@@ -1,73 +1,71 @@
+
+
+
+
 package net.subaraki.gravestone.handler;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayerMP;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.world.World;
-import net.minecraftforge.common.IExtendedEntityProperties;
-import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.common.network.PacketSyncModelToClient;
+import net.minecraftforge.common.*;
+import net.minecraft.nbt.*;
+import net.subaraki.gravestone.*;
+import net.minecraft.entity.*;
+import net.minecraft.world.*;
+import net.minecraft.entity.player.*;
+import net.subaraki.gravestone.common.network.*;
+import cpw.mods.fml.common.network.simpleimpl.*;
 
-public class PlayerGraveData implements IExtendedEntityProperties {
-
-	EntityPlayer player;
-	public static final String PROPS = "graveData";
-
-	private int graveID = 1;
-
-	public PlayerGraveData(EntityPlayer player) {
-		this.player = player;
-	}
-
-	public static final void register(EntityPlayer player) {
-
-		player.registerExtendedProperties(PROPS, new PlayerGraveData(player));
-	}
-
-	public static final PlayerGraveData get(EntityPlayer p) {
-
-		return (PlayerGraveData) p.getExtendedProperties(PROPS);
-	}
-
-	public int getGraveModel(){
-		return graveID;
-	}
-
-	public void setGraveModel(int i){
-		graveID = i;
-	}
-
-	@Override
-	public void saveNBTData(NBTTagCompound compound) {
-		compound.setInteger("grave_ID", graveID);
-		
-		if(this.player != null && player.worldObj.isRemote)
-			GraveStones.printDebugMessage("C save " + graveID + " ");
-		if(this.player != null && !player.worldObj.isRemote)
-			GraveStones.printDebugMessage("S save " + graveID + " ");
-	}
-
-	@Override
-	public void loadNBTData(NBTTagCompound compound) {
-		graveID = compound.getInteger("grave_ID");
-		
-//		if(this.player != null && player.worldObj.isRemote)
-//			GraveStones.printDebugMessage("C load " + graveID + " ");
-//		if(this.player != null && !player.worldObj.isRemote)
-//			GraveStones.printDebugMessage("S load " + graveID + " ");
-		
-	}
-
-	@Override
-	public void init(Entity entity, World world) {
-
-	}
-
-	/**Sometimes, the client is out of sync. calling this will fix that*/
-	public void sync(){
-		if(player != null)
-			if(player instanceof EntityPlayerMP)
-				GraveStones.instance.network.sendTo(new PacketSyncModelToClient(graveID), (EntityPlayerMP) player);
-	}
+public class PlayerGraveData implements IExtendedEntityProperties
+{
+    EntityPlayer player;
+    public static final String PROPS = "graveData";
+    private int graveID;
+    
+    public PlayerGraveData(final EntityPlayer player) {
+        this.graveID = 1;
+        this.player = player;
+    }
+    
+    public static final void register(final EntityPlayer player) {
+        player.registerExtendedProperties("graveData", (IExtendedEntityProperties)new PlayerGraveData(player));
+    }
+    
+    public static final PlayerGraveData get(final EntityPlayer p) {
+        return (PlayerGraveData)p.getExtendedProperties("graveData");
+    }
+    
+    public int getGraveModel() {
+        return this.graveID;
+    }
+    
+    public void setGraveModel(final int i) {
+        this.graveID = i;
+    }
+    
+    public void saveNBTData(final NBTTagCompound compound) {
+        compound.setInteger("grave_ID", this.graveID);
+        if (this.player != null && this.player.worldObj.isRemote) {
+            GraveStones.printDebugMessage("C save " + this.graveID + " ");
+        }
+        if (this.player != null && !this.player.worldObj.isRemote) {
+            GraveStones.printDebugMessage("S save " + this.graveID + " ");
+        }
+    }
+    
+    public void loadNBTData(final NBTTagCompound compound) {
+        this.graveID = compound.getInteger("grave_ID");
+        if (this.player != null && this.player.worldObj.isRemote) {
+            GraveStones.printDebugMessage("C load " + this.graveID + " ");
+        }
+        if (this.player != null && !this.player.worldObj.isRemote) {
+            GraveStones.printDebugMessage("S load " + this.graveID + " ");
+        }
+    }
+    
+    public void init(final Entity entity, final World world) {
+    }
+    
+    public void sync() {
+        if (this.player != null && this.player instanceof EntityPlayerMP) {
+            GraveStones.instance.network.sendTo((IMessage)new PacketSyncModelToClient(this.graveID), (EntityPlayerMP)this.player);
+        }
+    }
 }

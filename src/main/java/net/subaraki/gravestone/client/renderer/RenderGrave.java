@@ -1,31 +1,28 @@
+
+
+
+
 package net.subaraki.gravestone.client.renderer;
 
-import static net.subaraki.gravestone.util.Constants.GRAVE_PLACEHOLDER;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.*;
+import net.minecraft.item.*;
+import net.subaraki.gravestone.util.*;
+import net.minecraft.tileentity.*;
+import net.minecraft.client.renderer.tileentity.*;
 
-public class RenderGrave implements IItemRenderer {
-
-	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		return true;
-	}
-
-	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item,
-			ItemRendererHelper helper) {
-		return true;
-	}
-
-	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		
-		GRAVE_PLACEHOLDER.modelType = item.getItemDamage();
-		
-		TileEntitySpecialRenderer tesr = TileEntityRendererDispatcher.instance.getSpecialRenderer(GRAVE_PLACEHOLDER);
-		tesr.renderTileEntityAt(GRAVE_PLACEHOLDER, 0, 0, 0, 0);
-	}
-
+public class RenderGrave implements IItemRenderer
+{
+    public boolean handleRenderType(final ItemStack item, final IItemRenderer.ItemRenderType type) {
+        return true;
+    }
+    
+    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item, final IItemRenderer.ItemRendererHelper helper) {
+        return true;
+    }
+    
+    public void renderItem(final IItemRenderer.ItemRenderType type, final ItemStack item, final Object... data) {
+        Constants.GRAVE_PLACEHOLDER.modelType = item.getItemDamage();
+        final TileEntitySpecialRenderer tesr = TileEntityRendererDispatcher.instance.getSpecialRenderer((TileEntity)Constants.GRAVE_PLACEHOLDER);
+        tesr.renderTileEntityAt((TileEntity)Constants.GRAVE_PLACEHOLDER, 0.0, 0.0, 0.0, 0.0f);
+    }
 }

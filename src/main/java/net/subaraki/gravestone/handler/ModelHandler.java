@@ -1,70 +1,88 @@
+
+
+
+
 package net.subaraki.gravestone.handler;
 
-import net.subaraki.gravestone.client.model.ModelAngel;
-import net.subaraki.gravestone.client.model.ModelGraveSkeleton;
-import net.subaraki.gravestone.client.model.ModelGraveStone;
-import net.subaraki.gravestone.client.model.ModelHead;
-import net.subaraki.gravestone.client.model.ModelKnight;
-import net.subaraki.gravestone.client.model.ModelPillar;
-import net.subaraki.gravestone.client.model.ModelStoneCross;
-import net.subaraki.gravestone.client.model.ModelTomb;
-import net.subaraki.gravestone.client.model.ModelWoodenGrave;
-import net.subaraki.gravestone.util.Constants;
+import net.subaraki.gravestone.client.model.*;
+import net.subaraki.gravestone.util.*;
 
-public class ModelHandler {
-
-	public static final ModelAngel angel = new ModelAngel();
-	public static final ModelGraveSkeleton skeleton = new ModelGraveSkeleton();
-	public static final ModelGraveStone gravestone = new ModelGraveStone();
-	public static final ModelKnight knight = new ModelKnight();
-	public static final ModelPillar pillar = new ModelPillar();
-	public static final ModelStoneCross cross = new ModelStoneCross();
-	public static final ModelTomb tomb = new ModelTomb();
-	public static final ModelWoodenGrave wood = new ModelWoodenGrave();
-
-	public static ModelHead modelhead = new ModelHead();
-	public static ModelHead modelarmorhead = new ModelHead();
-	public static ModelHead modelarmorchest = new ModelHead();
-
-	public static final GraveArmorHandler helper = new GraveArmorHandler();
-
-	public static void renderModelFromType(int modelType){
-
-		switch (modelType) {
-		case 1:
-			cross.render(0.0625f);
-			break;
-		case 2:
-			gravestone.render(0.0625f);
-			break;
-		case 3 :
-			tomb.render(0.0625f);
-			break;
-		case 4:
-			pillar.render(0.0625f);
-			skeleton.render(0.0625f);
-			break;
-		case 5:
-			pillar.render(0.0625f);
-			break;
-		case 6:
-			wood.render(0.0625f);
-		case 7:
-			pillar.render(0.0625f);
-			break;
-		case 8:
-			Constants.angelStatue.render();
-			break;
-		case 9:
-			knight.render(0.0625f);
-			break;
-		case 10:
-			Constants.barrel.render();
-			break;
-
-		default :
-			cross.render(0.0625f);
-			break;
-		}
-	}
+public class ModelHandler
+{
+    public static final ModelAngel angel;
+    public static final ModelGraveSkeleton skeleton;
+    public static final ModelGraveStone gravestone;
+    public static final ModelKnight knight;
+    public static final ModelPillar pillar;
+    public static final ModelStoneCross cross;
+    public static final ModelTomb tomb;
+    public static final ModelWoodenGrave wood;
+    public static ModelHead modelhead;
+    public static ModelHead modelarmorhead;
+    public static ModelHead modelarmorchest;
+    public static final GraveArmorHandler helper;
+    
+    public static void renderModelFromType(final int modelType) {
+        switch (modelType) {
+            case 1: {
+                ModelHandler.cross.render(0.0625f);
+                break;
+            }
+            case 2: {
+                ModelHandler.gravestone.render(0.0625f);
+                break;
+            }
+            case 3: {
+                ModelHandler.tomb.render(0.0625f);
+                break;
+            }
+            case 4: {
+                ModelHandler.pillar.render(0.0625f);
+                ModelHandler.skeleton.render(0.0625f);
+                break;
+            }
+            case 5: {
+                ModelHandler.pillar.render(0.0625f);
+                break;
+            }
+            case 6: {
+                ModelHandler.wood.render(0.0625f);
+            }
+            case 7: {
+                ModelHandler.pillar.render(0.0625f);
+                break;
+            }
+            case 8: {
+                Constants.angelStatue.render();
+                break;
+            }
+            case 9: {
+                ModelHandler.knight.render(0.0625f);
+                break;
+            }
+            case 10: {
+                Constants.barrel.render();
+                break;
+            }
+            default: {
+                ModelHandler.cross.render(0.0625f);
+                break;
+            }
+        }
+    }
+    
+    static {
+        angel = new ModelAngel();
+        skeleton = new ModelGraveSkeleton();
+        gravestone = new ModelGraveStone();
+        knight = new ModelKnight();
+        pillar = new ModelPillar();
+        cross = new ModelStoneCross();
+        tomb = new ModelTomb();
+        wood = new ModelWoodenGrave();
+        ModelHandler.modelhead = new ModelHead();
+        ModelHandler.modelarmorhead = new ModelHead();
+        ModelHandler.modelarmorchest = new ModelHead();
+        helper = new GraveArmorHandler();
+    }
 }

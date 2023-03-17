@@ -1,42 +1,45 @@
+
+
+
+
 package net.subaraki.gravestone.client;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
-import net.minecraftforge.client.MinecraftForgeClient;
-import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.client.model.ModelCubeWorld;
-import net.subaraki.gravestone.client.renderer.RenderGrave;
-import net.subaraki.gravestone.client.renderer.TileEntitySpecialRendererGrave;
-import net.subaraki.gravestone.common.CommonProxy;
-import net.subaraki.gravestone.handler.ConfigHandler;
-import net.subaraki.gravestone.tileentity.TileEntityGravestone;
-import net.subaraki.gravestone.util.Constants;
+import net.subaraki.gravestone.common.*;
+import net.minecraft.client.settings.*;
+import net.subaraki.gravestone.handler.*;
+import cpw.mods.fml.client.registry.*;
+import net.subaraki.gravestone.tileentity.*;
+import net.minecraft.client.renderer.tileentity.*;
+import net.subaraki.gravestone.client.model.*;
+import net.subaraki.gravestone.util.*;
+import net.subaraki.gravestone.*;
+import net.minecraft.item.*;
+import net.subaraki.gravestone.client.renderer.*;
+import net.minecraftforge.client.*;
+import net.minecraft.entity.player.*;
+import net.minecraft.client.*;
 
-import org.lwjgl.input.Keyboard;
-
-import cpw.mods.fml.client.registry.ClientRegistry;
-
-public class ClientProxy extends CommonProxy {
-
-	public static KeyBinding keyGui = new KeyBinding("Pick Grave Gui", Keyboard.KEY_M, "gravestonemod");
-
-	@Override
-	public void preInit() {
-
-		if(ConfigHandler.enableGravesTroughKey)
-			ClientRegistry.registerKeyBinding(keyGui);
-		
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityGravestone.class, new TileEntitySpecialRendererGrave());
-
-		Constants.angelStatue = new ModelCubeWorld(ModelCubeWorld.class.getResourceAsStream("/assets/grave/models/angelStatue.cub"));
-		Constants.barrel = new ModelCubeWorld(ModelCubeWorld.class.getResourceAsStream("/assets/grave/models/barrel.cub"));
-
-		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GraveStones.graveStone), new RenderGrave());
-	}
-	
-	public EntityPlayer getClientPlayer(){
-		return Minecraft.getMinecraft().thePlayer;
-	}
+public class ClientProxy extends CommonProxy
+{
+    public static KeyBinding keyGui;
+    
+    @Override
+    public void preInit() {
+        if (ConfigHandler.enableGravesTroughKey) {
+            ClientRegistry.registerKeyBinding(ClientProxy.keyGui);
+        }
+        ClientRegistry.bindTileEntitySpecialRenderer((Class)TileEntityGravestone.class, (TileEntitySpecialRenderer)new TileEntitySpecialRendererGrave());
+        Constants.angelStatue = new ModelCubeWorld(ModelCubeWorld.class.getResourceAsStream("/assets/grave/models/angelStatue.cub"));
+        Constants.barrel = new ModelCubeWorld(ModelCubeWorld.class.getResourceAsStream("/assets/grave/models/barrel.cub"));
+        MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(GraveStones.graveStone), (IItemRenderer)new RenderGrave());
+    }
+    
+    @Override
+    public EntityPlayer getClientPlayer() {
+        return (EntityPlayer)Minecraft.getMinecraft().thePlayer;
+    }
+    
+    static {
+        ClientProxy.keyGui = new KeyBinding("Pick Grave Gui", 50, "gravestonemod");
+    }
 }
