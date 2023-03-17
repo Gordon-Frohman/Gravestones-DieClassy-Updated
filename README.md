@@ -1,5 +1,5 @@
 # So why is this thing exists?
-To my mind Gravestones - DieClassy is the best gravestone mod ever created (at least for minecraft 1.7.10).
+To my mind Gravestones - Die Classy is the best gravestone mod ever created (at least for minecraft 1.7.10).
 But unfortunately minecraft 1.7.10 is long gone and no one really maintains mods for it. And even more unforunately there are some issues with the Gravestones mod.
 For example it conflicts with the other mods that add a way to keep your inventory after death - Twilight Forest, Thaumic Horizons, you name it.
 Or for whatever reason armor put onto a player bust gravestone renders perpendicularly to it.
