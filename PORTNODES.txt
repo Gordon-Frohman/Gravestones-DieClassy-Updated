@@ -1,0 +1,4 @@
+1. Find fitting version(s) for 1.18.2 gradlew, gradlew.bat, build.gradle
+2. check the current situation in Forge. Which version do we need? 
+3. Check what the old version does and write new functions that work with 1.18.2 
+4. Good luck.
