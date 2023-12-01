@@ -5,6 +5,7 @@
 package net.subaraki.gravestone.client.gui;
 
 import net.minecraft.entity.player.*;
+import net.minecraft.util.StatCollector;
 import net.minecraft.client.gui.*;
 import org.lwjgl.opengl.*;
 import net.subaraki.gravestone.handler.*;
@@ -34,16 +35,16 @@ public class GuiPickGrave extends GuiScreen
         final int posX = (this.width - this.xSize) / 2;
         final int posY = (this.height - this.ySize) / 2;
         this.buttonList.add(new GuiButton(0, posX + 150, posY - 100, 20, 20, "X"));
-        this.buttonList.add(new GuiButton(1, posX + 90, posY - 70, 80, 20, "Cross"));
-        this.buttonList.add(new GuiButton(2, posX + 90, posY - 40, 80, 20, "Classic Grave"));
-        this.buttonList.add(new GuiButton(3, posX + 90, posY - 10, 80, 20, "Tomb"));
-        this.buttonList.add(new GuiButton(4, posX + 90, posY + 20, 80, 20, "Pillar"));
-        this.buttonList.add(new GuiButton(5, posX + 90, posY + 50, 80, 20, "Bust"));
-        this.buttonList.add(new GuiButton(6, posX, posY - 70, 80, 20, "Cheap Cross"));
-        this.buttonList.add(new GuiButton(7, posX, posY - 40, 80, 20, "Stele"));
-        this.buttonList.add(new GuiButton(8, posX, posY - 10, 80, 20, "Angel"));
-        this.buttonList.add(new GuiButton(9, posX, posY + 20, 80, 20, "Knight"));
-        this.buttonList.add(new GuiButton(10, posX, posY + 50, 80, 20, "Some Barrel"));
+        this.buttonList.add(new GuiButton(1, posX + 90, posY - 70, 80, 20, StatCollector.translateToLocal("pickGrave.cross")));
+        this.buttonList.add(new GuiButton(2, posX + 90, posY - 40, 80, 20, StatCollector.translateToLocal("pickGrave.classic")));
+        this.buttonList.add(new GuiButton(3, posX + 90, posY - 10, 80, 20, StatCollector.translateToLocal("pickGrave.tomb")));
+        this.buttonList.add(new GuiButton(4, posX + 90, posY + 20, 80, 20, StatCollector.translateToLocal("pickGrave.pillar")));
+        this.buttonList.add(new GuiButton(5, posX + 90, posY + 50, 80, 20, StatCollector.translateToLocal("pickGrave.bust")));
+        this.buttonList.add(new GuiButton(6, posX, posY - 70, 80, 20, StatCollector.translateToLocal("pickGrave.cheap")));
+        this.buttonList.add(new GuiButton(7, posX, posY - 40, 80, 20, StatCollector.translateToLocal("pickGrave.stele")));
+        this.buttonList.add(new GuiButton(8, posX, posY - 10, 80, 20, StatCollector.translateToLocal("pickGrave.angel")));
+        this.buttonList.add(new GuiButton(9, posX, posY + 20, 80, 20, StatCollector.translateToLocal("pickGrave.knight")));
+        this.buttonList.add(new GuiButton(10, posX, posY + 50, 80, 20, StatCollector.translateToLocal("pickGrave.barrel")));
     }
     
     public void drawScreen(final int par1, final int par2, final float par3) {
@@ -52,7 +53,7 @@ public class GuiPickGrave extends GuiScreen
         final int posX = (this.width - this.xSize) / 2;
         final int posY = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
-        this.fontRendererObj.drawSplitString("Choose the Grave you want to spawn when you die.", this.width / 2 - 84, this.height / 2 - 100, 150, 16777215);
+        this.fontRendererObj.drawSplitString(StatCollector.translateToLocal("pickGrave.text"), this.width / 2 - 84, this.height / 2 - 100, 150, 16777215);
         this.fontRendererObj.drawSplitString("" + this.render, this.width / 2 + 140, this.height / 2 - 95, 150, 16777215);
         GL11.glPushMatrix();
         this.mc.renderEngine.bindTexture(TextureHandler.getTextureFromMeta(this.render));
@@ -103,7 +104,7 @@ public class GuiPickGrave extends GuiScreen
     private void renderBust() {
         GL11.glPushMatrix();
         if (this.player != null) {
-            this.mc.renderEngine.bindTexture(GraveUtility.instance.processPlayerTexture(this.player));
+            this.mc.renderEngine.bindTexture(GraveUtility.instance.processPlayerTexture(this.player.getDisplayName()));
             GL11.glTranslatef((float)(this.width / 2 - 150), (float)(this.height / 2 - 40), 40.0f);
             GL11.glScaled(50.0, 50.0, -50.0);
             GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);

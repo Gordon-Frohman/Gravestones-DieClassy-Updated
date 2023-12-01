@@ -21,7 +21,12 @@ import java.util.*;
 import javax.imageio.ImageIO;
 import javax.net.ssl.HttpsURLConnection;
 
+import com.google.common.collect.Iterables;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
 import net.subaraki.gravestone.*;
+import net.subaraki.gravestone.util.GraveUtility;
 import net.minecraft.nbt.*;
 import net.minecraft.world.*;
 import net.minecraft.entity.item.*;
@@ -30,6 +35,7 @@ import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.*;
 import net.minecraft.util.*;
 import net.minecraft.network.play.server.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.network.*;
 
 public class TileEntityGravestone extends TileEntity implements IInventory
@@ -38,6 +44,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory
     public ItemStack[] slots;
     public int tab;
     public String playername;
+    public GameProfile profile;
     public int modelType;
     public float ModelRotation;
     public EntityPlayer entityPlayerStub;
@@ -47,6 +54,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory
     public boolean hasItems;
     public String locked;
     public boolean otherPlayerHasTakenItemStack;
+    public ResourceLocation skinLocation = null;
     Random rand;
     
     public TileEntityGravestone() {
@@ -68,9 +76,11 @@ public class TileEntityGravestone extends TileEntity implements IInventory
     public void setGraveData(final String playername, final int modelid) {
         this.playername = playername;
         this.modelType = modelid;
-        if(this.modelType == 5)
+        if(this.modelType == 5 && playername != "")
         {
-        	this.downloadSkin();
+        	//this.downloadSkin();
+            this.profile = new GameProfile((UUID)null, playername);
+            fixProfile();
         }
     }
     
@@ -152,6 +162,14 @@ public class TileEntityGravestone extends TileEntity implements IInventory
         this.ModelRotation = nbt.getFloat("rotation");
         this.otherPlayerHasTakenItemStack = nbt.getBoolean("isLooted");
         this.isDecorativeGrave = nbt.getBoolean("decoGrave");
+        if(this.modelType == 5 && playername != "")
+        {
+            this.profile = new GameProfile((UUID)null, playername);
+            fixProfile();
+        }
+        /*if(nbt.hasKey("skinLocation")) {
+        	this.skinLocation = new ResourceLocation(nbt.getString("skinLocation"));
+        }*/
         final NBTTagList tagList = nbt.getTagList("Items", 10);
         for (int i = 0; i < tagList.tagCount(); ++i) {
             final NBTTagCompound tag = tagList.getCompoundTagAt(i);
@@ -179,6 +197,9 @@ public class TileEntityGravestone extends TileEntity implements IInventory
         par1NBTTagCompound.setFloat("rotation", this.ModelRotation);
         par1NBTTagCompound.setBoolean("isLooted", this.otherPlayerHasTakenItemStack);
         par1NBTTagCompound.setBoolean("decoGrave", this.isDecorativeGrave);
+        /*if(skinLocation != null) {
+        	par1NBTTagCompound.setString("skinLocation", this.skinLocation.toString());
+        }*/
         
         final NBTTagList nbttaglist = new NBTTagList();
         for (int i = 0; i < this.slots.length; ++i) {
@@ -233,14 +254,22 @@ public class TileEntityGravestone extends TileEntity implements IInventory
     
     public String setName(final String name) {
         this.playername = name;
-        if(this.modelType == 5)
+        if(this.modelType == 5 && playername != "")
         {
-        	this.downloadSkin();
+        	//this.downloadSkin();
+        	//this.skinLocation = GraveUtility.instance.processPlayerTexture(this.playername);
+            this.profile = new GameProfile((UUID)null, name);
+            fixProfile();
         }
         return this.playername;
     }
     
     public Entity setPlayer(final EntityPlayer player) {
+        if(this.modelType == 5 && player.getDisplayName() != "")
+        {
+            this.profile = new GameProfile((UUID)null, player.getDisplayName());
+            fixProfile();
+        }
         return (Entity)(this.entityPlayerStub = player);
     }
     
@@ -276,7 +305,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory
     }
     
     public String getInventoryName() {
-        return "Grave";
+        return StatCollector.translateToLocal("grave.container.name");
     }
     
     public boolean hasCustomInventoryName() {
@@ -376,6 +405,25 @@ public class TileEntityGravestone extends TileEntity implements IInventory
             name = "Mariculture";
         }
         return name;
+    }
+
+    private void fixProfile() {
+        if (this.profile != null && !StringUtils.isNullOrEmpty(this.profile.getName())) {
+            if (!this.profile.isComplete() || !this.profile.getProperties().containsKey("textures")) {
+                GameProfile gameprofile = MinecraftServer.getServer().func_152358_ax().func_152655_a(this.profile.getName());
+
+                if (gameprofile != null) {
+                    Property property = (Property)Iterables.getFirst(gameprofile.getProperties().get("textures"), (Object)null);
+
+                    if (property == null) {
+                        gameprofile = MinecraftServer.getServer().func_147130_as().fillProfileProperties(gameprofile, true);
+                    }
+
+                    this.profile = gameprofile;
+                    this.markDirty();
+                }
+            }
+        }
     }
     
     public void downloadSkin()

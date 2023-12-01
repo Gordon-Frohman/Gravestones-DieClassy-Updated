@@ -13,9 +13,9 @@ buildscript {
 
 apply plugin: 'forge'
 
-version = "1.4"
+version = "1.4.2"
 group= "net.subaraki.gravestone" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "GraveStones"
+archivesBaseName = "GraveStones - Die Classy Updated"
 
 minecraft {
     version = "1.7.10-10.13.4.1614-1.7.10"
@@ -37,6 +37,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
     
     //compile files('libs/twilightforest-1.7.10-2.3.8dev.jar')
+	compile files('libs/TConstruct-1.10.12-GTNH-dev.jar')
 
 }
 

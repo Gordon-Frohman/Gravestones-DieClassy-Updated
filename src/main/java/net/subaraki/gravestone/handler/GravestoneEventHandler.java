@@ -9,6 +9,7 @@ import cpw.mods.fml.common.*;
 import net.minecraftforge.event.entity.*;
 import cpw.mods.fml.common.gameevent.*;
 import net.subaraki.gravestone.client.*;
+import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.minecraft.client.*;
 import net.subaraki.gravestone.*;
 import net.minecraft.world.*;
@@ -175,8 +176,8 @@ public class GravestoneEventHandler
             }
         }
         if (GraveStones.hasTiCo) {
-            final IInventory sack = this.accesInventoryContents(player, "getKnapsackInventory ", "tconstruct.armor.player.TPlayerStats", "Tinkers Construct");
-            final IInventory inv2 = this.accesInventoryContents(player, "getAccessoryInventory ", "tconstruct.armor.player.TPlayerStats", "Tinkers Construct");
+            final IInventory sack = TinkersConstructIntegration.getKnapsackInventory(player);
+            final IInventory inv2 = TinkersConstructIntegration.getAccessoryInventory(player);
             if (sack != null) {
                 for (int j = 0; j < 27; ++j) {
                     final ItemStack is2 = sack.getStackInSlot(j);

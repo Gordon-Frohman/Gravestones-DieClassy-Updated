@@ -59,7 +59,7 @@ public class BlockGrave extends Block
             return true;
         }
         if (!world.isRemote) {
-            player.addChatComponentMessage((IChatComponent)new ChatComponentText("This grave belongs to someone. I should not do that."));
+            player.addChatComponentMessage((IChatComponent)new ChatComponentText(StatCollector.translateToLocal("chat.dontTouch")));
         }
         return true;
     }

@@ -36,7 +36,7 @@ public class GuiGraveContainer extends GuiContainer
         super((Container)new ContainerGrave(player.inventory, grave, player));
         this.rotationCounter = 0;
         this.gravetext = "";
-        this.tabText = "MineCraft";
+        this.tabText = "Minecraft";
         this.modelhead = new ModelHead();
         this.deathPlayer = player.worldObj.getPlayerEntityByName(grave.playername);
         this.playerOpenGui = player;
@@ -48,7 +48,7 @@ public class GuiGraveContainer extends GuiContainer
             if (grave.message1.length() <= 0) {
                 grave.isDecorativeGrave = false;
                 if (this.nameOfDeathPlayer.equals("!Empty!")) {
-                    this.gravetext = "The Grave is empty !";
+                    this.gravetext = StatCollector.translateToLocal("grave.empty");
                 }
                 else {
                     this.gravetext = GraveTextHandler.getStringFromMeta(this.nameOfDeathPlayer, this.te.modelType);

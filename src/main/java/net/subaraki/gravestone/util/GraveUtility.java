@@ -8,6 +8,7 @@ import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.subaraki.gravestone.*;
 import net.minecraft.entity.player.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.*;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -23,9 +24,11 @@ import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
+import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import com.mojang.authlib.properties.Property;
 
 import cpw.mods.fml.relauncher.*;
 
@@ -77,9 +80,10 @@ public class GraveUtility
     
     @SideOnly(Side.CLIENT)
     public ResourceLocation processPlayerTexture(final String playername) {
-        if (this.SKIN_ABSTRACT_PLAYER == null) {
+    	this.SKIN_ABSTRACT_PLAYER = null;
+        /*if (this.SKIN_ABSTRACT_PLAYER == null) {
             this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
-        }
+        }*/
         try {
             if (playername != null && playername.length() > 1) {
             	EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(playername);
@@ -89,20 +93,21 @@ public class GraveUtility
                     Map<Type, MinecraftProfileTexture> map = minecraft.func_152342_ad().func_152788_a(gameprofile);
                     if (map.containsKey(Type.SKIN)) {
                     	this.SKIN_ABSTRACT_PLAYER = minecraft.func_152342_ad().func_152792_a((MinecraftProfileTexture)map.get(Type.SKIN), Type.SKIN);
+                    	//AbstractClientPlayer.getDownloadImageSkin(SKIN_ABSTRACT_PLAYER, playername);
                     }
             	}
-            	else {
+            	/*else {
                     this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
-            	}
+            	}*/
             }
-            else {
+            /*else {
                 this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
-            }
+            }*/
         }
         catch (Exception e) {
-            this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
+            //this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
         }
-        if(this.SKIN_ABSTRACT_PLAYER == this.SKIN_STEVE)
+        if(this.SKIN_ABSTRACT_PLAYER == null /*this.SKIN_STEVE*/)
         {
         	if(playername != null && playername.length() > 1)
         	{
@@ -113,8 +118,8 @@ public class GraveUtility
         				bufferedImage = bufferedImage.getSubimage(0, 0, bufferedImage.getWidth(), bufferedImage.getHeight()/2);
         			}
         			this.SKIN_ABSTRACT_PLAYER = Minecraft.getMinecraft().getTextureManager().getDynamicTextureLocation(" ", new DynamicTexture(bufferedImage));
-        		} catch (IOException e) {
-        			e.printStackTrace();
+        		} catch (Exception e) {
+        			//e.printStackTrace();
                     this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
         		}
         	}

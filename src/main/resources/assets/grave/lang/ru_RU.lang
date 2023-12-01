@@ -32,3 +32,23 @@ grave.knight.2=, рыцарь Первого Ордена, живший, как 
 
 grave.barrel.1=Здесь лежит 
 grave.barrel.2=. Он очень любил бочки.
+
+grave.empty=Эта могила пуста!
+
+grave.decorative=Декоративная могила.
+
+pickGrave.settings.category=Надгробные камни
+pickGrave.settings.0=Меню выбора надгробия
+pickGrave.text=Выберите могилу, которая будет хранить ваши вещи после смерти.
+pickGrave.cross=Крест
+pickGrave.classic=Классическая могила
+pickGrave.tomb=Гробница
+pickGrave.pillar=Колонна
+pickGrave.bust=Бюст
+pickGrave.cheap=Дешёвый крест
+pickGrave.stele=Стела
+pickGrave.angel=Ангел
+pickGrave.knight=Рыцарь
+pickGrave.barrel=Какая-то бочка
+
+chat.dontTouch=Эта могила принадлежит кому-то. Не стоит мне этого делать.

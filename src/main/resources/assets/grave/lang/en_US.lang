@@ -32,3 +32,23 @@ grave.knight.2=, a Knight of First Order. Great in life, glorious in death.
 
 grave.barrel.1=Here lies 
 grave.barrel.2=. He really liked barrels.
+
+grave.empty=The Grave is empty!
+
+grave.decorative=Decorative grave.
+
+pickGrave.settings.category=Gravestones
+pickGrave.settings.0=Pick Grave Gui
+pickGrave.text=Choose the Grave you want to spawn when you die.
+pickGrave.cross=Cross
+pickGrave.classic=Classic Grave
+pickGrave.tomb=Tomb
+pickGrave.pillar=Pillar
+pickGrave.bust=Bust
+pickGrave.cheap=Cheap Cross
+pickGrave.stele=Stele
+pickGrave.angel=Angel
+pickGrave.knight=Knight
+pickGrave.barrel=Some Barrel
+
+chat.dontTouch=This grave belongs to someone. I should not do that.

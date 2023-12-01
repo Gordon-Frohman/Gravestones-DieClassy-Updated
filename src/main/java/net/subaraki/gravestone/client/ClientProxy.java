@@ -14,6 +14,7 @@ import net.subaraki.gravestone.client.model.*;
 import net.subaraki.gravestone.util.*;
 import net.subaraki.gravestone.*;
 import net.minecraft.item.*;
+import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.client.renderer.*;
 import net.minecraftforge.client.*;
 import net.minecraft.entity.player.*;
@@ -40,6 +41,6 @@ public class ClientProxy extends CommonProxy
     }
     
     static {
-        ClientProxy.keyGui = new KeyBinding("Pick Grave Gui", 50, "gravestonemod");
+    	ClientProxy.keyGui = new KeyBinding(StatCollector.translateToLocal("pickGrave.settings.0"), 50, StatCollector.translateToLocal("pickGrave.settings.category"));
     }
 }

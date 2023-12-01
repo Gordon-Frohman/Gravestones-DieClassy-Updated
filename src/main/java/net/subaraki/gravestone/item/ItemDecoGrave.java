@@ -14,6 +14,7 @@ import net.minecraft.world.*;
 import net.subaraki.gravestone.*;
 import net.subaraki.gravestone.tileentity.*;
 import net.minecraft.tileentity.*;
+import net.minecraft.util.StatCollector;
 
 public class ItemDecoGrave extends ItemBlock
 {
@@ -61,7 +62,7 @@ public class ItemDecoGrave extends ItemBlock
         par3World.setBlock(par4, par5, par6, GraveStones.graveStone, par7, 2);
         final int i1 = 0;
         final TileEntityGravestone grave = new TileEntityGravestone();
-        grave.setDeathMessage("Decorative grave.");
+        grave.setDeathMessage(StatCollector.translateToLocal("grave.decorative"));
         grave.setDeathMessage2("");
         grave.isDecorativeGrave = true;
         grave.modelType = par1ItemStack.getItemDamage();

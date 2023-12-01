@@ -8,7 +8,14 @@ import net.minecraft.client.renderer.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.tileentity.*;
 import net.subaraki.gravestone.tileentity.*;
+
+import java.util.Map;
+
 import org.lwjgl.opengl.*;
+
+import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+
 import net.subaraki.gravestone.handler.*;
 import net.subaraki.gravestone.util.*;
 import net.minecraft.client.renderer.entity.*;
@@ -73,7 +80,23 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer
         final float sc = 0.75f;
         GL11.glScalef(sc, sc, sc);
         if (modeltype == 5) {
-            this.bindTexture(GraveUtility.instance.processPlayerTexture(tile.playername));
+        	/*if(tile.skinLocation == null)
+        		tile.skinLocation = GraveUtility.instance.processPlayerTexture(tile.playername);
+            this.bindTexture(tile.skinLocation);*/
+        	
+            ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
+
+            if (tile.profile != null) {
+                Minecraft minecraft = Minecraft.getMinecraft();
+                Map map = minecraft.func_152342_ad().func_152788_a(tile.profile);
+
+                if (map.containsKey(Type.SKIN)) {
+                    resourcelocation = minecraft.func_152342_ad().func_152792_a((MinecraftProfileTexture)map.get(Type.SKIN), Type.SKIN);
+                }
+            }
+
+            this.bindTexture(resourcelocation);
+        	
             GL11.glRotatef(rot, 0.0f, 1.0f, 0.0f);
             ModelHandler.modelhead.renderHead(0.0625f);
             if (tile.getStackInSlot(tile.getSizeInventory() - 1) != null && tile.getStackInSlot(tile.getSizeInventory() - 1).getItem() instanceof ItemArmor) {
