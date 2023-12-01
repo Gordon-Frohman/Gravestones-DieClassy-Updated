@@ -56,7 +56,7 @@ public class GraveStones
     public void init(final FMLInitializationEvent event) {
         GraveStones.hasRpgI = GraveUtility.findClass("rpgInventory.RpgInventoryMod", "Rpg Inventory");
         GraveStones.hasTiCo = GraveUtility.findClass("tconstruct.TConstruct", "Tinkers Construct");
-        GraveStones.hasBaub = GraveUtility.findClass("baubles.common.Baubles", "Baubles Inventory");
+        GraveStones.hasBaub = GraveUtility.findClass("baubles.common.Baubles", "Baubel Inventory");
         GraveStones.hasGal_Craft = GraveUtility.findClass("micdoodle8.mods.galacticraft.core.GalacticraftCore", "GalacticCraft");
         GraveStones.hasMari_Cul = GraveUtility.findClass("mariculture.Mariculture", "Mariculture");
     }
