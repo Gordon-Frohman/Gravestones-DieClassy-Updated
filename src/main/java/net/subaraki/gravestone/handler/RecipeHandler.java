@@ -1,11 +1,11 @@
 
 package net.subaraki.gravestone.handler;
 
-import net.minecraft.init.*;
-import net.minecraft.item.*;
-import net.subaraki.gravestone.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.subaraki.gravestone.GraveStones;
 
-import cpw.mods.fml.common.registry.*;
+import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RecipeHandler {
 

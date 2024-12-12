@@ -1,7 +1,7 @@
 
 package net.subaraki.gravestone.handler;
 
-import net.minecraft.util.*;
+import net.minecraft.util.ResourceLocation;
 
 public class TextureHandler {
 

@@ -1,7 +1,7 @@
 
 package net.subaraki.gravestone.common;
 
-import net.minecraft.entity.player.*;
+import net.minecraft.entity.player.EntityPlayer;
 
 public class CommonProxy {
 

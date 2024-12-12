@@ -9,12 +9,13 @@ import java.util.UUID;
 import javax.imageio.ImageIO;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.*;
+import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.entity.player.*;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.*;
-import net.subaraki.gravestone.*;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StringUtils;
+import net.subaraki.gravestone.GraveStones;
 
 import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
@@ -22,7 +23,8 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.mojang.authlib.properties.Property;
 
-import cpw.mods.fml.relauncher.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class GraveUtility {
 

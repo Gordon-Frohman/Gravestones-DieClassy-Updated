@@ -1,13 +1,15 @@
 
 package net.subaraki.gravestone.common.network;
 
-import net.minecraft.tileentity.*;
-import net.minecraft.world.*;
-import net.subaraki.gravestone.*;
-import net.subaraki.gravestone.tileentity.*;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
-import io.netty.buffer.*;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
 
 public class PacketSwitchSlotLayout implements IMessage {
 

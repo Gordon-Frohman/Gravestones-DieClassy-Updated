@@ -3,21 +3,26 @@ package net.subaraki.gravestone.client.renderer;
 
 import java.util.Map;
 
-import net.minecraft.client.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
-import net.minecraft.client.model.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.tileentity.*;
+import net.minecraft.client.model.ModelBiped;
+import net.minecraft.client.model.ModelBox;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.entity.RenderBiped;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.monster.EntityZombie;
-import net.minecraft.item.*;
-import net.minecraft.tileentity.*;
-import net.minecraft.util.*;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.ResourceLocation;
 import net.subaraki.gravestone.client.model.ModelBust;
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.tileentity.*;
+import net.subaraki.gravestone.handler.ModelHandler;
+import net.subaraki.gravestone.handler.TextureHandler;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;

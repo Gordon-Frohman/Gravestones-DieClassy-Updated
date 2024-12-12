@@ -1,14 +1,17 @@
 
 package net.subaraki.gravestone.client.model;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
-import net.minecraft.client.model.*;
-import net.minecraft.entity.*;
-import net.minecraftforge.common.util.*;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
+import net.minecraft.entity.Entity;
+import net.minecraftforge.common.util.ForgeDirection;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
 
 public class ModelCubeWorld extends ModelBase {
 

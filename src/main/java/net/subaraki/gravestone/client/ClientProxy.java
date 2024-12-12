@@ -1,22 +1,24 @@
 
 package net.subaraki.gravestone.client;
 
-import net.minecraft.client.*;
-import net.minecraft.client.renderer.tileentity.*;
-import net.minecraft.client.settings.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.item.*;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.util.StatCollector;
-import net.minecraftforge.client.*;
-import net.subaraki.gravestone.*;
-import net.subaraki.gravestone.client.model.*;
-import net.subaraki.gravestone.client.renderer.*;
-import net.subaraki.gravestone.common.*;
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.tileentity.*;
-import net.subaraki.gravestone.util.*;
+import net.minecraftforge.client.IItemRenderer;
+import net.minecraftforge.client.MinecraftForgeClient;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.client.model.ModelCubeWorld;
+import net.subaraki.gravestone.client.renderer.RenderGrave;
+import net.subaraki.gravestone.client.renderer.TileEntitySpecialRendererGrave;
+import net.subaraki.gravestone.common.CommonProxy;
+import net.subaraki.gravestone.handler.ConfigHandler;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
+import net.subaraki.gravestone.util.Constants;
 
-import cpw.mods.fml.client.registry.*;
+import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class ClientProxy extends CommonProxy {
 

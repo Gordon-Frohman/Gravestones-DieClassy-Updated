@@ -1,15 +1,16 @@
 
 package net.subaraki.gravestone.handler;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.nbt.*;
-import net.minecraft.world.*;
-import net.minecraftforge.common.*;
-import net.subaraki.gravestone.*;
-import net.subaraki.gravestone.common.network.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.world.World;
+import net.minecraftforge.common.IExtendedEntityProperties;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.common.network.PacketSyncModelToClient;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
 public class PlayerGraveData implements IExtendedEntityProperties {
 

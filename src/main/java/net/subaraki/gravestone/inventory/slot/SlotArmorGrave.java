@@ -1,10 +1,11 @@
 
 package net.subaraki.gravestone.inventory.slot;
 
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.subaraki.gravestone.tileentity.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 public class SlotArmorGrave extends Slot {
 

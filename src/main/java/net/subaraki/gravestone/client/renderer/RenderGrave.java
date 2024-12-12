@@ -1,11 +1,12 @@
 
 package net.subaraki.gravestone.client.renderer;
 
-import net.minecraft.client.renderer.tileentity.*;
-import net.minecraft.item.*;
-import net.minecraft.tileentity.*;
-import net.minecraftforge.client.*;
-import net.subaraki.gravestone.util.*;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.client.IItemRenderer;
+import net.subaraki.gravestone.util.Constants;
 
 public class RenderGrave implements IItemRenderer {
 

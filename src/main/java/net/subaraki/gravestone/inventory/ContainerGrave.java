@@ -1,15 +1,21 @@
 
 package net.subaraki.gravestone.inventory;
 
-import net.minecraft.entity.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.*;
-import net.minecraft.item.*;
-import net.minecraft.util.*;
-import net.subaraki.gravestone.inventory.slot.*;
-import net.subaraki.gravestone.tileentity.*;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemArmor;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
+import net.subaraki.gravestone.inventory.slot.SlotArmorGrave;
+import net.subaraki.gravestone.inventory.slot.SlotGrave;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
-import cpw.mods.fml.relauncher.*;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ContainerGrave extends Container {
 

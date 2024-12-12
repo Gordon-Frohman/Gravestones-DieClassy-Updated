@@ -1,17 +1,20 @@
 
 package net.subaraki.gravestone.client.gui;
 
-import net.minecraft.client.gui.*;
-import net.minecraft.entity.player.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
-import net.subaraki.gravestone.*;
-import net.subaraki.gravestone.common.network.*;
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.util.*;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.common.network.PacketSyncGraveModel;
+import net.subaraki.gravestone.handler.ModelHandler;
+import net.subaraki.gravestone.handler.PlayerGraveData;
+import net.subaraki.gravestone.handler.TextureHandler;
+import net.subaraki.gravestone.util.GraveUtility;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
 public class GuiPickGrave extends GuiScreen {
 

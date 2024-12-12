@@ -1,12 +1,14 @@
 
 package net.subaraki.gravestone.common.network;
 
-import net.minecraft.entity.player.*;
-import net.subaraki.gravestone.*;
-import net.subaraki.gravestone.handler.*;
+import net.minecraft.entity.player.EntityPlayer;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.handler.PlayerGraveData;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
-import io.netty.buffer.*;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
 
 public class PacketSyncModelToClient implements IMessage {
 

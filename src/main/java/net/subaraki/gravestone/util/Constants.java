@@ -1,13 +1,24 @@
 
 package net.subaraki.gravestone.util;
 
-import net.minecraft.init.*;
-import net.minecraft.item.*;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.client.model.*;
-import net.subaraki.gravestone.tileentity.*;
+import net.subaraki.gravestone.client.model.ModelAngel;
+import net.subaraki.gravestone.client.model.ModelCubeWorld;
+import net.subaraki.gravestone.client.model.ModelGraveSkeleton;
+import net.subaraki.gravestone.client.model.ModelGraveStone;
+import net.subaraki.gravestone.client.model.ModelKnight;
+import net.subaraki.gravestone.client.model.ModelPillar;
+import net.subaraki.gravestone.client.model.ModelStoneCross;
+import net.subaraki.gravestone.client.model.ModelTomb;
+import net.subaraki.gravestone.client.model.ModelWoodenGrave;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
-import org.apache.logging.log4j.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import tconstruct.armor.TinkerArmor;
 

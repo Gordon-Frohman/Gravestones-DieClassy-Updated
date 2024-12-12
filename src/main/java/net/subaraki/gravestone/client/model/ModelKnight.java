@@ -1,7 +1,8 @@
 
 package net.subaraki.gravestone.client.model;
 
-import net.minecraft.client.model.*;
+import net.minecraft.client.model.ModelBase;
+import net.minecraft.client.model.ModelRenderer;
 
 public class ModelKnight extends ModelBase {
 

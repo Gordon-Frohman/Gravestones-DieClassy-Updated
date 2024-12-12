@@ -2,8 +2,16 @@
 package net.subaraki.gravestone.handler;
 
 import net.minecraft.client.model.ModelBiped;
-import net.subaraki.gravestone.client.model.*;
-import net.subaraki.gravestone.util.*;
+import net.subaraki.gravestone.client.model.ModelAngel;
+import net.subaraki.gravestone.client.model.ModelBust;
+import net.subaraki.gravestone.client.model.ModelGraveSkeleton;
+import net.subaraki.gravestone.client.model.ModelGraveStone;
+import net.subaraki.gravestone.client.model.ModelKnight;
+import net.subaraki.gravestone.client.model.ModelPillar;
+import net.subaraki.gravestone.client.model.ModelStoneCross;
+import net.subaraki.gravestone.client.model.ModelTomb;
+import net.subaraki.gravestone.client.model.ModelWoodenGrave;
+import net.subaraki.gravestone.util.Constants;
 
 public class ModelHandler {
 

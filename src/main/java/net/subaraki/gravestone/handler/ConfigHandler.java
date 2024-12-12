@@ -1,9 +1,9 @@
 
 package net.subaraki.gravestone.handler;
 
-import java.io.*;
+import java.io.File;
 
-import net.minecraftforge.common.config.*;
+import net.minecraftforge.common.config.Configuration;
 
 public class ConfigHandler {
 

@@ -1,22 +1,26 @@
 
 package net.subaraki.gravestone.client.gui;
 
-import net.minecraft.client.gui.*;
-import net.minecraft.client.gui.inventory.*;
-import net.minecraft.entity.player.*;
-import net.minecraft.inventory.*;
-import net.minecraft.util.*;
-import net.subaraki.gravestone.*;
-import net.subaraki.gravestone.client.model.*;
-import net.subaraki.gravestone.common.network.*;
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.inventory.*;
-import net.subaraki.gravestone.tileentity.*;
-import net.subaraki.gravestone.util.*;
+import net.minecraft.client.gui.GuiButton;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.StatCollector;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.client.model.ModelBust;
+import net.subaraki.gravestone.common.network.PacketSwitchSlotLayout;
+import net.subaraki.gravestone.handler.GraveTextHandler;
+import net.subaraki.gravestone.handler.ModelHandler;
+import net.subaraki.gravestone.handler.TextureHandler;
+import net.subaraki.gravestone.inventory.ContainerGrave;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
+import net.subaraki.gravestone.util.Constants;
+import net.subaraki.gravestone.util.GraveUtility;
 
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.simpleimpl.*;
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
 public class GuiGraveContainer extends GuiContainer {
 
@@ -28,7 +32,7 @@ public class GuiGraveContainer extends GuiContainer {
     private TileEntityGravestone te;
     private String tabText;
     private static final ResourceLocation graveGui;
-    private ModelBust modelhead;
+    private ModelBust modelBust;
     private ResourceLocation texture;
 
     public GuiGraveContainer(final EntityPlayer player, final TileEntityGravestone grave) {
@@ -36,7 +40,7 @@ public class GuiGraveContainer extends GuiContainer {
         this.rotationCounter = 0;
         this.gravetext = "";
         this.tabText = "Minecraft";
-        this.modelhead = new ModelBust();
+        this.modelBust = new ModelBust();
         this.deathPlayer = player.worldObj.getPlayerEntityByName(grave.playername);
         this.playerOpenGui = player;
         this.nameOfDeathPlayer = grave.playername;

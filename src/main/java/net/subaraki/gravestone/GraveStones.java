@@ -1,23 +1,32 @@
 
 package net.subaraki.gravestone;
 
-import net.minecraft.block.*;
-import net.minecraft.block.material.*;
-import net.minecraft.creativetab.*;
-import net.subaraki.gravestone.block.*;
-import net.subaraki.gravestone.common.*;
-import net.subaraki.gravestone.common.network.*;
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.item.*;
-import net.subaraki.gravestone.tileentity.*;
-import net.subaraki.gravestone.util.*;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
+import net.subaraki.gravestone.block.BlockGrave;
+import net.subaraki.gravestone.common.CommonProxy;
+import net.subaraki.gravestone.common.network.PacketSwitchSlotLayout;
+import net.subaraki.gravestone.common.network.PacketSyncGraveModel;
+import net.subaraki.gravestone.common.network.PacketSyncModelToClient;
+import net.subaraki.gravestone.handler.ConfigHandler;
+import net.subaraki.gravestone.handler.GravestoneEventHandler;
+import net.subaraki.gravestone.handler.GuiHandler;
+import net.subaraki.gravestone.handler.RecipeHandler;
+import net.subaraki.gravestone.item.ItemDecoGrave;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
+import net.subaraki.gravestone.util.Constants;
+import net.subaraki.gravestone.util.GraveUtility;
 
-import cpw.mods.fml.common.*;
-import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.*;
-import cpw.mods.fml.common.network.simpleimpl.*;
-import cpw.mods.fml.common.registry.*;
-import cpw.mods.fml.relauncher.*;
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.SidedProxy;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPreInitializationEvent;
+import cpw.mods.fml.common.network.IGuiHandler;
+import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.relauncher.Side;
 
 @Mod(modid = "gravestonemod", name = "Gravestones", version = "1.7.10")
 public class GraveStones {
