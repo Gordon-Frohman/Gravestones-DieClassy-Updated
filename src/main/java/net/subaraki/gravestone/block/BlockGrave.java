@@ -22,7 +22,7 @@ import net.minecraft.world.World;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
-import cpw.mods.fml.client.registry.*;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class BlockGrave extends Block {
 
