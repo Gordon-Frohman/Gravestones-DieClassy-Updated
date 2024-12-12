@@ -34,8 +34,8 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
-	implementation files('libs/TwilightForest-2.7.0-dev.jar')
-    api("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {transitive = false} // For TF to work
-    api("com.github.GTNewHorizons:Baubles:1.0.4:dev") // For Thaumcraft runtime
+	compileOnly files('libs/TwilightForest-2.7.0-dev.jar')
+    compileOnly("thaumcraft:Thaumcraft:1.7.10-4.2.3.5:dev") {transitive = false} // For TF to work
+    compileOnly("com.github.GTNewHorizons:Baubles:1.0.4:dev") // For Thaumcraft runtime
 	compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.11.11-GTNH:dev")
 }
