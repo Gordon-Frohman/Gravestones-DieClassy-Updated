@@ -1,20 +1,18 @@
 
-
-
-
 package net.subaraki.gravestone.util;
 
+import net.minecraft.init.*;
+import net.minecraft.item.*;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.model.*;
 import net.subaraki.gravestone.tileentity.*;
-import tconstruct.armor.TinkerArmor;
 
 import org.apache.logging.log4j.*;
-import net.minecraft.item.*;
-import net.minecraft.init.*;
 
-public class Constants
-{
+import tconstruct.armor.TinkerArmor;
+
+public class Constants {
+
     public static final String MODID = "gravestonemod";
     public static final String MOD_NAME = "Gravestones";
     public static final String VERSION = "1.7.10";
@@ -46,7 +44,7 @@ public class Constants
     public static final byte GALACTICRAFT = 4;
     public static final byte MARICULTURE = 5;
     public static final TileEntityGravestone GRAVE_PLACEHOLDER;
-    
+
     static {
         LOG = LogManager.getLogger("Gravestones");
         MODEL_ANGEL = new ModelAngel();
@@ -58,8 +56,9 @@ public class Constants
         MODEL_TOMB = new ModelTomb();
         MODEL_WOOD = new ModelWoodenGrave();
         ICON_VANILLA = new ItemStack(Items.iron_sword);
-        ICON_TCON = GraveStones.hasTiCo? new ItemStack((Item)TinkerArmor.knapsack) : new ItemStack((Item)Items.diamond_chestplate);
-        ICON_RPGI = new ItemStack((Item)Items.golden_chestplate);
+        ICON_TCON = GraveStones.hasTiCo ? new ItemStack((Item) TinkerArmor.knapsack)
+            : new ItemStack((Item) Items.diamond_chestplate);
+        ICON_RPGI = new ItemStack((Item) Items.golden_chestplate);
         ICON_BAUBLES = new ItemStack(Items.gold_ingot);
         ICON_GALACTICRAFT = new ItemStack(Blocks.glass);
         ICON_MARICULTURE = new ItemStack(Items.fish);

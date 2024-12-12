@@ -1,24 +1,23 @@
 
-
-
-
 package net.subaraki.gravestone.handler;
 
-import net.minecraft.client.model.*;
 import net.minecraft.client.*;
+import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.entity.*;
-import org.lwjgl.opengl.*;
 import net.minecraft.item.*;
 
-public class GraveArmorHandler
-{
+import org.lwjgl.opengl.*;
+
+public class GraveArmorHandler {
+
     public void setArmorModel(final ModelBiped model, final ItemStack itemstack, final int par2, final String armor) {
         if (itemstack != null) {
             final Item item = itemstack.getItem();
             if (item instanceof ItemArmor) {
-                final ItemArmor itemarmor = (ItemArmor)item;
-                Minecraft.getMinecraft().renderEngine.bindTexture(RenderBiped.getArmorResource((Entity)null, itemstack, par2, (String)null));
+                final ItemArmor itemarmor = (ItemArmor) item;
+                Minecraft.getMinecraft().renderEngine
+                    .bindTexture(RenderBiped.getArmorResource((Entity) null, itemstack, par2, (String) null));
                 final boolean for0 = par2 == 0;
                 final boolean for2 = par2 == 1;
                 final boolean for3 = par2 == 2;

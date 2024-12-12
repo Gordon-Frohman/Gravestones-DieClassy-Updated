@@ -1,47 +1,42 @@
 
-
-
-
 package net.subaraki.gravestone.client.renderer;
 
-import net.minecraft.client.renderer.tileentity.*;
-import net.minecraft.util.*;
-import net.minecraft.tileentity.*;
-import net.subaraki.gravestone.tileentity.*;
-
 import java.util.Map;
+
+import net.minecraft.client.*;
+import net.minecraft.client.entity.AbstractClientPlayer;
+import net.minecraft.client.model.*;
+import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.entity.*;
+import net.minecraft.client.renderer.tileentity.*;
+import net.minecraft.item.*;
+import net.minecraft.tileentity.*;
+import net.minecraft.util.*;
+import net.subaraki.gravestone.handler.*;
+import net.subaraki.gravestone.tileentity.*;
+import net.subaraki.gravestone.util.*;
 
 import org.lwjgl.opengl.*;
 
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.util.*;
-import net.minecraft.client.renderer.entity.*;
-import net.minecraft.client.renderer.texture.DynamicTexture;
-import net.minecraft.client.model.*;
-import net.minecraft.item.*;
-import net.minecraft.client.renderer.*;
-import net.minecraft.client.*;
-import net.minecraft.client.entity.AbstractClientPlayer;
+public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
 
-public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer
-{
     ResourceLocation texture;
-    
+
     public TileEntitySpecialRendererGrave() {
         this.texture = null;
     }
-    
+
     public void renderTileEntityAt(final TileEntity te, final double x, final double y, final double z, final float f) {
-        final TileEntityGravestone tile = (TileEntityGravestone)te;
+        final TileEntityGravestone tile = (TileEntityGravestone) te;
         float rot = tile.ModelRotation;
         final int modeltype = tile.modelType;
         this.renderBeam(tile, x, y, z);
         GL11.glPushMatrix();
         this.bindTexture(TextureHandler.getTextureFromMeta(modeltype));
-        GL11.glTranslatef((float)x + 0.5f, (float)y + 1.5f, (float)z + 0.5f);
+        GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
         GL11.glScalef(1.0f, -1.0f, -1.0f);
         if (modeltype == 2 || modeltype == 3 || modeltype == 6 || modeltype == 8 || modeltype == 9 || modeltype == 5) {
             rot -= 90.0f;
@@ -75,56 +70,72 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer
         ModelHandler.renderModelFromType(modeltype);
         GL11.glPopMatrix();
         GL11.glPushMatrix();
-        GL11.glTranslatef((float)x + 0.5f, (float)y + 1.5f, (float)z + 0.5f);
+        GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
         GL11.glScalef(1.0f, -1.0f, -1.0f);
         final float sc = 0.75f;
         GL11.glScalef(sc, sc, sc);
         if (modeltype == 5) {
-        	/*if(tile.skinLocation == null)
-        		tile.skinLocation = GraveUtility.instance.processPlayerTexture(tile.playername);
-            this.bindTexture(tile.skinLocation);*/
-        	
+            /*
+             * if(tile.skinLocation == null)
+             * tile.skinLocation = GraveUtility.instance.processPlayerTexture(tile.playername);
+             * this.bindTexture(tile.skinLocation);
+             */
+
             ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
 
             if (tile.profile != null) {
                 Minecraft minecraft = Minecraft.getMinecraft();
-                Map map = minecraft.func_152342_ad().func_152788_a(tile.profile);
+                Map map = minecraft.func_152342_ad()
+                    .func_152788_a(tile.profile);
 
                 if (map.containsKey(Type.SKIN)) {
-                    resourcelocation = minecraft.func_152342_ad().func_152792_a((MinecraftProfileTexture)map.get(Type.SKIN), Type.SKIN);
+                    resourcelocation = minecraft.func_152342_ad()
+                        .func_152792_a((MinecraftProfileTexture) map.get(Type.SKIN), Type.SKIN);
                 }
             }
 
             this.bindTexture(resourcelocation);
-        	
+
             GL11.glRotatef(rot, 0.0f, 1.0f, 0.0f);
             ModelHandler.modelhead.renderHead(0.0625f);
-            if (tile.getStackInSlot(tile.getSizeInventory() - 1) != null && tile.getStackInSlot(tile.getSizeInventory() - 1).getItem() instanceof ItemArmor) {
+            if (tile.getStackInSlot(tile.getSizeInventory() - 1) != null
+                && tile.getStackInSlot(tile.getSizeInventory() - 1)
+                    .getItem() instanceof ItemArmor) {
                 GL11.glPushMatrix();
                 final float f2 = 1.2f;
                 GL11.glScalef(f2, f2, f2);
                 GL11.glTranslatef(0.0f, 0.05f, 0.0f);
                 GL11.glRotatef(rot + 90, 0.0f, 1.0f, 0.0f);
                 final ItemStack item = tile.getStackInSlot(tile.getSizeInventory() - 1);
-                ModelHandler.helper.setArmorModel((ModelBiped)ModelHandler.modelarmorhead, item, ((ItemArmor)item.getItem()).armorType, RenderBiped.bipedArmorFilenamePrefix[((ItemArmor)item.getItem()).renderIndex]);
+                ModelHandler.helper.setArmorModel(
+                    (ModelBiped) ModelHandler.modelarmorhead,
+                    item,
+                    ((ItemArmor) item.getItem()).armorType,
+                    RenderBiped.bipedArmorFilenamePrefix[((ItemArmor) item.getItem()).renderIndex]);
                 ModelHandler.modelarmorhead.renderHead(0.0625f);
                 GL11.glPopMatrix();
             }
-            if (tile.getStackInSlot(tile.getSizeInventory() - 2) != null && tile.getStackInSlot(tile.getSizeInventory() - 2).getItem() instanceof ItemArmor) {
+            if (tile.getStackInSlot(tile.getSizeInventory() - 2) != null
+                && tile.getStackInSlot(tile.getSizeInventory() - 2)
+                    .getItem() instanceof ItemArmor) {
                 GL11.glPushMatrix();
                 final float f2 = 1.1f;
                 GL11.glScalef(f2, f2, f2);
                 GL11.glTranslatef(0.0f, -0.02f, 0.0f);
                 GL11.glRotatef(rot + 90, 0.0f, 1.0f, 0.0f);
                 final ItemStack item = tile.getStackInSlot(tile.getSizeInventory() - 2);
-                ModelHandler.helper.setArmorModel((ModelBiped)ModelHandler.modelarmorchest, item, ((ItemArmor)item.getItem()).armorType, RenderBiped.bipedArmorFilenamePrefix[((ItemArmor)item.getItem()).renderIndex]);
+                ModelHandler.helper.setArmorModel(
+                    (ModelBiped) ModelHandler.modelarmorchest,
+                    item,
+                    ((ItemArmor) item.getItem()).armorType,
+                    RenderBiped.bipedArmorFilenamePrefix[((ItemArmor) item.getItem()).renderIndex]);
                 ModelHandler.modelarmorchest.renderHead(0.0625f);
                 GL11.glPopMatrix();
             }
         }
         GL11.glPopMatrix();
     }
-    
+
     private void renderBeam(final TileEntityGravestone tileentity, final double d, final double d1, final double d2) {
         if (tileentity.hasItems) {
             final Tessellator tesselator = Tessellator.instance;
@@ -142,9 +153,11 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer
             final int height = 256;
             final double topWidthFactor = 0.5;
             final double bottomWidthFactor = 0.5;
-            final boolean other = !tileentity.playername.equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+            final boolean other = !tileentity.playername
+                .equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
             final float otherFloat = 0.0f;
-            final float color = (other && !Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) ? 0.0f : 0.7f;
+            final float color = (other && !Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) ? 0.0f
+                : 0.7f;
             for (int width = 0; width < (other ? 2 : 5); ++width) {
                 tesselator.startDrawing(5);
                 tesselator.setColorRGBA_F(color - otherFloat, color - otherFloat, color, 0.11f);

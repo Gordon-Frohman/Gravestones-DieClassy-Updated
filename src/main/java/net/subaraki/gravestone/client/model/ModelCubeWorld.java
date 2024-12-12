@@ -1,18 +1,17 @@
 
-
-
-
 package net.subaraki.gravestone.client.model;
 
-import net.minecraft.client.model.*;
 import java.io.*;
-import net.minecraftforge.common.util.*;
 import java.util.*;
-import org.lwjgl.opengl.*;
-import net.minecraft.entity.*;
 
-public class ModelCubeWorld extends ModelBase
-{
+import net.minecraft.client.model.*;
+import net.minecraft.entity.*;
+import net.minecraftforge.common.util.*;
+
+import org.lwjgl.opengl.*;
+
+public class ModelCubeWorld extends ModelBase {
+
     byte[][][][] modelData;
     int[] pointers;
     final ModelRenderer cube;
@@ -29,27 +28,32 @@ public class ModelCubeWorld extends ModelBase
     int[] final_red_lookup;
     int[] final_green_lookup;
     int[] final_blue_lookup;
-    
+
     public ModelCubeWorld(final InputStream stream) {
         this.hue = 180.0;
         this.saturation = 50.0;
         this.lightness = 0.0;
-        this.cube = new ModelRenderer((ModelBase)this, 0, 0).addBox(0.0f, 0.0f, 0.0f, 1, 1, 1);
+        this.cube = new ModelRenderer((ModelBase) this, 0, 0).addBox(0.0f, 0.0f, 0.0f, 1, 1, 1);
         int it = 0;
         int area = 0;
         byte[] sizesBuffer = new byte[12];
         try {
             int i;
             while ((i = stream.read()) != -1) {
-                final byte val = (byte)(i & 0xFF);
+                final byte val = (byte) (i & 0xFF);
                 if (it < 12) {
                     sizesBuffer[it] = val;
-                }
-                else {
+                } else {
                     if (it == 12) {
-                        final int x = sizesBuffer[0] | sizesBuffer[1] << 8 | sizesBuffer[2] << 16 | sizesBuffer[3] << 24;
-                        final int y = sizesBuffer[4] | sizesBuffer[5] << 8 | sizesBuffer[6] << 16 | sizesBuffer[7] << 24;
-                        final int z = sizesBuffer[8] | sizesBuffer[9] << 8 | sizesBuffer[10] << 16 | sizesBuffer[11] << 24;
+                        final int x = sizesBuffer[0] | sizesBuffer[1] << 8
+                            | sizesBuffer[2] << 16
+                            | sizesBuffer[3] << 24;
+                        final int y = sizesBuffer[4] | sizesBuffer[5] << 8
+                            | sizesBuffer[6] << 16
+                            | sizesBuffer[7] << 24;
+                        final int z = sizesBuffer[8] | sizesBuffer[9] << 8
+                            | sizesBuffer[10] << 16
+                            | sizesBuffer[11] << 24;
                         this.modelData = new byte[x][y][z][3];
                         area = x * y;
                         sizesBuffer = null;
@@ -60,7 +64,8 @@ public class ModelCubeWorld extends ModelBase
                     final int it2d = it1d - area * z;
                     final int x2 = it2d % this.modelData.length;
                     final int y2 = it2d / this.modelData.length;
-                    if (x2 >= this.modelData.length || y2 >= this.modelData[0].length || z >= this.modelData[0][0].length) {
+                    if (x2 >= this.modelData.length || y2 >= this.modelData[0].length
+                        || z >= this.modelData[0][0].length) {
                         ++it;
                         continue;
                     }
@@ -68,13 +73,12 @@ public class ModelCubeWorld extends ModelBase
                 }
                 ++it;
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
         this.calculatePointers(false);
     }
-    
+
     public void calculatePointers(final boolean renderHidden) {
         final List<Integer> newPointers = new ArrayList<Integer>();
         for (int x = 0; x < this.modelData.length; ++x) {
@@ -104,7 +108,7 @@ public class ModelCubeWorld extends ModelBase
             ++it;
         }
     }
-    
+
     public boolean cubeExists(final int x, final int y, final int z) {
         final int xs = this.modelData.length;
         final int ys = this.modelData[0].length;
@@ -115,11 +119,11 @@ public class ModelCubeWorld extends ModelBase
         final byte[] values = this.modelData[x][y][z];
         return values[0] != 0 || values[1] != 0 || values[2] != 0;
     }
-    
+
     public byte[][][][] getModelData() {
         return this.modelData;
     }
-    
+
     public void render() {
         GL11.glPushMatrix();
         GL11.glDisable(3553);
@@ -131,17 +135,18 @@ public class ModelCubeWorld extends ModelBase
             final int x = i & 0x3FF;
             final int y = i >> 10 & 0x3FF;
             final int z = i >> 20 & 0x3FF;
-            GL11.glTranslatef((float)x, (float)y, (float)z);
+            GL11.glTranslatef((float) x, (float) y, (float) z);
             final byte[] color = this.modelData[x][y][z];
             GL11.glColor3ub(color[0], color[1], color[2]);
             this.cube.render(1.0f);
-            GL11.glTranslatef((float)(-x), (float)(-y), (float)(-z));
+            GL11.glTranslatef((float) (-x), (float) (-y), (float) (-z));
         }
         GL11.glEnable(3553);
         GL11.glPopMatrix();
     }
-    
-    public void render(final Entity par1Entity, final float par2, final float par3, final float par4, final float par5, final float par6, final float par7) {
+
+    public void render(final Entity par1Entity, final float par2, final float par3, final float par4, final float par5,
+        final float par6, final float par7) {
         this.render();
     }
 }

@@ -1,13 +1,10 @@
 
-
-
-
 package net.subaraki.gravestone.client.model;
 
 import net.minecraft.client.model.*;
 
-public class ModelAngel extends ModelBase
-{
+public class ModelAngel extends ModelBase {
+
     ModelRenderer b;
     ModelRenderer b1;
     ModelRenderer b2;
@@ -39,167 +36,167 @@ public class ModelAngel extends ModelBase
     ModelRenderer b29;
     ModelRenderer b30;
     ModelRenderer b7;
-    
+
     public ModelAngel() {
         this.textureHeight = 64;
         this.textureWidth = 64;
-        (this.b = new ModelRenderer((ModelBase)this, 0, 19)).addBox(1.0f, -7.0f, 0.0f, 0, 13, 32);
+        (this.b = new ModelRenderer((ModelBase) this, 0, 19)).addBox(1.0f, -7.0f, 0.0f, 0, 13, 32);
         this.b.setRotationPoint(3.0f, 1.0f, 2.0f);
         this.b.setTextureSize(64, 64);
         this.b.mirror = true;
         this.setRotation(this.b, 0.1745329f, 0.7853982f, 0.0f);
-        (this.b1 = new ModelRenderer((ModelBase)this, 0, 19)).addBox(0.0f, -7.0f, 0.0f, 0, 13, 32);
+        (this.b1 = new ModelRenderer((ModelBase) this, 0, 19)).addBox(0.0f, -7.0f, 0.0f, 0, 13, 32);
         this.b1.setRotationPoint(-3.0f, 1.0f, 2.0f);
         this.b1.setTextureSize(64, 64);
         this.b1.mirror = true;
         this.setRotation(this.b1, 0.1745329f, -0.7853982f, 0.0f);
-        (this.b2 = new ModelRenderer((ModelBase)this, 40, 38)).addBox(1.0f, 0.0f, 0.0f, 1, 2, 11);
+        (this.b2 = new ModelRenderer((ModelBase) this, 40, 38)).addBox(1.0f, 0.0f, 0.0f, 1, 2, 11);
         this.b2.setRotationPoint(3.0f, 1.0f, 3.0f);
         this.b2.setTextureSize(64, 64);
         this.b2.mirror = true;
         this.setRotation(this.b2, 0.8901179f, 0.7853982f, 0.0f);
-        (this.b3 = new ModelRenderer((ModelBase)this, 38, 37)).addBox(0.0f, -1.0f, 0.0f, 1, 2, 12);
+        (this.b3 = new ModelRenderer((ModelBase) this, 38, 37)).addBox(0.0f, -1.0f, 0.0f, 1, 2, 12);
         this.b3.setRotationPoint(8.5f, -7.0f, 7.0f);
         this.b3.setTextureSize(64, 64);
         this.b3.mirror = true;
         this.setRotation(this.b3, 0.1570796f, 0.7853982f, 0.0f);
-        (this.b4 = new ModelRenderer((ModelBase)this, 40, 38)).addBox(-1.0f, 0.0f, 0.0f, 1, 2, 11);
+        (this.b4 = new ModelRenderer((ModelBase) this, 40, 38)).addBox(-1.0f, 0.0f, 0.0f, 1, 2, 11);
         this.b4.setRotationPoint(-3.0f, 1.0f, 3.0f);
         this.b4.setTextureSize(64, 64);
         this.b4.mirror = true;
         this.setRotation(this.b4, 0.8901179f, -0.7853982f, 0.0f);
-        (this.b5 = new ModelRenderer((ModelBase)this, 38, 37)).addBox(0.0f, -1.0f, 0.0f, 1, 2, 12);
+        (this.b5 = new ModelRenderer((ModelBase) this, 38, 37)).addBox(0.0f, -1.0f, 0.0f, 1, 2, 12);
         this.b5.setRotationPoint(-8.5f, -7.0f, 7.0f);
         this.b5.setTextureSize(64, 64);
         this.b5.mirror = true;
         this.setRotation(this.b5, 0.1570796f, -0.7853982f, 0.0f);
-        (this.b8 = new ModelRenderer((ModelBase)this, 0, 41)).addBox(-5.0f, -1.0f, -4.0f, 11, 2, 8);
+        (this.b8 = new ModelRenderer((ModelBase) this, 0, 41)).addBox(-5.0f, -1.0f, -4.0f, 11, 2, 8);
         this.b8.setRotationPoint(-0.5f, 23.0f, 0.0f);
         this.b8.setTextureSize(64, 64);
         this.b8.mirror = true;
         this.setRotation(this.b8, 0.0f, 0.0f, 0.0f);
-        (this.b9 = new ModelRenderer((ModelBase)this, 0, 42)).addBox(0.0f, -2.0f, 0.0f, 10, 3, 7);
+        (this.b9 = new ModelRenderer((ModelBase) this, 0, 42)).addBox(0.0f, -2.0f, 0.0f, 10, 3, 7);
         this.b9.setRotationPoint(-5.0f, 22.0f, -3.5f);
         this.b9.setTextureSize(64, 64);
         this.b9.mirror = true;
         this.setRotation(this.b9, 0.0f, 0.0f, 0.0f);
-        (this.b10 = new ModelRenderer((ModelBase)this, 0, 43)).addBox(-4.5f, -4.0f, -3.0f, 9, 2, 6);
+        (this.b10 = new ModelRenderer((ModelBase) this, 0, 43)).addBox(-4.5f, -4.0f, -3.0f, 9, 2, 6);
         this.b10.setRotationPoint(0.0f, 22.0f, 0.0f);
         this.b10.setTextureSize(64, 64);
         this.b10.mirror = true;
         this.setRotation(this.b10, 0.0f, 0.0f, 0.0f);
-        (this.b11 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(0.0f, 0.0f, 0.0f, 9, 1, 5);
+        (this.b11 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(0.0f, 0.0f, 0.0f, 9, 1, 5);
         this.b11.setRotationPoint(-4.5f, 17.0f, -2.5f);
         this.b11.setTextureSize(64, 64);
         this.b11.mirror = true;
         this.setRotation(this.b11, 0.0f, 0.0f, 0.0f);
-        (this.b12 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(-6.3f, 22.0f, 0.0f, 1, 2, 1);
+        (this.b12 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(-6.3f, 22.0f, 0.0f, 1, 2, 1);
         this.b12.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.b12.setTextureSize(64, 64);
         this.b12.mirror = true;
         this.setRotation(this.b12, 0.0f, 0.0f, 0.0f);
-        (this.b13 = new ModelRenderer((ModelBase)this, 0, 41)).addBox(-5.7f, 0.0f, 0.0f, 1, 2, 1);
+        (this.b13 = new ModelRenderer((ModelBase) this, 0, 41)).addBox(-5.7f, 0.0f, 0.0f, 1, 2, 1);
         this.b13.setRotationPoint(0.0f, 20.0f, 0.0f);
         this.b13.setTextureSize(64, 64);
         this.b13.mirror = true;
         this.setRotation(this.b13, 0.0f, 0.0f, 0.0f);
-        (this.b14 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(-5.2f, 0.0f, 0.0f, 1, 3, 1);
+        (this.b14 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(-5.2f, 0.0f, 0.0f, 1, 3, 1);
         this.b14.setRotationPoint(0.0f, 17.0f, 0.0f);
         this.b14.setTextureSize(64, 64);
         this.b14.mirror = true;
         this.setRotation(this.b14, 0.0f, 0.0f, 0.0f);
-        (this.b15 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(-4.7f, 0.0f, 0.0f, 1, 4, 1);
+        (this.b15 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(-4.7f, 0.0f, 0.0f, 1, 4, 1);
         this.b15.setRotationPoint(0.0f, 13.0f, 0.0f);
         this.b15.setTextureSize(64, 64);
         this.b15.mirror = true;
         this.setRotation(this.b15, 0.0f, 0.0f, 0.0f);
-        (this.b16 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(-4.5f, 0.0f, 0.0f, 1, 2, 1);
+        (this.b16 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(-4.5f, 0.0f, 0.0f, 1, 2, 1);
         this.b16.setRotationPoint(0.0f, 11.0f, 0.0f);
         this.b16.setTextureSize(64, 64);
         this.b16.mirror = true;
         this.setRotation(this.b16, 0.0f, 0.0f, 0.0f);
-        (this.b17 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(-3.0f, 0.0f, -4.5f, 2, 2, 1);
+        (this.b17 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(-3.0f, 0.0f, -4.5f, 2, 2, 1);
         this.b17.setRotationPoint(0.0f, 22.0f, 0.0f);
         this.b17.setTextureSize(64, 64);
         this.b17.mirror = true;
         this.setRotation(this.b17, 0.0f, 0.0f, 0.0f);
-        (this.b18 = new ModelRenderer((ModelBase)this, 0, 46)).addBox(-3.0f, -1.0f, -4.0f, 2, 2, 1);
+        (this.b18 = new ModelRenderer((ModelBase) this, 0, 46)).addBox(-3.0f, -1.0f, -4.0f, 2, 2, 1);
         this.b18.setRotationPoint(0.0f, 21.0f, 0.0f);
         this.b18.setTextureSize(64, 64);
         this.b18.mirror = true;
         this.setRotation(this.b18, 0.0f, 0.0f, 0.0f);
-        (this.b19 = new ModelRenderer((ModelBase)this, 4, 45)).addBox(-2.5f, 0.0f, -3.5f, 1, 2, 1);
+        (this.b19 = new ModelRenderer((ModelBase) this, 4, 45)).addBox(-2.5f, 0.0f, -3.5f, 1, 2, 1);
         this.b19.setRotationPoint(0.0f, 18.0f, 0.0f);
         this.b19.setTextureSize(64, 64);
         this.b19.mirror = true;
         this.setRotation(this.b19, 0.0f, 0.0f, 0.0f);
-        (this.b20 = new ModelRenderer((ModelBase)this, 11, 41)).addBox(-2.5f, 0.0f, -2.7f, 1, 4, 1);
+        (this.b20 = new ModelRenderer((ModelBase) this, 11, 41)).addBox(-2.5f, 0.0f, -2.7f, 1, 4, 1);
         this.b20.setRotationPoint(0.0f, 14.0f, 0.0f);
         this.b20.setTextureSize(64, 64);
         this.b20.mirror = true;
         this.setRotation(this.b20, 0.0f, 0.0f, 0.0f);
-        (this.b21 = new ModelRenderer((ModelBase)this, 8, 45)).addBox(-2.5f, 12.0f, -2.3f, 1, 2, 1);
+        (this.b21 = new ModelRenderer((ModelBase) this, 8, 45)).addBox(-2.5f, 12.0f, -2.3f, 1, 2, 1);
         this.b21.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.b21.setTextureSize(64, 64);
         this.b21.mirror = true;
         this.setRotation(this.b21, 0.0f, 0.0f, 0.0f);
-        (this.b22 = new ModelRenderer((ModelBase)this, 4, 45)).addBox(5.0f, 0.0f, -4.5f, 1, 2, 1);
+        (this.b22 = new ModelRenderer((ModelBase) this, 4, 45)).addBox(5.0f, 0.0f, -4.5f, 1, 2, 1);
         this.b22.setRotationPoint(0.0f, 22.0f, 0.0f);
         this.b22.setTextureSize(64, 64);
         this.b22.mirror = true;
         this.setRotation(this.b22, 0.0f, 0.0f, 0.0f);
-        (this.b23 = new ModelRenderer((ModelBase)this, 0, 45)).addBox(4.5f, 20.0f, -4.0f, 1, 2, 1);
+        (this.b23 = new ModelRenderer((ModelBase) this, 0, 45)).addBox(4.5f, 20.0f, -4.0f, 1, 2, 1);
         this.b23.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.b23.setTextureSize(64, 64);
         this.b23.mirror = true;
         this.setRotation(this.b23, 0.0f, 0.0f, 0.0f);
-        (this.b24 = new ModelRenderer((ModelBase)this, 0, 40)).addBox(4.0f, 0.0f, -3.5f, 1, 1, 1);
+        (this.b24 = new ModelRenderer((ModelBase) this, 0, 40)).addBox(4.0f, 0.0f, -3.5f, 1, 1, 1);
         this.b24.setRotationPoint(0.0f, 19.0f, 0.0f);
         this.b24.setTextureSize(64, 64);
         this.b24.mirror = true;
         this.setRotation(this.b24, 0.0f, 0.0f, 0.0f);
-        (this.b25 = new ModelRenderer((ModelBase)this, 0, 0)).addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8);
+        (this.b25 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8);
         this.b25.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.b25.setTextureSize(64, 64);
         this.b25.mirror = true;
         this.setRotation(this.b25, 0.2094395f, 0.0f, 0.0f);
-        (this.b252 = new ModelRenderer((ModelBase)this, 32, 0)).addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8, 0.5f);
+        (this.b252 = new ModelRenderer((ModelBase) this, 32, 0)).addBox(-4.0f, -8.0f, -4.0f, 8, 8, 8, 0.5f);
         this.b252.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.b252.setTextureSize(64, 64);
         this.b252.mirror = true;
         this.setRotation(this.b252, 0.2094395f, 0.0f, 0.0f);
-        (this.b26 = new ModelRenderer((ModelBase)this, 16, 16)).addBox(-4.0f, 0.0f, -2.0f, 8, 12, 4);
+        (this.b26 = new ModelRenderer((ModelBase) this, 16, 16)).addBox(-4.0f, 0.0f, -2.0f, 8, 12, 4);
         this.b26.setRotationPoint(0.0f, 0.0f, 0.0f);
         this.b26.setTextureSize(64, 64);
         this.b26.mirror = true;
         this.setRotation(this.b26, 0.0f, 0.0f, 0.0f);
-        (this.b27 = new ModelRenderer((ModelBase)this, 40, 16)).addBox(-3.0f, -2.0f, -2.0f, 4, 6, 4);
+        (this.b27 = new ModelRenderer((ModelBase) this, 40, 16)).addBox(-3.0f, -2.0f, -2.0f, 4, 6, 4);
         this.b27.setRotationPoint(-5.0f, 2.0f, 0.0f);
         this.b27.setTextureSize(64, 64);
         this.b27.mirror = true;
         this.setRotation(this.b27, -0.3490659f, 0.0f, 0.0f);
-        (this.b28 = new ModelRenderer((ModelBase)this, 40, 16)).addBox(-1.0f, -2.0f, -2.0f, 4, 6, 4);
+        (this.b28 = new ModelRenderer((ModelBase) this, 40, 16)).addBox(-1.0f, -2.0f, -2.0f, 4, 6, 4);
         this.b28.setRotationPoint(5.0f, 2.0f, 0.0f);
         this.b28.setTextureSize(64, 64);
         this.b28.mirror = true;
         this.setRotation(this.b28, -0.3490659f, 0.0f, 0.0f);
-        (this.b29 = new ModelRenderer((ModelBase)this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
+        (this.b29 = new ModelRenderer((ModelBase) this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
         this.b29.setRotationPoint(-2.0f, 12.0f, 0.0f);
         this.b29.setTextureSize(64, 64);
         this.b29.mirror = true;
         this.setRotation(this.b29, 0.0f, 0.0f, 0.0f);
-        (this.b30 = new ModelRenderer((ModelBase)this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
+        (this.b30 = new ModelRenderer((ModelBase) this, 0, 16)).addBox(-2.0f, 0.0f, -2.0f, 4, 12, 4);
         this.b30.setRotationPoint(2.0f, 12.0f, 0.0f);
         this.b30.setTextureSize(64, 64);
         this.b30.mirror = true;
         this.setRotation(this.b30, 0.0f, 0.0f, 0.0f);
-        (this.b7 = new ModelRenderer((ModelBase)this, 0, 32)).addBox(0.0f, -0.2f, 0.8f, 16, 4, 4);
+        (this.b7 = new ModelRenderer((ModelBase) this, 0, 32)).addBox(0.0f, -0.2f, 0.8f, 16, 4, 4);
         this.b7.setRotationPoint(-8.0f, 5.0f, -4.0f);
         this.b7.setTextureSize(64, 64);
         this.b7.mirror = true;
         this.setRotation(this.b7, -0.3490659f, 0.0f, 0.0f);
     }
-    
+
     public void render(final float f5) {
         this.b.render(f5);
         this.b1.render(f5);
@@ -233,7 +230,7 @@ public class ModelAngel extends ModelBase
         this.b30.render(f5);
         this.b7.render(f5);
     }
-    
+
     private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
         model.rotateAngleX = x;
         model.rotateAngleY = y;

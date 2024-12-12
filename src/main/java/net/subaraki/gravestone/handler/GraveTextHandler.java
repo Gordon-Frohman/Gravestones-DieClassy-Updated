@@ -1,13 +1,10 @@
 
-
-
-
 package net.subaraki.gravestone.handler;
 
 import net.minecraft.util.*;
 
-public class GraveTextHandler
-{
+public class GraveTextHandler {
+
     public static String getStringFromMeta(final String nameOfDeathPlayer, final int meta) {
         final String rest1 = StatCollector.translateToLocal("grave.rest.1");
         final String rest2 = StatCollector.translateToLocal("grave.rest.2");

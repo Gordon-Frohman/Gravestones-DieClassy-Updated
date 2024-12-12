@@ -1,20 +1,17 @@
 
-
-
-
 package net.subaraki.gravestone.handler;
 
 import net.minecraft.util.*;
 
-public class TextureHandler
-{
+public class TextureHandler {
+
     private static final String path = "grave:textures/entity/tile/";
     private static final ResourceLocation graveTexture;
     private static final ResourceLocation tombTexture;
     private static final ResourceLocation pillarTexture;
     private static final ResourceLocation woodTexture;
     private static final ResourceLocation knightTexture;
-    
+
     public static ResourceLocation getTextureFromMeta(final int meta) {
         ResourceLocation resourcelocation = null;
         switch (meta) {
@@ -57,7 +54,7 @@ public class TextureHandler
         }
         return resourcelocation;
     }
-    
+
     static {
         graveTexture = new ResourceLocation("grave:textures/entity/tile/grave_stone.png");
         tombTexture = new ResourceLocation("grave:textures/entity/tile/grave_zerk.png");

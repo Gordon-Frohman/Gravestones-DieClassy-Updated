@@ -1,26 +1,25 @@
 
-
-
-
 package net.subaraki.gravestone.client.gui;
 
+import net.minecraft.client.gui.*;
 import net.minecraft.client.gui.inventory.*;
 import net.minecraft.entity.player.*;
-import net.subaraki.gravestone.tileentity.*;
-import net.subaraki.gravestone.client.model.*;
-import net.subaraki.gravestone.inventory.*;
 import net.minecraft.inventory.*;
 import net.minecraft.util.*;
-import org.lwjgl.opengl.*;
-import net.subaraki.gravestone.handler.*;
-import net.subaraki.gravestone.util.*;
 import net.subaraki.gravestone.*;
-import net.minecraft.client.gui.*;
+import net.subaraki.gravestone.client.model.*;
 import net.subaraki.gravestone.common.network.*;
+import net.subaraki.gravestone.handler.*;
+import net.subaraki.gravestone.inventory.*;
+import net.subaraki.gravestone.tileentity.*;
+import net.subaraki.gravestone.util.*;
+
+import org.lwjgl.opengl.*;
+
 import cpw.mods.fml.common.network.simpleimpl.*;
 
-public class GuiGraveContainer extends GuiContainer
-{
+public class GuiGraveContainer extends GuiContainer {
+
     private short rotationCounter;
     public String gravetext;
     public EntityPlayer deathPlayer;
@@ -31,9 +30,9 @@ public class GuiGraveContainer extends GuiContainer
     private static final ResourceLocation graveGui;
     private ModelHead modelhead;
     private ResourceLocation texture;
-    
+
     public GuiGraveContainer(final EntityPlayer player, final TileEntityGravestone grave) {
-        super((Container)new ContainerGrave(player.inventory, grave, player));
+        super((Container) new ContainerGrave(player.inventory, grave, player));
         this.rotationCounter = 0;
         this.gravetext = "";
         this.tabText = "Minecraft";
@@ -49,21 +48,20 @@ public class GuiGraveContainer extends GuiContainer
                 grave.isDecorativeGrave = false;
                 if (this.nameOfDeathPlayer.equals("!Empty!")) {
                     this.gravetext = StatCollector.translateToLocal("grave.empty");
-                }
-                else {
+                } else {
                     this.gravetext = GraveTextHandler.getStringFromMeta(this.nameOfDeathPlayer, this.te.modelType);
                 }
-            }
-            else {
+            } else {
                 this.gravetext = grave.message1 + grave.playername + grave.message2;
             }
         }
     }
-    
+
     protected void drawGuiContainerForegroundLayer(final int par1, final int par2) {
-        this.fontRendererObj.drawString(StatCollector.translateToLocal("grave.container.name"), 8, this.ySize - 96 + 2, 16777215);
+        this.fontRendererObj
+            .drawString(StatCollector.translateToLocal("grave.container.name"), 8, this.ySize - 96 + 2, 16777215);
     }
-    
+
     protected void drawGuiContainerBackgroundLayer(final float f, final int i, final int j) {
         final int posX = (this.width - this.xSize) / 2;
         final int posY = (this.height - this.ySize) / 2;
@@ -73,9 +71,14 @@ public class GuiGraveContainer extends GuiContainer
         this.fontRendererObj.drawSplitString(this.gravetext, this.width / 2 + 110, this.height / 2 - 90, 100, 16777215);
         if (this.te.locked.length() > 0) {
             this.fontRendererObj.drawSplitString(this.te.locked, this.width / 2 + 79, this.height / 2 + 39, 150, 0);
-            this.fontRendererObj.drawSplitString(this.te.locked, this.width / 2 + 80, this.height / 2 + 40, 150, 16777215);
+            this.fontRendererObj
+                .drawSplitString(this.te.locked, this.width / 2 + 80, this.height / 2 + 40, 150, 16777215);
         }
-        this.fontRendererObj.drawString(this.tabText, this.width / 2 - this.xSize / 2 + 5, this.height / 2 - this.ySize / 2 + 5, 16777215);
+        this.fontRendererObj.drawString(
+            this.tabText,
+            this.width / 2 - this.xSize / 2 + 5,
+            this.height / 2 - this.ySize / 2 + 5,
+            16777215);
         final int render = this.te.modelType;
         GL11.glPushMatrix();
         this.mc.renderEngine.bindTexture(TextureHandler.getTextureFromMeta(render));
@@ -90,8 +93,8 @@ public class GuiGraveContainer extends GuiContainer
         if (render == 8) {
             scale = 50.0f;
         }
-        GL11.glTranslatef((float)(this.width / 2 - 150), (float)(this.height / 2 - height), 40.0f);
-        GL11.glScaled((double)scale, (double)scale, (double)(-scale));
+        GL11.glTranslatef((float) (this.width / 2 - 150), (float) (this.height / 2 - height), 40.0f);
+        GL11.glScaled((double) scale, (double) scale, (double) (-scale));
         final float s = -0.65f;
         final float s2 = -0.4f;
         if (render == 8) {
@@ -107,8 +110,8 @@ public class GuiGraveContainer extends GuiContainer
         }
         GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
         final short rotationCounter = this.rotationCounter;
-        this.rotationCounter = (short)(rotationCounter + 1);
-        GL11.glRotatef((float)rotationCounter, 0.0f, 1.0f, 0.0f);
+        this.rotationCounter = (short) (rotationCounter + 1);
+        GL11.glRotatef((float) rotationCounter, 0.0f, 1.0f, 0.0f);
         if (render == 8) {
             GL11.glTranslatef(s, 0.0f, -s);
         }
@@ -121,18 +124,18 @@ public class GuiGraveContainer extends GuiContainer
             this.renderBust();
         }
     }
-    
+
     private void renderBust() {
         GL11.glPushMatrix();
         this.mc.renderEngine.bindTexture(GraveUtility.instance.processPlayerTexture(this.nameOfDeathPlayer));
-        GL11.glTranslatef((float)(this.width / 2 - 150), (float)(this.height / 2 - 40), 40.0f);
+        GL11.glTranslatef((float) (this.width / 2 - 150), (float) (this.height / 2 - 40), 40.0f);
         GL11.glScaled(50.0, 50.0, -50.0);
         GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
-        GL11.glRotatef((float)this.rotationCounter, 0.0f, 1.0f, 0.0f);
+        GL11.glRotatef((float) this.rotationCounter, 0.0f, 1.0f, 0.0f);
         ModelHandler.modelhead.renderHead(0.0625f);
         GL11.glPopMatrix();
     }
-    
+
     public void initGui() {
         super.initGui();
         this.buttonList.clear();
@@ -140,33 +143,84 @@ public class GuiGraveContainer extends GuiContainer
         final int offsetSize = 33;
         final int x = this.width / 2 - this.xSize / 2 + 4;
         final int y = this.height / 2 - this.ySize / 2 - 19;
-        this.buttonList.add(new GuiTabButton(0, x, y, 35, 20, "", this.te.tab == 0, Constants.ICON_VANILLA, this.fontRendererObj));
+        this.buttonList
+            .add(new GuiTabButton(0, x, y, 35, 20, "", this.te.tab == 0, Constants.ICON_VANILLA, this.fontRendererObj));
         offsetX += offsetSize;
         if (GraveStones.hasRpgI) {
-            this.buttonList.add(new GuiTabButton(1, x + offsetX, y, 35, 20, "", this.te.tab == 1, Constants.ICON_RPGI, this.fontRendererObj));
+            this.buttonList.add(
+                new GuiTabButton(
+                    1,
+                    x + offsetX,
+                    y,
+                    35,
+                    20,
+                    "",
+                    this.te.tab == 1,
+                    Constants.ICON_RPGI,
+                    this.fontRendererObj));
             offsetX += offsetSize;
         }
         if (GraveStones.hasTiCo) {
-            this.buttonList.add(new GuiTabButton(2, x + offsetX, y, 35, 20, "", this.te.tab == 2, Constants.ICON_TCON, this.fontRendererObj));
+            this.buttonList.add(
+                new GuiTabButton(
+                    2,
+                    x + offsetX,
+                    y,
+                    35,
+                    20,
+                    "",
+                    this.te.tab == 2,
+                    Constants.ICON_TCON,
+                    this.fontRendererObj));
             offsetX += offsetSize;
         }
         if (GraveStones.hasBaub) {
-            this.buttonList.add(new GuiTabButton(3, x + offsetX, y, 35, 20, "", this.te.tab == 3, Constants.ICON_BAUBLES, this.fontRendererObj));
+            this.buttonList.add(
+                new GuiTabButton(
+                    3,
+                    x + offsetX,
+                    y,
+                    35,
+                    20,
+                    "",
+                    this.te.tab == 3,
+                    Constants.ICON_BAUBLES,
+                    this.fontRendererObj));
             offsetX += offsetSize;
         }
         if (GraveStones.hasGal_Craft) {
-            this.buttonList.add(new GuiTabButton(4, x + offsetX, y, 35, 20, "", this.te.tab == 4, Constants.ICON_GALACTICRAFT, this.fontRendererObj));
+            this.buttonList.add(
+                new GuiTabButton(
+                    4,
+                    x + offsetX,
+                    y,
+                    35,
+                    20,
+                    "",
+                    this.te.tab == 4,
+                    Constants.ICON_GALACTICRAFT,
+                    this.fontRendererObj));
             offsetX += offsetSize;
         }
         if (GraveStones.hasMari_Cul) {
-            this.buttonList.add(new GuiTabButton(5, x + offsetX, y, 35, 20, "", this.te.tab == 5, Constants.ICON_MARICULTURE, this.fontRendererObj));
+            this.buttonList.add(
+                new GuiTabButton(
+                    5,
+                    x + offsetX,
+                    y,
+                    35,
+                    20,
+                    "",
+                    this.te.tab == 5,
+                    Constants.ICON_MARICULTURE,
+                    this.fontRendererObj));
             offsetX += offsetX;
         }
     }
-    
+
     protected void actionPerformed(final GuiButton button) {
         super.actionPerformed(button);
-        this.updateInventory((byte)button.id);
+        this.updateInventory((byte) button.id);
         if (button.id == 0) {
             this.tabText = "Minecraft";
         }
@@ -187,38 +241,39 @@ public class GuiGraveContainer extends GuiContainer
         }
         this.initGui();
     }
-    
+
     private void updateInventory(final byte i) {
-        GraveStones.instance.network.sendToServer((IMessage)new PacketSwitchSlotLayout(this.te.xCoord, this.te.yCoord, this.te.zCoord, i));
+        GraveStones.instance.network
+            .sendToServer((IMessage) new PacketSwitchSlotLayout(this.te.xCoord, this.te.yCoord, this.te.zCoord, i));
         switch (i) {
             case 0: {
-                this.te.changeSlotLayout((byte)0);
+                this.te.changeSlotLayout((byte) 0);
                 break;
             }
             case 1: {
-                this.te.changeSlotLayout((byte)1);
+                this.te.changeSlotLayout((byte) 1);
                 break;
             }
             case 2: {
-                this.te.changeSlotLayout((byte)2);
+                this.te.changeSlotLayout((byte) 2);
                 break;
             }
             case 3: {
-                this.te.changeSlotLayout((byte)3);
+                this.te.changeSlotLayout((byte) 3);
                 break;
             }
             case 4: {
-                this.te.changeSlotLayout((byte)4);
+                this.te.changeSlotLayout((byte) 4);
                 break;
             }
             case 5: {
-                this.te.changeSlotLayout((byte)5);
+                this.te.changeSlotLayout((byte) 5);
                 break;
             }
         }
         this.te.tab = i;
     }
-    
+
     static {
         graveGui = new ResourceLocation("grave:textures/entity/tile/grave_chest.png");
     }

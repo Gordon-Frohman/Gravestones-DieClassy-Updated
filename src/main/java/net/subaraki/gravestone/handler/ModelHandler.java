@@ -1,14 +1,11 @@
 
-
-
-
 package net.subaraki.gravestone.handler;
 
 import net.subaraki.gravestone.client.model.*;
 import net.subaraki.gravestone.util.*;
 
-public class ModelHandler
-{
+public class ModelHandler {
+
     public static final ModelAngel angel;
     public static final ModelGraveSkeleton skeleton;
     public static final ModelGraveStone gravestone;
@@ -21,7 +18,7 @@ public class ModelHandler
     public static ModelHead modelarmorhead;
     public static ModelHead modelarmorchest;
     public static final GraveArmorHandler helper;
-    
+
     public static void renderModelFromType(final int modelType) {
         switch (modelType) {
             case 1: {
@@ -70,7 +67,7 @@ public class ModelHandler
             }
         }
     }
-    
+
     static {
         angel = new ModelAngel();
         skeleton = new ModelGraveSkeleton();
