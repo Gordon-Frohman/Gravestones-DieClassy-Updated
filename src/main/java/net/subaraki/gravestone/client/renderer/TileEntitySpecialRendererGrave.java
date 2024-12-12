@@ -9,12 +9,13 @@ import net.minecraft.client.model.*;
 import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.entity.*;
 import net.minecraft.client.renderer.tileentity.*;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
+import net.subaraki.gravestone.client.model.ModelBust;
 import net.subaraki.gravestone.handler.*;
 import net.subaraki.gravestone.tileentity.*;
-import net.subaraki.gravestone.util.*;
 
 import org.lwjgl.opengl.*;
 
@@ -24,6 +25,8 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
 
     ResourceLocation texture;
+
+    public static boolean inventoryRender = false;
 
     public TileEntitySpecialRendererGrave() {
         this.texture = null;
@@ -97,7 +100,11 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             this.bindTexture(resourcelocation);
 
             GL11.glRotatef(rot, 0.0f, 1.0f, 0.0f);
-            ModelHandler.modelhead.renderHead(0.0625f);
+            if (inventoryRender) {
+                ModelHandler.modelBust.renderInventoryBust(0.0625f);
+            } else {
+                ModelHandler.modelBust.renderBust(0.0625f);
+            }
             if (tile.getStackInSlot(tile.getSizeInventory() - 1) != null
                 && tile.getStackInSlot(tile.getSizeInventory() - 1)
                     .getItem() instanceof ItemArmor) {
@@ -105,14 +112,20 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 final float f2 = 1.2f;
                 GL11.glScalef(f2, f2, f2);
                 GL11.glTranslatef(0.0f, 0.05f, 0.0f);
-                GL11.glRotatef(rot + 90, 0.0f, 1.0f, 0.0f);
+                GL11.glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
                 final ItemStack item = tile.getStackInSlot(tile.getSizeInventory() - 1);
+                ItemArmor itemArmor = (ItemArmor) item.getItem();
+                // We're creating a zombie because some mods require actual entities to check for armor
+                ModelBiped modelArmor = itemArmor
+                    .getArmorModel(new EntityZombie(te.getWorldObj()), item, itemArmor.armorType);
+                ModelHandler.modelArmorHead = modelArmor == null ? new ModelBust() : modelArmor;
                 ModelHandler.helper.setArmorModel(
-                    (ModelBiped) ModelHandler.modelarmorhead,
+                    (ModelBiped) ModelHandler.modelArmorHead,
                     item,
                     ((ItemArmor) item.getItem()).armorType,
                     RenderBiped.bipedArmorFilenamePrefix[((ItemArmor) item.getItem()).renderIndex]);
-                ModelHandler.modelarmorhead.renderHead(0.0625f);
+                ModelHandler.modelArmorHead.bipedHead.render(0.0625f);
+                ModelHandler.modelArmorHead.bipedHeadwear.render(0.0625f);
                 GL11.glPopMatrix();
             }
             if (tile.getStackInSlot(tile.getSizeInventory() - 2) != null
@@ -122,18 +135,69 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 final float f2 = 1.1f;
                 GL11.glScalef(f2, f2, f2);
                 GL11.glTranslatef(0.0f, -0.02f, 0.0f);
-                GL11.glRotatef(rot + 90, 0.0f, 1.0f, 0.0f);
+                GL11.glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
                 final ItemStack item = tile.getStackInSlot(tile.getSizeInventory() - 2);
+                ItemArmor itemArmor = (ItemArmor) item.getItem();
+                // We're creating a zombie because some mods require actual entities to check for armor
+                ModelBiped modelArmor = itemArmor
+                    .getArmorModel(new EntityZombie(te.getWorldObj()), item, itemArmor.armorType);
+                if (modelArmor == null) {
+                    ModelHandler.modelArmorChest = new ModelBust();
+                } else {
+                    ModelHandler.modelArmorChest = modelArmor;
+                    // This stuff could look very nice, but since I'm unable to copy original armor models, it is
+                    // worthless
+                    /*
+                     * recursivelyCutModel(6, ModelHandler.modelArmorChest.bipedBody);
+                     * recursivelyCutModel(6, ModelHandler.modelArmorChest.bipedLeftArm);
+                     * recursivelyCutModel(6, ModelHandler.modelArmorChest.bipedRightArm);
+                     */
+                }
                 ModelHandler.helper.setArmorModel(
-                    (ModelBiped) ModelHandler.modelarmorchest,
+                    (ModelBiped) ModelHandler.modelArmorChest,
                     item,
                     ((ItemArmor) item.getItem()).armorType,
                     RenderBiped.bipedArmorFilenamePrefix[((ItemArmor) item.getItem()).renderIndex]);
-                ModelHandler.modelarmorchest.renderHead(0.0625f);
+                ModelHandler.modelArmorChest.bipedBody.render(0.0625f);
+                ModelHandler.modelArmorChest.bipedLeftArm.render(0.0625f);
+                ModelHandler.modelArmorChest.bipedRightArm.render(0.0625f);
                 GL11.glPopMatrix();
             }
         }
         GL11.glPopMatrix();
+    }
+
+    private void recursivelyCutModel(int treshold, ModelRenderer model) {
+        Object[] boxes = model.cubeList.toArray();
+        for (Object boxObject : boxes) {
+            ModelBox box = (ModelBox) boxObject;
+            if (box.posY1 + model.rotationPointY > treshold) {
+                model.cubeList.remove(box);
+            } else {
+                if (box.posY2 + model.rotationPointY > treshold) {
+                    ModelBox newBox = new ModelBox(
+                        model,
+                        model.textureOffsetX,
+                        model.textureOffsetY,
+                        box.posX1,
+                        box.posY1,
+                        box.posZ1,
+                        (int) (box.posX2 - box.posX1),
+                        (int) (6 - box.posY1),
+                        (int) (box.posZ2 - box.posZ1),
+                        0.0F);
+                    model.cubeList.add(newBox);
+                    model.cubeList.remove(box);
+                }
+            }
+        }
+        if (model.childModels != null) {
+            Object[] childModels = model.childModels.toArray();
+            for (Object childModelObject : childModels) {
+                ModelRenderer childModel = (ModelRenderer) childModelObject;
+                recursivelyCutModel(treshold, childModel);
+            }
+        }
     }
 
     private void renderBeam(final TileEntityGravestone tileentity, final double d, final double d1, final double d2) {

@@ -63,5 +63,6 @@ public class Constants {
         ICON_GALACTICRAFT = new ItemStack(Blocks.glass);
         ICON_MARICULTURE = new ItemStack(Items.fish);
         GRAVE_PLACEHOLDER = new TileEntityGravestone();
+        GRAVE_PLACEHOLDER.isDecorativeGrave = true;
     }
 }

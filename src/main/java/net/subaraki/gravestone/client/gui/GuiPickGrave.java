@@ -125,7 +125,7 @@ public class GuiPickGrave extends GuiScreen {
             GL11.glScaled(50.0, 50.0, -50.0);
             GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
             GL11.glRotatef((float) this.rotationCounter, 0.0f, 1.0f, 0.0f);
-            ModelHandler.modelhead.renderHead(0.0625f);
+            ModelHandler.modelBust.renderBust(0.0625f);
         }
         GL11.glPopMatrix();
     }

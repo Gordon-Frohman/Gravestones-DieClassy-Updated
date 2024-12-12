@@ -4,6 +4,7 @@ package net.subaraki.gravestone.util;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.imageio.ImageIO;
 
@@ -11,12 +12,15 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.*;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.entity.player.*;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.*;
 import net.subaraki.gravestone.*;
 
+import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import com.mojang.authlib.properties.Property;
 
 import cpw.mods.fml.relauncher.*;
 
@@ -70,11 +74,6 @@ public class GraveUtility {
     @SideOnly(Side.CLIENT)
     public ResourceLocation processPlayerTexture(final String playername) {
         this.SKIN_ABSTRACT_PLAYER = null;
-        /*
-         * if (this.SKIN_ABSTRACT_PLAYER == null) {
-         * this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
-         * }
-         */
         try {
             if (playername != null && playername.length() > 1) {
                 EntityPlayer player = Minecraft.getMinecraft().theWorld.getPlayerEntityByName(playername);
@@ -86,24 +85,24 @@ public class GraveUtility {
                     if (map.containsKey(Type.SKIN)) {
                         this.SKIN_ABSTRACT_PLAYER = minecraft.func_152342_ad()
                             .func_152792_a((MinecraftProfileTexture) map.get(Type.SKIN), Type.SKIN);
-                        // AbstractClientPlayer.getDownloadImageSkin(SKIN_ABSTRACT_PLAYER, playername);
+                    }
+                } else {
+                    GameProfile profile = fixProfile(new GameProfile((UUID) null, playername));
+                    if (profile != null) {
+                        Minecraft minecraft = Minecraft.getMinecraft();
+                        Map map = minecraft.func_152342_ad()
+                            .func_152788_a(profile);
+                        if (map.containsKey(Type.SKIN)) {
+                            this.SKIN_ABSTRACT_PLAYER = minecraft.func_152342_ad()
+                                .func_152792_a((MinecraftProfileTexture) map.get(Type.SKIN), Type.SKIN);
+                        }
                     }
                 }
-                /*
-                 * else {
-                 * this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
-                 * }
-                 */
             }
-            /*
-             * else {
-             * this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
-             * }
-             */
         } catch (Exception e) {
             // this.SKIN_ABSTRACT_PLAYER = this.SKIN_STEVE;
         }
-        if (this.SKIN_ABSTRACT_PLAYER == null /* this.SKIN_STEVE */) {
+        if (this.SKIN_ABSTRACT_PLAYER == null) {
             if (playername != null && playername.length() > 1) {
                 try {
                     BufferedImage bufferedImage = ImageIO.read(new File("./cachedImages/skins/" + playername + ".png"));
@@ -123,5 +122,32 @@ public class GraveUtility {
             }
         }
         return this.SKIN_ABSTRACT_PLAYER;
+    }
+
+    public static GameProfile fixProfile(GameProfile profile) {
+        if (profile != null && !StringUtils.isNullOrEmpty(profile.getName())) {
+            if (!profile.isComplete() || !profile.getProperties()
+                .containsKey("textures")) {
+                GameProfile gameprofile = MinecraftServer.getServer()
+                    .func_152358_ax()
+                    .func_152655_a(profile.getName());
+
+                if (gameprofile != null) {
+                    Property property = (Property) Iterables.getFirst(
+                        gameprofile.getProperties()
+                            .get("textures"),
+                        (Object) null);
+
+                    if (property == null) {
+                        gameprofile = MinecraftServer.getServer()
+                            .func_147130_as()
+                            .fillProfileProperties(gameprofile, true);
+                    }
+
+                    profile = gameprofile;
+                }
+            }
+        }
+        return profile;
     }
 }

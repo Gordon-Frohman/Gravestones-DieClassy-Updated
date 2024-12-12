@@ -81,7 +81,8 @@ public class BlockGrave extends Block {
     }
 
     public void onBlockClicked(final World world, final int x, final int y, final int z, final EntityPlayer player) {
-        if (((TileEntityGravestone) world.getTileEntity(x, y, z)).hasItems) {
+        TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
+        if (te.hasItems && !te.isDecorativeGrave) {
             this.setBlockUnbreakable();
         } else {
             this.setHardness(5.0f);
@@ -200,5 +201,10 @@ public class BlockGrave extends Block {
 
     public TileEntity createTileEntity(final World world, final int metadata) {
         return new TileEntityGravestone();
+    }
+
+    public int getDamageValue(World worldIn, int x, int y, int z) {
+        final TileEntityGravestone te = (TileEntityGravestone) worldIn.getTileEntity(x, y, z);
+        return te.modelType;
     }
 }

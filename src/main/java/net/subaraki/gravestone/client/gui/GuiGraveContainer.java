@@ -28,7 +28,7 @@ public class GuiGraveContainer extends GuiContainer {
     private TileEntityGravestone te;
     private String tabText;
     private static final ResourceLocation graveGui;
-    private ModelHead modelhead;
+    private ModelBust modelhead;
     private ResourceLocation texture;
 
     public GuiGraveContainer(final EntityPlayer player, final TileEntityGravestone grave) {
@@ -36,7 +36,7 @@ public class GuiGraveContainer extends GuiContainer {
         this.rotationCounter = 0;
         this.gravetext = "";
         this.tabText = "Minecraft";
-        this.modelhead = new ModelHead();
+        this.modelhead = new ModelBust();
         this.deathPlayer = player.worldObj.getPlayerEntityByName(grave.playername);
         this.playerOpenGui = player;
         this.nameOfDeathPlayer = grave.playername;
@@ -132,7 +132,7 @@ public class GuiGraveContainer extends GuiContainer {
         GL11.glScaled(50.0, 50.0, -50.0);
         GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
         GL11.glRotatef((float) this.rotationCounter, 0.0f, 1.0f, 0.0f);
-        ModelHandler.modelhead.renderHead(0.0625f);
+        ModelHandler.modelBust.renderBust(0.0625f);
         GL11.glPopMatrix();
     }
 

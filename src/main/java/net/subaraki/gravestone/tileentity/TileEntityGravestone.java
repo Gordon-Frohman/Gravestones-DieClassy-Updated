@@ -18,15 +18,13 @@ import net.minecraft.item.*;
 import net.minecraft.nbt.*;
 import net.minecraft.network.*;
 import net.minecraft.network.play.server.*;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.*;
 import net.minecraft.util.*;
 import net.minecraft.world.*;
 import net.subaraki.gravestone.*;
+import net.subaraki.gravestone.util.GraveUtility;
 
-import com.google.common.collect.Iterables;
 import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 
 public class TileEntityGravestone extends TileEntity implements IInventory {
 
@@ -162,7 +160,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         this.ModelRotation = nbt.getFloat("rotation");
         this.otherPlayerHasTakenItemStack = nbt.getBoolean("isLooted");
         this.isDecorativeGrave = nbt.getBoolean("decoGrave");
-        if (this.modelType == 5 && playername != "") {
+        if (this.modelType == 5 && playername.length() > 0) {
             this.profile = new GameProfile((UUID) null, playername);
             fixProfile();
         }
@@ -419,30 +417,8 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     }
 
     private void fixProfile() {
-        if (this.profile != null && !StringUtils.isNullOrEmpty(this.profile.getName())) {
-            if (!this.profile.isComplete() || !this.profile.getProperties()
-                .containsKey("textures")) {
-                GameProfile gameprofile = MinecraftServer.getServer()
-                    .func_152358_ax()
-                    .func_152655_a(this.profile.getName());
-
-                if (gameprofile != null) {
-                    Property property = (Property) Iterables.getFirst(
-                        gameprofile.getProperties()
-                            .get("textures"),
-                        (Object) null);
-
-                    if (property == null) {
-                        gameprofile = MinecraftServer.getServer()
-                            .func_147130_as()
-                            .fillProfileProperties(gameprofile, true);
-                    }
-
-                    this.profile = gameprofile;
-                    this.markDirty();
-                }
-            }
-        }
+        this.profile = GraveUtility.fixProfile(this.profile);
+        this.markDirty();
     }
 
     public void downloadSkin() {

@@ -1,6 +1,7 @@
 
 package net.subaraki.gravestone.handler;
 
+import net.minecraft.client.model.ModelBiped;
 import net.subaraki.gravestone.client.model.*;
 import net.subaraki.gravestone.util.*;
 
@@ -14,9 +15,9 @@ public class ModelHandler {
     public static final ModelStoneCross cross;
     public static final ModelTomb tomb;
     public static final ModelWoodenGrave wood;
-    public static ModelHead modelhead;
-    public static ModelHead modelarmorhead;
-    public static ModelHead modelarmorchest;
+    public static ModelBust modelBust;
+    public static ModelBiped modelArmorHead;
+    public static ModelBiped modelArmorChest;
     public static final GraveArmorHandler helper;
 
     public static void renderModelFromType(final int modelType) {
@@ -77,9 +78,9 @@ public class ModelHandler {
         cross = new ModelStoneCross();
         tomb = new ModelTomb();
         wood = new ModelWoodenGrave();
-        ModelHandler.modelhead = new ModelHead();
-        ModelHandler.modelarmorhead = new ModelHead();
-        ModelHandler.modelarmorchest = new ModelHead();
+        ModelHandler.modelBust = new ModelBust();
+        ModelHandler.modelArmorHead = new ModelBust();
+        ModelHandler.modelArmorChest = new ModelBust();
         helper = new GraveArmorHandler();
     }
 }

@@ -15,7 +15,6 @@ import net.minecraft.world.*;
 import net.minecraftforge.common.*;
 import net.minecraftforge.event.entity.*;
 import net.minecraftforge.event.entity.living.*;
-import net.minecraftforge.event.entity.player.*;
 import net.subaraki.gravestone.*;
 import net.subaraki.gravestone.client.*;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
@@ -181,6 +180,14 @@ public class GravestoneEventHandler {
             }
         }
         this.addOtherInventory(te, player);
+
+        Vec3 playerLookVec = player.getLookVec();
+        double graveRotation = Math.toDegrees(Math.atan2(playerLookVec.zCoord, playerLookVec.xCoord));
+        if (graveRotation < 0) {
+            graveRotation += 360;
+        }
+        te.ModelRotation = (float) (Math.round(graveRotation / 15) * 15);
+
         player.worldObj.setTileEntity(x, y + 1, z, (TileEntity) te);
         player.worldObj.markBlockForUpdate(x, y + 1, z);
         te.markDirty();

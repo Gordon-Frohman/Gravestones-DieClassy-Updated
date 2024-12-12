@@ -22,6 +22,8 @@ public class RenderGrave implements IItemRenderer {
         Constants.GRAVE_PLACEHOLDER.modelType = item.getItemDamage();
         final TileEntitySpecialRenderer tesr = TileEntityRendererDispatcher.instance
             .getSpecialRenderer((TileEntity) Constants.GRAVE_PLACEHOLDER);
+        TileEntitySpecialRendererGrave.inventoryRender = true;
         tesr.renderTileEntityAt((TileEntity) Constants.GRAVE_PLACEHOLDER, 0.0, 0.0, 0.0, 0.0f);
+        TileEntitySpecialRendererGrave.inventoryRender = false;
     }
 }
