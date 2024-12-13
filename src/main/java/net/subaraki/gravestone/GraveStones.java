@@ -13,6 +13,10 @@ import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.RecipeHandler;
+import net.subaraki.gravestone.integration.GalacticraftIntegration;
+import net.subaraki.gravestone.integration.MaricultureIntegration;
+import net.subaraki.gravestone.integration.ThaumcraftIntegration;
+import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.item.ItemDecoGrave;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
@@ -39,11 +43,12 @@ public class GraveStones {
     public static GraveStones instance;
     public SimpleNetworkWrapper network;
     public static Block graveStone;
-    public static boolean hasTiCo;
+    public static boolean hasTiC;
     public static boolean hasRpgI;
-    public static boolean hasBaub;
-    public static boolean hasGal_Craft;
-    public static boolean hasMari_Cul;
+    public static boolean hasBaubles;
+    public static boolean hasThaumcraft;
+    public static boolean hasGalacticraft;
+    public static boolean hasMariculture;
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
@@ -76,12 +81,17 @@ public class GraveStones {
 
     @Mod.EventHandler
     public void init(final FMLInitializationEvent event) {
-        GraveStones.hasRpgI = GraveUtility.findClass("rpgInventory.RpgInventoryMod", "Rpg Inventory");
-        GraveStones.hasTiCo = GraveUtility.findClass("tconstruct.TConstruct", "Tinkers Construct");
-        GraveStones.hasBaub = GraveUtility.findClass("baubles.common.Baubles", "Baubel Inventory");
-        GraveStones.hasGal_Craft = GraveUtility
-            .findClass("micdoodle8.mods.galacticraft.core.GalacticraftCore", "GalacticCraft");
-        GraveStones.hasMari_Cul = GraveUtility.findClass("mariculture.Mariculture", "Mariculture");
+        GraveStones.hasRpgI = GraveUtility.findClass("rpgInventory.RpgInventoryMod", "RPG Inventory");
+        GraveStones.hasTiC = GraveUtility.findClass("tconstruct.TConstruct", "Tinkers Construct");
+        Constants.ICON_TCON = TinkersConstructIntegration.getModIcon();
+        GraveStones.hasBaubles = GraveUtility.findClass("baubles.common.Baubles", "Baubles");
+        GraveStones.hasThaumcraft = GraveUtility.findClass("thaumcraft.common.Thaumcraft", "Thaumcraft");
+        Constants.ICON_BAUBLES = ThaumcraftIntegration.getModIcon(); // Yes, that's correct
+        GraveStones.hasGalacticraft = GraveUtility
+            .findClass("micdoodle8.mods.galacticraft.core.GalacticraftCore", "Galacticraft");
+        Constants.ICON_GALACTICRAFT = GalacticraftIntegration.getModIcon();
+        GraveStones.hasMariculture = GraveUtility.findClass("mariculture.Mariculture", "Mariculture");
+        Constants.ICON_MARICULTURE = MaricultureIntegration.getModIcon();
     }
 
     public static void printDebugMessage(final String message) {
@@ -91,10 +101,11 @@ public class GraveStones {
     }
 
     static {
-        GraveStones.hasTiCo = false;
+        GraveStones.hasTiC = false;
         GraveStones.hasRpgI = false;
-        GraveStones.hasBaub = false;
-        GraveStones.hasGal_Craft = false;
-        GraveStones.hasMari_Cul = false;
+        GraveStones.hasBaubles = false;
+        GraveStones.hasThaumcraft = false;
+        GraveStones.hasGalacticraft = false;
+        GraveStones.hasMariculture = false;
     }
 }

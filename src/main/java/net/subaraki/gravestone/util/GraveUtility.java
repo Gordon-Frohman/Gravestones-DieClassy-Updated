@@ -43,7 +43,7 @@ public class GraveUtility {
             final Class classToFind = Class.forName(classPath);
             if (classToFind != null) {
                 GraveStones.printDebugMessage(
-                    "GraveStones Detected " + modName + ". Inventory Content will be dumped into grave");
+                    "GraveStones detected " + modName + ". Inventory Content will be dumped into grave");
                 return true;
             }
         } catch (Exception ex) {}

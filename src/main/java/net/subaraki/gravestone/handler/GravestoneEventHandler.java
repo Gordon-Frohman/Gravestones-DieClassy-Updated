@@ -215,7 +215,7 @@ public class GravestoneEventHandler {
                     "GraveStones Mod couldn't connect to Rpg Inventory. Have these classes been modified ? Report to mod Author pleases.");
             }
         }
-        if (GraveStones.hasTiCo) {
+        if (GraveStones.hasTiC) {
             final IInventory sack = TinkersConstructIntegration.getKnapsackInventory(player);
             final IInventory inv2 = TinkersConstructIntegration.getAccessoryInventory(player);
             if (sack != null) {
@@ -239,7 +239,7 @@ public class GravestoneEventHandler {
                     "GraveStones Mod couldn't connect to Tinkers Construct's Armor. Have these classes been modified ? Report to mod Author pleases.");
             }
         }
-        if (GraveStones.hasBaub) {
+        if (GraveStones.hasBaubles) {
             final IInventory inv = this
                 .accesInventoryContents(player, "getPlayerBaubles", "baubles.common.lib.PlayerHandler", "Baubles");
             if (inv != null) {
@@ -274,7 +274,7 @@ public class GravestoneEventHandler {
                 e6.printStackTrace();
             }
         }
-        if (GraveStones.hasGal_Craft) {
+        if (GraveStones.hasGalacticraft) {
             final ItemStack[] inv3 = this.accesInventoryContentsStacks(
                 player,
                 "getExtendedInventory",
@@ -286,7 +286,7 @@ public class GravestoneEventHandler {
                 inv3[i] = null;
             }
         }
-        if (GraveStones.hasMari_Cul) {
+        if (GraveStones.hasMariculture) {
             final ItemStack[] inv3 = this
                 .accesInventoryContentsStacks(player, "getInventory", "mariculture.magic.MirrorHelper", "Mariculture");
             for (int i = 0; i < 3; ++i) {

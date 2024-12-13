@@ -164,7 +164,7 @@ public class GuiGraveContainer extends GuiContainer {
                     this.fontRendererObj));
             offsetX += offsetSize;
         }
-        if (GraveStones.hasTiCo) {
+        if (GraveStones.hasTiC) {
             this.buttonList.add(
                 new GuiTabButton(
                     2,
@@ -178,7 +178,7 @@ public class GuiGraveContainer extends GuiContainer {
                     this.fontRendererObj));
             offsetX += offsetSize;
         }
-        if (GraveStones.hasBaub) {
+        if (GraveStones.hasBaubles) {
             this.buttonList.add(
                 new GuiTabButton(
                     3,
@@ -192,7 +192,7 @@ public class GuiGraveContainer extends GuiContainer {
                     this.fontRendererObj));
             offsetX += offsetSize;
         }
-        if (GraveStones.hasGal_Craft) {
+        if (GraveStones.hasGalacticraft) {
             this.buttonList.add(
                 new GuiTabButton(
                     4,
@@ -206,7 +206,7 @@ public class GuiGraveContainer extends GuiContainer {
                     this.fontRendererObj));
             offsetX += offsetSize;
         }
-        if (GraveStones.hasMari_Cul) {
+        if (GraveStones.hasMariculture) {
             this.buttonList.add(
                 new GuiTabButton(
                     5,

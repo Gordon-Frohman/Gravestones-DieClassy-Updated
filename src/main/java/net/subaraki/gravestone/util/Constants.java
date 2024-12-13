@@ -5,7 +5,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.model.ModelAngel;
 import net.subaraki.gravestone.client.model.ModelCubeWorld;
 import net.subaraki.gravestone.client.model.ModelGraveSkeleton;
@@ -19,8 +18,6 @@ import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import tconstruct.armor.TinkerArmor;
 
 public class Constants {
 
@@ -43,11 +40,11 @@ public class Constants {
     public static ModelCubeWorld angelStatue;
     public static ModelCubeWorld barrel;
     public static final ItemStack ICON_VANILLA;
-    public static final ItemStack ICON_TCON;
-    public static final ItemStack ICON_RPGI;
-    public static final ItemStack ICON_BAUBLES;
-    public static final ItemStack ICON_GALACTICRAFT;
-    public static final ItemStack ICON_MARICULTURE;
+    public static ItemStack ICON_TCON;
+    public static ItemStack ICON_RPGI;
+    public static ItemStack ICON_BAUBLES;
+    public static ItemStack ICON_GALACTICRAFT;
+    public static ItemStack ICON_MARICULTURE;
     public static final byte VANILLA = 0;
     public static final byte RPGI = 1;
     public static final byte TC = 2;
@@ -67,8 +64,7 @@ public class Constants {
         MODEL_TOMB = new ModelTomb();
         MODEL_WOOD = new ModelWoodenGrave();
         ICON_VANILLA = new ItemStack(Items.iron_sword);
-        ICON_TCON = GraveStones.hasTiCo ? new ItemStack((Item) TinkerArmor.knapsack)
-            : new ItemStack((Item) Items.diamond_chestplate);
+        ICON_TCON = new ItemStack((Item) Items.diamond_chestplate);
         ICON_RPGI = new ItemStack((Item) Items.golden_chestplate);
         ICON_BAUBLES = new ItemStack(Items.gold_ingot);
         ICON_GALACTICRAFT = new ItemStack(Blocks.glass);
