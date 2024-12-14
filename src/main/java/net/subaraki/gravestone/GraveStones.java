@@ -7,6 +7,8 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.subaraki.gravestone.block.BlockGrave;
 import net.subaraki.gravestone.common.CommonProxy;
 import net.subaraki.gravestone.common.network.PacketSwitchSlotLayout;
@@ -121,7 +123,7 @@ public class GraveStones {
         Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
         Constants.ICON_AETHER = AetherIntegration.getModIcon();
         Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
-        Constants.ICON_TRAVELLERS_GEAR = TravellersGearIntegration.getModIcon();
+        Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear? TravellersGearIntegration.getModIcon() : new ItemStack(Items.name_tag);
     }
 
     public static void printDebugMessage(final String message) {
