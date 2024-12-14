@@ -16,6 +16,7 @@ import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.RecipeHandler;
+import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.GalacticraftIntegration;
 import net.subaraki.gravestone.integration.MaricultureIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
@@ -55,6 +56,7 @@ public class GraveStones {
     public static boolean hasMariculture;
     public static boolean hasCosmeticArmor;
     public static boolean hasSatchels;
+    public static boolean hasAether;
 
     public static Map<Integer, String> inventories = new HashMap<Integer, String>();
     public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
@@ -105,6 +107,8 @@ public class GraveStones {
             .findClass("lain.mods.cos.CosmeticArmorReworked", "Cosmetic Armor Reworked");
         GraveStones.hasSatchels = GraveUtility.findClass("makamys.satchels.Satchels", "Satchels");
         Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
+        GraveStones.hasAether = GraveUtility.findClass("com.gildedgames.the_aether.Aether", "Aether");
+        Constants.ICON_AETHER = AetherIntegration.getModIcon();
     }
 
     public static void printDebugMessage(final String message) {
@@ -137,13 +141,15 @@ public class GraveStones {
         GraveStones.hasMariculture = false;
         GraveStones.hasCosmeticArmor = false;
         GraveStones.hasSatchels = false;
-        registerInventory(0, "Minecraft", 40);
-        registerInventory(1, "RPG Inventory", 7);
-        registerInventory(2, "Tinkers Construct", 34);
-        registerInventory(3, "Baubles", 4);
-        registerInventory(4, "Galacticraft", 10);
-        registerInventory(5, "Mariculture", 3);
-        registerInventory(6, "Cosmetic Armor", 4);
-        registerInventory(7, "Satchels", 3);
+        GraveStones.hasAether = false;
+        registerInventory(Constants.VANILLA, "Minecraft", 40);
+        registerInventory(Constants.RPGI, "RPG Inventory", 7);
+        registerInventory(Constants.TC, "Tinkers Construct", 34);
+        registerInventory(Constants.BAUBLES, "Baubles", 4);
+        registerInventory(Constants.GALACTICRAFT, "Galacticraft", 10);
+        registerInventory(Constants.MARICULTURE, "Mariculture", 3);
+        registerInventory(Constants.COSMETIC_ARMOR, "Cosmetic Armor", 4);
+        registerInventory(Constants.SATCHELS, "Satchels", 3);
+        registerInventory(Constants.AETHER, "Aether", 8);
     }
 }

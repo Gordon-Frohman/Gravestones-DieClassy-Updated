@@ -22,10 +22,12 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.ClientProxy;
+import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
+import net.subaraki.gravestone.util.Constants;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -203,11 +205,11 @@ public class GravestoneEventHandler {
     }
 
     private void addOtherInventory(final TileEntityGravestone te, final EntityPlayer player) {
-        int invId = 0;
+        int invId = Constants.VANILLA;
         int prevInvSize = 0;
         int invSize = 40;
         if (GraveStones.hasRpgI) {
-            invId = 1;
+            invId = Constants.RPGI;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory inv = this
@@ -224,7 +226,7 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasTiC) {
-            invId = 2;
+            invId = Constants.TC;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory sack = TinkersConstructIntegration.getKnapsackInventory(player);
@@ -251,7 +253,7 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasBaubles) {
-            invId = 3;
+            invId = Constants.BAUBLES;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory inv = this
@@ -289,7 +291,7 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasGalacticraft) {
-            invId = 4;
+            invId = Constants.GALACTICRAFT;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final ItemStack[] inv3 = this.accesInventoryContentsStacks(
@@ -304,7 +306,7 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasMariculture) {
-            invId = 5;
+            invId = Constants.MARICULTURE;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final ItemStack[] inv3 = this
@@ -323,7 +325,7 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasCosmeticArmor) {
-            invId = 6;
+            invId = Constants.COSMETIC_ARMOR;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory cosmeticArmor = CosmeticArmorIntegration.getCosArmorInventory(player.getUniqueID());
@@ -340,7 +342,7 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasSatchels) {
-            invId = 7;
+            invId = Constants.SATCHELS;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory satchels = SatchelsIntegration.getSatchelsInventory(player);
@@ -354,6 +356,14 @@ public class GravestoneEventHandler {
             } else {
                 GraveStones.printDebugMessage(
                     "GraveStones Mod couldn't connect to Satchels inventory. Have these classes been modified ? Report to mod Author pleases.");
+            }
+        }
+        if (GraveStones.hasAether) {
+            invId = Constants.AETHER;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
+            for (int j = 0; j < invSize; ++j) {
+                te.list[j + prevInvSize] = AetherIntegration.removeStackFromSlot(player, j);
             }
         }
     }

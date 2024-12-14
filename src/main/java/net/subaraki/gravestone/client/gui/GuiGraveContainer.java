@@ -146,33 +146,41 @@ public class GuiGraveContainer extends GuiContainer {
     }
 
     public void initGui() {
+        initGui(0);
+    }
+
+    public void initGui(int tabId) {
         super.initGui();
+        this.updateInventory((byte) tabId);
         this.buttonList.clear();
         offsetX = 0;
         x = this.width / 2 - this.xSize / 2 + 4;
         y = this.height / 2 - this.ySize / 2 - 19;
         // Minecraft
-        registerInventory(0, Constants.ICON_VANILLA);
+        registerInventory(Constants.VANILLA, Constants.ICON_VANILLA);
         if (GraveStones.hasRpgI) {
-            registerInventory(1, Constants.ICON_RPGI);
+            registerInventory(Constants.RPGI, Constants.ICON_RPGI);
         }
         if (GraveStones.hasTiC) {
-            registerInventory(2, Constants.ICON_TCON);
+            registerInventory(Constants.TC, Constants.ICON_TCON);
         }
         if (GraveStones.hasBaubles) {
-            registerInventory(3, Constants.ICON_BAUBLES);
+            registerInventory(Constants.BAUBLES, Constants.ICON_BAUBLES);
         }
         if (GraveStones.hasGalacticraft) {
-            registerInventory(4, Constants.ICON_GALACTICRAFT);
+            registerInventory(Constants.GALACTICRAFT, Constants.ICON_GALACTICRAFT);
         }
         if (GraveStones.hasMariculture) {
-            registerInventory(5, Constants.ICON_MARICULTURE);
+            registerInventory(Constants.MARICULTURE, Constants.ICON_MARICULTURE);
         }
         if (GraveStones.hasCosmeticArmor) {
-            registerInventory(6, Constants.ICON_COSMETIC_ARMOR);
+            registerInventory(Constants.COSMETIC_ARMOR, Constants.ICON_COSMETIC_ARMOR);
         }
         if (GraveStones.hasSatchels) {
-            registerInventory(7, Constants.ICON_SATCHELS);
+            registerInventory(Constants.SATCHELS, Constants.ICON_SATCHELS);
+        }
+        if (GraveStones.hasAether) {
+            registerInventory(Constants.AETHER, Constants.ICON_AETHER);
         }
     }
 
@@ -185,10 +193,9 @@ public class GuiGraveContainer extends GuiContainer {
 
     protected void actionPerformed(final GuiButton button) {
         super.actionPerformed(button);
-        this.updateInventory((byte) button.id);
         this.tabText = GraveStones.inventories.containsKey(button.id) ? GraveStones.inventories.get(button.id)
             : tabText;
-        this.initGui();
+        this.initGui(button.id);
     }
 
     private void updateInventory(final byte i) {

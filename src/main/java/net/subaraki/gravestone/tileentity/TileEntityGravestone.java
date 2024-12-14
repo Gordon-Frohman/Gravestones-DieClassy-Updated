@@ -371,11 +371,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     private int getListSlotID(final int slot) {
         if (!GraveStones.inventories.containsKey(this.tab)) return -1;
         int id = GraveStones.inventorySizes.get(this.tab) <= 4 ? slot - 36 : slot;
-        for (int i = 0; i < this.tab; i++) {
-            Integer inventorySize = GraveStones.inventorySizes.get(i);
-            id += inventorySize == null ? 0 : inventorySize;
-        }
-        return id;
+        return id + GraveStones.getPrevInventoriesSize(this.tab);
     }
 
     private void fixProfile() {

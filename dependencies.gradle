@@ -44,4 +44,5 @@ dependencies {
     compileOnly(dependencies.rfg.deobf(files("libs/Enchiridion 2-1.7.10-2.0.2a.jar"))) // For Mariculture to work
     compileOnly(dependencies.rfg.deobf(files("libs/CosmeticArmorReworked-1.7.10-v7.jar")))
     compileOnly(dependencies.rfg.deobf(files("libs/Satchels-1.7.10-1.0.7.jar"))) // Won't launch in IDE because of built-in Mixins
+    compileOnly(dependencies.rfg.deobf(files("libs/aether-1.7.10-v1.1.2.5.jar")))
 }

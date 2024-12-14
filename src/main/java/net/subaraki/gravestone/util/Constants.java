@@ -47,6 +47,7 @@ public class Constants {
     public static ItemStack ICON_MARICULTURE;
     public static ItemStack ICON_COSMETIC_ARMOR;
     public static ItemStack ICON_SATCHELS;
+    public static ItemStack ICON_AETHER;
     public static final byte VANILLA = 0;
     public static final byte RPGI = 1;
     public static final byte TC = 2;
@@ -54,6 +55,8 @@ public class Constants {
     public static final byte GALACTICRAFT = 4;
     public static final byte MARICULTURE = 5;
     public static final byte COSMETIC_ARMOR = 6;
+    public static final byte SATCHELS = 6;
+    public static final byte AETHER = 6;
     public static final TileEntityGravestone GRAVE_PLACEHOLDER;
 
     static {
@@ -73,6 +76,8 @@ public class Constants {
         ICON_GALACTICRAFT = new ItemStack(Blocks.glass);
         ICON_MARICULTURE = new ItemStack(Items.fish);
         ICON_COSMETIC_ARMOR = new ItemStack(Items.leather_chestplate);
+        ICON_SATCHELS = new ItemStack(Items.leather);
+        ICON_AETHER = new ItemStack(Items.feather);
         GRAVE_PLACEHOLDER = new TileEntityGravestone();
         GRAVE_PLACEHOLDER.isDecorativeGrave = true;
     }
