@@ -40,7 +40,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "gravestonemod", name = "Gravestones", version = "1.5")
+@Mod(modid = "gravestonemod", name = "Gravestones", version = "1.5.1")
 public class GraveStones {
 
     @SidedProxy(
