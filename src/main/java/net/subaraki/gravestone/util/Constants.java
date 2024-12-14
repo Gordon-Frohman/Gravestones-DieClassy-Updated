@@ -55,8 +55,8 @@ public class Constants {
     public static final byte GALACTICRAFT = 4;
     public static final byte MARICULTURE = 5;
     public static final byte COSMETIC_ARMOR = 6;
-    public static final byte SATCHELS = 6;
-    public static final byte AETHER = 6;
+    public static final byte SATCHELS = 7;
+    public static final byte AETHER = 8;
     public static final TileEntityGravestone GRAVE_PLACEHOLDER;
 
     static {
