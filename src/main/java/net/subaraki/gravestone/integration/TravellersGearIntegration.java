@@ -14,7 +14,7 @@ import travellersgear.api.TravellersGearAPI;
 public class TravellersGearIntegration {
 
     public static ItemStack getModIcon() {
-        return GraveStones.hasSatchels && TravellersGear.simpleGear != null
+        return GraveStones.hasTravellersGear && TravellersGear.simpleGear != null
             ? new ItemStack(TravellersGear.simpleGear, 1, 6)
             : new ItemStack(Items.name_tag);
     }
