@@ -4,6 +4,7 @@ package net.subaraki.gravestone.handler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -26,6 +27,7 @@ import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
+import net.subaraki.gravestone.integration.TravellersGearIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
 
@@ -377,6 +379,17 @@ public class GravestoneEventHandler {
                 player.inventory.setInventorySlotContents(j + 150, (ItemStack) null);
                 player.inventory.markDirty();
             }
+        }
+        if (GraveStones.hasTravellersGear) {
+            // Stuff from Mariculture and Baubles will be already taken out by this point
+            invId = Constants.TRAVELLERS_GEAR;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
+            List<ItemStack> tgInv = TravellersGearIntegration.getTravellersGearInventory(player);
+            for (int j = 0; j < invSize; ++j) {
+                te.list[j + prevInvSize] = tgInv.get(j);
+            }
+            TravellersGearIntegration.clearTravellersGearInventory(player);
         }
     }
 

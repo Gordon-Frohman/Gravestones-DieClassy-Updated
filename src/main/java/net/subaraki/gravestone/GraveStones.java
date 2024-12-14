@@ -23,6 +23,7 @@ import net.subaraki.gravestone.integration.MaricultureIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
 import net.subaraki.gravestone.integration.ThaumcraftIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
+import net.subaraki.gravestone.integration.TravellersGearIntegration;
 import net.subaraki.gravestone.item.ItemDecoGrave;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
@@ -31,6 +32,7 @@ import net.subaraki.gravestone.util.GraveUtility;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
@@ -59,6 +61,7 @@ public class GraveStones {
     public static boolean hasSatchels;
     public static boolean hasAether;
     public static boolean hasBattlegear;
+    public static boolean hasTravellersGear;
 
     public static Map<Integer, String> inventories = new HashMap<Integer, String>();
     public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
@@ -118,6 +121,7 @@ public class GraveStones {
         Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
         Constants.ICON_AETHER = AetherIntegration.getModIcon();
         Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
+        Constants.ICON_TRAVELLERS_GEAR = TravellersGearIntegration.getModIcon();
     }
 
     public static void printDebugMessage(final String message) {
@@ -152,6 +156,7 @@ public class GraveStones {
         GraveStones.hasSatchels = false;
         GraveStones.hasAether = false;
         GraveStones.hasBattlegear = false;
+        GraveStones.hasTravellersGear = false;
         registerInventory(Constants.VANILLA, "Minecraft", 40);
         registerInventory(Constants.RPGI, "RPG Inventory", 7);
         registerInventory(Constants.TC, "Tinkers Construct", 34);
@@ -162,5 +167,6 @@ public class GraveStones {
         registerInventory(Constants.SATCHELS, "Satchels", 3);
         registerInventory(Constants.AETHER, "Aether", 8);
         registerInventory(Constants.BATTLEGEAR, "Battlegear", 18);
+        registerInventory(Constants.TRAVELLERS_GEAR, "Traveller's Gear", 4);
     }
 }
