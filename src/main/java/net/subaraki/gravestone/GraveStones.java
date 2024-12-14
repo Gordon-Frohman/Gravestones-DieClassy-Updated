@@ -96,22 +96,27 @@ public class GraveStones {
     public void init(final FMLInitializationEvent event) {
         GraveStones.hasRpgI = GraveUtility.findClass("rpgInventory.RpgInventoryMod", "RPG Inventory");
         GraveStones.hasTiC = GraveUtility.findClass("tconstruct.TConstruct", "Tinkers Construct");
-        Constants.ICON_TCON = TinkersConstructIntegration.getModIcon();
         GraveStones.hasBaubles = GraveUtility.findClass("baubles.common.Baubles", "Baubles");
         GraveStones.hasThaumcraft = GraveUtility.findClass("thaumcraft.common.Thaumcraft", "Thaumcraft");
-        Constants.ICON_BAUBLES = ThaumcraftIntegration.getModIcon(); // Yes, that's correct
         GraveStones.hasGalacticraft = GraveUtility
             .findClass("micdoodle8.mods.galacticraft.core.GalacticraftCore", "Galacticraft");
-        Constants.ICON_GALACTICRAFT = GalacticraftIntegration.getModIcon();
         GraveStones.hasMariculture = GraveUtility.findClass("mariculture.Mariculture", "Mariculture");
-        Constants.ICON_MARICULTURE = MaricultureIntegration.getModIcon();
         GraveStones.hasCosmeticArmor = GraveUtility
             .findClass("lain.mods.cos.CosmeticArmorReworked", "Cosmetic Armor Reworked");
         GraveStones.hasSatchels = GraveUtility.findClass("makamys.satchels.Satchels", "Satchels");
-        Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
         GraveStones.hasAether = GraveUtility.findClass("com.gildedgames.the_aether.Aether", "Aether");
-        Constants.ICON_AETHER = AetherIntegration.getModIcon();
         GraveStones.hasBattlegear = GraveUtility.findClass("mods.battlegear2.Battlegear", "Mine & Blade: Battlegear 2");
+        GraveStones.hasTravellersGear = GraveUtility.findClass("travellersgear.TravellersGear", "Traveller's Gear");
+    }
+
+    @Mod.EventHandler
+    public void postInit(final FMLPostInitializationEvent event) {
+        Constants.ICON_TCON = TinkersConstructIntegration.getModIcon();
+        Constants.ICON_BAUBLES = ThaumcraftIntegration.getModIcon(); // Yes, that's correct
+        Constants.ICON_GALACTICRAFT = GalacticraftIntegration.getModIcon();
+        Constants.ICON_MARICULTURE = MaricultureIntegration.getModIcon();
+        Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
+        Constants.ICON_AETHER = AetherIntegration.getModIcon();
         Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
     }
 
