@@ -18,6 +18,7 @@ import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.RecipeHandler;
 import net.subaraki.gravestone.integration.GalacticraftIntegration;
 import net.subaraki.gravestone.integration.MaricultureIntegration;
+import net.subaraki.gravestone.integration.SatchelsIntegration;
 import net.subaraki.gravestone.integration.ThaumcraftIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.item.ItemDecoGrave;
@@ -53,6 +54,7 @@ public class GraveStones {
     public static boolean hasGalacticraft;
     public static boolean hasMariculture;
     public static boolean hasCosmeticArmor;
+    public static boolean hasSatchels;
 
     public static Map<Integer, String> inventories = new HashMap<Integer, String>();
     public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
@@ -101,6 +103,8 @@ public class GraveStones {
         Constants.ICON_MARICULTURE = MaricultureIntegration.getModIcon();
         GraveStones.hasCosmeticArmor = GraveUtility
             .findClass("lain.mods.cos.CosmeticArmorReworked", "Cosmetic Armor Reworked");
+        GraveStones.hasSatchels = GraveUtility.findClass("makamys.satchels.Satchels", "Satchels");
+        Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
     }
 
     public static void printDebugMessage(final String message) {
@@ -132,6 +136,7 @@ public class GraveStones {
         GraveStones.hasGalacticraft = false;
         GraveStones.hasMariculture = false;
         GraveStones.hasCosmeticArmor = false;
+        GraveStones.hasSatchels = false;
         registerInventory(0, "Minecraft", 40);
         registerInventory(1, "RPG Inventory", 7);
         registerInventory(2, "Tinkers Construct", 34);
@@ -139,5 +144,6 @@ public class GraveStones {
         registerInventory(4, "Galacticraft", 10);
         registerInventory(5, "Mariculture", 3);
         registerInventory(6, "Cosmetic Armor", 4);
+        registerInventory(7, "Satchels", 3);
     }
 }

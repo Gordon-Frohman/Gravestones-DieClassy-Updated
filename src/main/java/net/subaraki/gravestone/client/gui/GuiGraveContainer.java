@@ -171,6 +171,9 @@ public class GuiGraveContainer extends GuiContainer {
         if (GraveStones.hasCosmeticArmor) {
             registerInventory(6, Constants.ICON_COSMETIC_ARMOR);
         }
+        if (GraveStones.hasSatchels) {
+            registerInventory(7, Constants.ICON_SATCHELS);
+        }
     }
 
     @SuppressWarnings("unchecked")

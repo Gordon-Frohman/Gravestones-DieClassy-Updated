@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.ClientProxy;
 import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
+import net.subaraki.gravestone.integration.SatchelsIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
@@ -336,6 +337,23 @@ public class GravestoneEventHandler {
             } else {
                 GraveStones.printDebugMessage(
                     "GraveStones Mod couldn't connect to Cosmetic Armor inventory. Have these classes been modified ? Report to mod Author pleases.");
+            }
+        }
+        if (GraveStones.hasSatchels) {
+            invId = 7;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
+            final IInventory satchels = SatchelsIntegration.getSatchelsInventory(player);
+            if (satchels != null) {
+                for (int j = 0; j < invSize; ++j) {
+                    final ItemStack is2 = satchels.getStackInSlot(j);
+                    te.list[j + prevInvSize] = is2;
+                    satchels.setInventorySlotContents(j, (ItemStack) null);
+                    satchels.markDirty();
+                }
+            } else {
+                GraveStones.printDebugMessage(
+                    "GraveStones Mod couldn't connect to Satchels inventory. Have these classes been modified ? Report to mod Author pleases.");
             }
         }
     }

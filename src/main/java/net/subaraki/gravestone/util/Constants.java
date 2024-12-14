@@ -46,6 +46,7 @@ public class Constants {
     public static ItemStack ICON_GALACTICRAFT;
     public static ItemStack ICON_MARICULTURE;
     public static ItemStack ICON_COSMETIC_ARMOR;
+    public static ItemStack ICON_SATCHELS;
     public static final byte VANILLA = 0;
     public static final byte RPGI = 1;
     public static final byte TC = 2;
