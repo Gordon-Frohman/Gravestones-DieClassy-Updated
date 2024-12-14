@@ -42,7 +42,7 @@ import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 
-@Mod(modid = "gravestonemod", name = "Gravestones", version = "1.5.1")
+@Mod(modid = "gravestonemod")
 public class GraveStones {
 
     @SidedProxy(
@@ -123,7 +123,8 @@ public class GraveStones {
         Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
         Constants.ICON_AETHER = AetherIntegration.getModIcon();
         Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
-        Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear? TravellersGearIntegration.getModIcon() : new ItemStack(Items.name_tag);
+        Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear ? TravellersGearIntegration.getModIcon()
+            : new ItemStack(Items.name_tag);
     }
 
     public static void printDebugMessage(final String message) {

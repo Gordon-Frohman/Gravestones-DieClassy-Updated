@@ -1,0 +1,19 @@
+[
+{
+  "modid": "${modId}",
+  "name": "${modName}",
+  "description": "",
+  "version": "1.5.1",
+  "mcversion": "${minecraftVersion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": [
+    "Subaraki (AbsolemJackdaw) - Original author",
+    "Sergius Onesimus - Maintainer"
+  ],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
