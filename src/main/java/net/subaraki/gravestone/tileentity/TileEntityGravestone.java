@@ -51,8 +51,10 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     public ResourceLocation skinLocation = null;
     Random rand;
 
+    public static int listSize = 0;
+
     public TileEntityGravestone() {
-        this.list = new ItemStack[128];
+        this.list = new ItemStack[listSize];
         this.slots = new ItemStack[40];
         this.tab = 0;
         this.playername = "";
@@ -85,6 +87,10 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         return this.slots[par1];
     }
 
+    public ItemStack getStackInList(final int par1) {
+        return this.list[par1];
+    }
+
     public void setInventorySlotContents(final int slot, final ItemStack par2ItemStack) {
         final int slotID = this.getListSlotID(slot);
         if (slotID == -1) {
@@ -93,7 +99,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
             GraveStones.printDebugMessage(
                 "Tried getting content of tab #" + this.tab
                     + " this should be the "
-                    + this.modNameForTab(this.tab)
+                    + GraveStones.inventories.get(this.tab)
                     + " inventory");
         }
         this.slots[slot] = par2ItemStack;
@@ -111,7 +117,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
             GraveStones.printDebugMessage(
                 "Tried getting content of tab #" + this.tab
                     + " this should be the "
-                    + this.modNameForTab(this.tab)
+                    + GraveStones.inventories.get(this.tab)
                     + " inventory");
         }
         GraveStones.printDebugMessage("");
@@ -347,79 +353,29 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         for (int i = 0; i < this.slots.length; ++i) {
             this.slots[i] = null;
         }
-        switch (b) {
-            case 0: {
-                for (int i = 0; i < this.slots.length; ++i) {
-                    this.slots[i] = this.list[i];
-                }
-                break;
-            }
-            case 1: {
-                for (int i = 0; i < 7; ++i) {
-                    this.slots[i] = this.list[i + 40];
-                }
-                break;
-            }
-            case 2: {
-                for (int i = 0; i < 27; ++i) {
-                    this.slots[i] = this.list[i + 47];
-                }
-                for (int i = 0; i < 7; ++i) {
-                    this.slots[i + 27] = this.list[i + 74];
-                }
-                break;
-            }
-            case 3: {
-                for (int i = 0; i < 4; ++i) {
-                    this.slots[i] = this.list[i + 81];
-                }
-                break;
-            }
-            case 4: {
-                for (int i = 0; i < 10; ++i) {
-                    this.slots[i] = this.list[i + 85];
-                }
-                break;
-            }
-            case 5: {
-                for (int i = 0; i < 3; ++i) {
-                    this.slots[i] = this.list[i + 95];
-                }
-                break;
-            }
+        int previousSlots = 0;
+        int inventorySize = 40;
+        for (int i = 1; i <= b; i++) {
+            Integer previousInventorySize = GraveStones.inventorySizes.get(i - 1);
+            Integer currentInventorySize = GraveStones.inventorySizes.get(i);
+            previousSlots += previousInventorySize == null ? 0 : previousInventorySize;
+            inventorySize = currentInventorySize == null ? 0 : currentInventorySize;
+        }
+        int startPos = inventorySize <= 4 ? 36 : 0;
+        for (int i = 0; i < inventorySize; ++i) {
+            this.slots[startPos + i] = this.list[i + previousSlots];
         }
         this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
     }
 
     private int getListSlotID(final int slot) {
-        return (this.tab == 0) ? slot
-            : ((this.tab == 1) ? (slot + 40)
-                : ((this.tab == 2) ? (slot + 47)
-                    : ((this.tab == 3) ? (slot + 81)
-                        : ((this.tab == 4) ? (slot + 85) : ((this.tab == 5) ? (slot + 95) : -1)))));
-    }
-
-    private String modNameForTab(final int tabId) {
-        String name = null;
-        if (tabId == 0) {
-            name = "Minecraft";
+        if (!GraveStones.inventories.containsKey(this.tab)) return -1;
+        int id = GraveStones.inventorySizes.get(this.tab) <= 4 ? slot - 36 : slot;
+        for (int i = 0; i < this.tab; i++) {
+            Integer inventorySize = GraveStones.inventorySizes.get(i);
+            id += inventorySize == null ? 0 : inventorySize;
         }
-        if (tabId == 1) {
-            name = "Rpg Inventory";
-        }
-        if (tabId == 2) {
-            name = "Tinkers Construct";
-        }
-        if (tabId == 3) {
-            name = "Baubles Inventory";
-        }
-        if (tabId == 4) {
-            name = "Galacticraft";
-        }
-        if (tabId == 5) {
-            name = "Mariculture";
-        }
-        return name;
+        return id;
     }
 
     private void fixProfile() {

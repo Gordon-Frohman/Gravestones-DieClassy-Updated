@@ -1,6 +1,9 @@
 
 package net.subaraki.gravestone;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
@@ -49,6 +52,10 @@ public class GraveStones {
     public static boolean hasThaumcraft;
     public static boolean hasGalacticraft;
     public static boolean hasMariculture;
+    public static boolean hasCosmeticArmor;
+
+    public static Map<Integer, String> inventories = new HashMap<Integer, String>();
+    public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
@@ -92,12 +99,29 @@ public class GraveStones {
         Constants.ICON_GALACTICRAFT = GalacticraftIntegration.getModIcon();
         GraveStones.hasMariculture = GraveUtility.findClass("mariculture.Mariculture", "Mariculture");
         Constants.ICON_MARICULTURE = MaricultureIntegration.getModIcon();
+        GraveStones.hasCosmeticArmor = GraveUtility
+            .findClass("lain.mods.cos.CosmeticArmorReworked", "Cosmetic Armor Reworked");
     }
 
     public static void printDebugMessage(final String message) {
         if (ConfigHandler.allowDebug) {
             Constants.LOG.info(message);
         }
+    }
+
+    private static void registerInventory(int id, String inventoryName, int size) {
+        inventories.put(id, inventoryName);
+        inventorySizes.put(id, size);
+        TileEntityGravestone.listSize += size;
+    }
+
+    public static int getPrevInventoriesSize(int invId) {
+        int size = 0;
+        for (int i = 0; i < invId; i++) {
+            Integer inventorySize = GraveStones.inventorySizes.get(i);
+            size += inventorySize == null ? 0 : inventorySize;
+        }
+        return size;
     }
 
     static {
@@ -107,5 +131,13 @@ public class GraveStones {
         GraveStones.hasThaumcraft = false;
         GraveStones.hasGalacticraft = false;
         GraveStones.hasMariculture = false;
+        GraveStones.hasCosmeticArmor = false;
+        registerInventory(0, "Minecraft", 40);
+        registerInventory(1, "RPG Inventory", 7);
+        registerInventory(2, "Tinkers Construct", 34);
+        registerInventory(3, "Baubles", 4);
+        registerInventory(4, "Galacticraft", 10);
+        registerInventory(5, "Mariculture", 3);
+        registerInventory(6, "Cosmetic Armor", 4);
     }
 }

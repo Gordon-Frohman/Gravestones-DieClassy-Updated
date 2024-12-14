@@ -4,7 +4,7 @@ package net.subaraki.gravestone.client.gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.Container;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
@@ -35,8 +35,13 @@ public class GuiGraveContainer extends GuiContainer {
     private ModelBust modelBust;
     private ResourceLocation texture;
 
+    int offsetX = 0;
+    final int offsetSize = 33;
+    int x = this.width / 2 - this.xSize / 2 + 4;
+    int y = this.height / 2 - this.ySize / 2 - 19;
+
     public GuiGraveContainer(final EntityPlayer player, final TileEntityGravestone grave) {
-        super((Container) new ContainerGrave(player.inventory, grave, player));
+        super(new ContainerGrave(player.inventory, grave, player));
         this.rotationCounter = 0;
         this.gravetext = "";
         this.tabText = "Minecraft";
@@ -143,136 +148,59 @@ public class GuiGraveContainer extends GuiContainer {
     public void initGui() {
         super.initGui();
         this.buttonList.clear();
-        int offsetX = 0;
-        final int offsetSize = 33;
-        final int x = this.width / 2 - this.xSize / 2 + 4;
-        final int y = this.height / 2 - this.ySize / 2 - 19;
-        this.buttonList
-            .add(new GuiTabButton(0, x, y, 35, 20, "", this.te.tab == 0, Constants.ICON_VANILLA, this.fontRendererObj));
-        offsetX += offsetSize;
+        offsetX = 0;
+        x = this.width / 2 - this.xSize / 2 + 4;
+        y = this.height / 2 - this.ySize / 2 - 19;
+        // Minecraft
+        registerInventory(0, Constants.ICON_VANILLA);
         if (GraveStones.hasRpgI) {
-            this.buttonList.add(
-                new GuiTabButton(
-                    1,
-                    x + offsetX,
-                    y,
-                    35,
-                    20,
-                    "",
-                    this.te.tab == 1,
-                    Constants.ICON_RPGI,
-                    this.fontRendererObj));
-            offsetX += offsetSize;
+            registerInventory(1, Constants.ICON_RPGI);
         }
         if (GraveStones.hasTiC) {
-            this.buttonList.add(
-                new GuiTabButton(
-                    2,
-                    x + offsetX,
-                    y,
-                    35,
-                    20,
-                    "",
-                    this.te.tab == 2,
-                    Constants.ICON_TCON,
-                    this.fontRendererObj));
-            offsetX += offsetSize;
+            registerInventory(2, Constants.ICON_TCON);
         }
         if (GraveStones.hasBaubles) {
-            this.buttonList.add(
-                new GuiTabButton(
-                    3,
-                    x + offsetX,
-                    y,
-                    35,
-                    20,
-                    "",
-                    this.te.tab == 3,
-                    Constants.ICON_BAUBLES,
-                    this.fontRendererObj));
-            offsetX += offsetSize;
+            registerInventory(3, Constants.ICON_BAUBLES);
         }
         if (GraveStones.hasGalacticraft) {
-            this.buttonList.add(
-                new GuiTabButton(
-                    4,
-                    x + offsetX,
-                    y,
-                    35,
-                    20,
-                    "",
-                    this.te.tab == 4,
-                    Constants.ICON_GALACTICRAFT,
-                    this.fontRendererObj));
-            offsetX += offsetSize;
+            registerInventory(4, Constants.ICON_GALACTICRAFT);
         }
         if (GraveStones.hasMariculture) {
-            this.buttonList.add(
-                new GuiTabButton(
-                    5,
-                    x + offsetX,
-                    y,
-                    35,
-                    20,
-                    "",
-                    this.te.tab == 5,
-                    Constants.ICON_MARICULTURE,
-                    this.fontRendererObj));
-            offsetX += offsetX;
+            registerInventory(5, Constants.ICON_MARICULTURE);
         }
+        if (GraveStones.hasCosmeticArmor) {
+            registerInventory(6, Constants.ICON_COSMETIC_ARMOR);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private void registerInventory(int id, ItemStack icon) {
+        this.buttonList
+            .add(new GuiTabButton(id, x + offsetX, y, 35, 20, "", this.te.tab == id, icon, this.fontRendererObj));
+        offsetX += offsetSize;
     }
 
     protected void actionPerformed(final GuiButton button) {
         super.actionPerformed(button);
         this.updateInventory((byte) button.id);
-        if (button.id == 0) {
-            this.tabText = "Minecraft";
-        }
-        if (button.id == 1) {
-            this.tabText = "Rpg Inventory";
-        }
-        if (button.id == 2) {
-            this.tabText = "Tinkers Construct";
-        }
-        if (button.id == 3) {
-            this.tabText = "Baubles Inventory";
-        }
-        if (button.id == 4) {
-            this.tabText = "Galacticraft";
-        }
-        if (button.id == 5) {
-            this.tabText = "Mariculture";
-        }
+        this.tabText = GraveStones.inventories.containsKey(button.id) ? GraveStones.inventories.get(button.id)
+            : tabText;
         this.initGui();
     }
 
     private void updateInventory(final byte i) {
         GraveStones.instance.network
             .sendToServer((IMessage) new PacketSwitchSlotLayout(this.te.xCoord, this.te.yCoord, this.te.zCoord, i));
-        switch (i) {
-            case 0: {
-                this.te.changeSlotLayout((byte) 0);
-                break;
-            }
-            case 1: {
-                this.te.changeSlotLayout((byte) 1);
-                break;
-            }
-            case 2: {
-                this.te.changeSlotLayout((byte) 2);
-                break;
-            }
-            case 3: {
-                this.te.changeSlotLayout((byte) 3);
-                break;
-            }
-            case 4: {
-                this.te.changeSlotLayout((byte) 4);
-                break;
-            }
-            case 5: {
-                this.te.changeSlotLayout((byte) 5);
-                break;
+        this.te.changeSlotLayout(i);
+        Integer inventorySize = GraveStones.inventorySizes.get(Integer.valueOf(i));
+        if (inventorySize != null) {
+            ContainerGrave grave = (ContainerGrave) inventorySlots;
+            if (inventorySize <= 4) {
+                grave.interactableIndexMin = 36;
+                grave.interactableIndexMax = 39;
+            } else {
+                grave.interactableIndexMin = 0;
+                grave.interactableIndexMax = inventorySize - 1;
             }
         }
         this.te.tab = i;

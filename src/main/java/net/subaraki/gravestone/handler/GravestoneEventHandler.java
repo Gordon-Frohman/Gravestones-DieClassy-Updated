@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.ClientProxy;
+import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
@@ -201,13 +202,19 @@ public class GravestoneEventHandler {
     }
 
     private void addOtherInventory(final TileEntityGravestone te, final EntityPlayer player) {
+        int invId = 0;
+        int prevInvSize = 0;
+        int invSize = 40;
         if (GraveStones.hasRpgI) {
+            invId = 1;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
             final IInventory inv = this
                 .accesInventoryContents(player, "get", "rpgInventory.gui.rpginv.PlayerRpgInventory", "Rpg Inventory");
             if (inv != null) {
-                for (int i = 0; i < 7; ++i) {
+                for (int i = 0; i < invSize; ++i) {
                     final ItemStack is = inv.getStackInSlot(i);
-                    te.list[i + 40] = is;
+                    te.list[i + prevInvSize] = is;
                     inv.setInventorySlotContents(i, (ItemStack) null);
                 }
             } else {
@@ -216,12 +223,15 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasTiC) {
+            invId = 2;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
             final IInventory sack = TinkersConstructIntegration.getKnapsackInventory(player);
             final IInventory inv2 = TinkersConstructIntegration.getAccessoryInventory(player);
             if (sack != null) {
                 for (int j = 0; j < 27; ++j) {
                     final ItemStack is2 = sack.getStackInSlot(j);
-                    te.list[j + 47] = is2;
+                    te.list[j + prevInvSize] = is2;
                     sack.setInventorySlotContents(j, (ItemStack) null);
                 }
             } else {
@@ -231,7 +241,7 @@ public class GravestoneEventHandler {
             if (inv2 != null) {
                 for (int j = 0; j < 7; ++j) {
                     final ItemStack is2 = inv2.getStackInSlot(j);
-                    te.list[j + 74] = is2;
+                    te.list[j + prevInvSize + 27] = is2;
                     inv2.setInventorySlotContents(j, (ItemStack) null);
                 }
             } else {
@@ -240,12 +250,15 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasBaubles) {
+            invId = 3;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
             final IInventory inv = this
                 .accesInventoryContents(player, "getPlayerBaubles", "baubles.common.lib.PlayerHandler", "Baubles");
             if (inv != null) {
-                for (int i = 0; i < 4; ++i) {
+                for (int i = 0; i < invSize; ++i) {
                     final ItemStack is = inv.getStackInSlot(i);
-                    te.list[i + 81] = is;
+                    te.list[i + prevInvSize] = is;
                     inv.setInventorySlotContents(i, (ItemStack) null);
                 }
             } else {
@@ -275,23 +288,29 @@ public class GravestoneEventHandler {
             }
         }
         if (GraveStones.hasGalacticraft) {
+            invId = 4;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
             final ItemStack[] inv3 = this.accesInventoryContentsStacks(
                 player,
                 "getExtendedInventory",
                 "micdoodle8.mods.galacticraft.core.inventory.InventoryExtended",
-                "GalactiCraft");
-            for (int i = 0; i < 10; ++i) {
+                "Galacticraft");
+            for (int i = 0; i < invSize; ++i) {
                 final ItemStack is = inv3[i];
-                te.list[i + 85] = is;
+                te.list[i + prevInvSize] = is;
                 inv3[i] = null;
             }
         }
         if (GraveStones.hasMariculture) {
+            invId = 5;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
             final ItemStack[] inv3 = this
                 .accesInventoryContentsStacks(player, "getInventory", "mariculture.magic.MirrorHelper", "Mariculture");
-            for (int i = 0; i < 3; ++i) {
+            for (int i = 0; i < invSize; ++i) {
                 final ItemStack is = inv3[i];
-                te.list[i + 95] = is;
+                te.list[i + prevInvSize] = is;
             }
             try {
                 final ItemStack[] newstack = new ItemStack[4];
@@ -300,6 +319,23 @@ public class GravestoneEventHandler {
                 final Object saveEmptyArray = m2.invoke(null, player, newstack);
             } catch (Exception e7) {
                 e7.printStackTrace();
+            }
+        }
+        if (GraveStones.hasCosmeticArmor) {
+            invId = 6;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
+            final IInventory cosmeticArmor = CosmeticArmorIntegration.getCosArmorInventory(player.getUniqueID());
+            if (cosmeticArmor != null) {
+                for (int j = 0; j < invSize; ++j) {
+                    final ItemStack is2 = cosmeticArmor.getStackInSlot(j);
+                    te.list[j + prevInvSize] = is2;
+                    cosmeticArmor.setInventorySlotContents(j, (ItemStack) null);
+                    cosmeticArmor.markDirty();
+                }
+            } else {
+                GraveStones.printDebugMessage(
+                    "GraveStones Mod couldn't connect to Cosmetic Armor inventory. Have these classes been modified ? Report to mod Author pleases.");
             }
         }
     }

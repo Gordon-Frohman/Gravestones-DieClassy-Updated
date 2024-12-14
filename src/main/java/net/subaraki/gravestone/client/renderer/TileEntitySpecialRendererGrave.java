@@ -17,6 +17,7 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.model.ModelBust;
 import net.subaraki.gravestone.handler.ModelHandler;
 import net.subaraki.gravestone.handler.TextureHandler;
@@ -110,15 +111,16 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             } else {
                 ModelHandler.modelBust.renderBust(0.0625f);
             }
-            if (tile.getStackInSlot(tile.getSizeInventory() - 1) != null
-                && tile.getStackInSlot(tile.getSizeInventory() - 1)
-                    .getItem() instanceof ItemArmor) {
+            int itemId = GraveStones.hasCosmeticArmor ? GraveStones.getPrevInventoriesSize(6) + 3
+                : tile.getSizeInventory() - 1;
+            ItemStack item = tile.getStackInList(itemId);
+            if (GraveStones.hasCosmeticArmor && item == null) item = tile.getStackInList(tile.getSizeInventory() - 1);
+            if (item != null && item.getItem() instanceof ItemArmor) {
                 GL11.glPushMatrix();
                 final float f2 = 1.2f;
                 GL11.glScalef(f2, f2, f2);
                 GL11.glTranslatef(0.0f, 0.05f, 0.0f);
                 GL11.glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
-                final ItemStack item = tile.getStackInSlot(tile.getSizeInventory() - 1);
                 ItemArmor itemArmor = (ItemArmor) item.getItem();
                 // We're creating a zombie because some mods require actual entities to check for armor
                 ModelBiped modelArmor = itemArmor
@@ -133,15 +135,16 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 ModelHandler.modelArmorHead.bipedHeadwear.render(0.0625f);
                 GL11.glPopMatrix();
             }
-            if (tile.getStackInSlot(tile.getSizeInventory() - 2) != null
-                && tile.getStackInSlot(tile.getSizeInventory() - 2)
-                    .getItem() instanceof ItemArmor) {
+            itemId = GraveStones.hasCosmeticArmor ? GraveStones.getPrevInventoriesSize(6) + 3
+                : tile.getSizeInventory() - 2;
+            item = tile.getStackInList(itemId);
+            if (GraveStones.hasCosmeticArmor && item == null) item = tile.getStackInList(tile.getSizeInventory() - 2);
+            if (item != null && item.getItem() instanceof ItemArmor) {
                 GL11.glPushMatrix();
                 final float f2 = 1.1f;
                 GL11.glScalef(f2, f2, f2);
                 GL11.glTranslatef(0.0f, -0.02f, 0.0f);
                 GL11.glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
-                final ItemStack item = tile.getStackInSlot(tile.getSizeInventory() - 2);
                 ItemArmor itemArmor = (ItemArmor) item.getItem();
                 // We're creating a zombie because some mods require actual entities to check for armor
                 ModelBiped modelArmor = itemArmor

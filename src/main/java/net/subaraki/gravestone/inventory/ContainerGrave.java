@@ -23,6 +23,9 @@ public class ContainerGrave extends Container {
     int slotCount;
     private EntityPlayer player;
 
+    public int interactableIndexMin = 0;
+    public int interactableIndexMax = 39;
+
     public ContainerGrave(final InventoryPlayer inv, final TileEntityGravestone te, final EntityPlayer p) {
         this.slotCount = 0;
         this.te = te;
@@ -92,8 +95,9 @@ public class ContainerGrave extends Container {
         return this.te.isUseableByPlayer(par1EntityPlayer);
     }
 
-    public ItemStack slotClick(final int par1, final int par2, final int par3, final EntityPlayer par4EntityPlayer) {
-        return super.slotClick(par1, par2, par3, par4EntityPlayer);
+    public ItemStack slotClick(final int slotId, final int clickedButton, final int mode, final EntityPlayer player) {
+        if (slotId >= 0 & slotId <= 39 && (slotId < interactableIndexMin || slotId > interactableIndexMax)) return null;
+        else return super.slotClick(slotId, clickedButton, mode, player);
     }
 
     public ItemStack transferStackInSlot(final EntityPlayer player, final int slotID) {
@@ -105,22 +109,18 @@ public class ContainerGrave extends Container {
             if (!(slot.inventory instanceof TileEntityGravestone)) {
                 return null;
             }
-            if (slotID < 36) {
+            if (slotID < 36 || (slotID >= 36 && slotID <= 39 && !(stack.getItem() instanceof ItemArmor))) {
                 if (!this.mergeItemStack(stack, 40, 76, true)) {
                     return null;
                 }
             } else {
-                if (slotID == 36 && !this.mergeItemStack(stack, 76, 77, true)) {
-                    return null;
-                }
-                if (slotID == 37 && !this.mergeItemStack(stack, 77, 78, true)) {
-                    return null;
-                }
-                if (slotID == 38 && !this.mergeItemStack(stack, 78, 79, true)) {
-                    return null;
-                }
-                if (slotID == 39 && !this.mergeItemStack(stack, 79, 80, true)) {
-                    return null;
+                if ((slotID == 36 && !this.mergeItemStack(stack, 76, 77, true))
+                    || (slotID == 37 && !this.mergeItemStack(stack, 77, 78, true))
+                    || (slotID == 38 && !this.mergeItemStack(stack, 78, 79, true))
+                    || (slotID == 39 && !this.mergeItemStack(stack, 79, 80, true))) {
+                    if (!this.mergeItemStack(stack, 40, 76, true)) {
+                        return null;
+                    }
                 }
             }
             if (slotStack.stackSize != 1) {

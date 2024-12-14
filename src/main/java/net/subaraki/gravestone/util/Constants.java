@@ -45,12 +45,14 @@ public class Constants {
     public static ItemStack ICON_BAUBLES;
     public static ItemStack ICON_GALACTICRAFT;
     public static ItemStack ICON_MARICULTURE;
+    public static ItemStack ICON_COSMETIC_ARMOR;
     public static final byte VANILLA = 0;
     public static final byte RPGI = 1;
     public static final byte TC = 2;
-    public static final byte BAUBEL = 3;
+    public static final byte BAUBLES = 3;
     public static final byte GALACTICRAFT = 4;
     public static final byte MARICULTURE = 5;
+    public static final byte COSMETIC_ARMOR = 6;
     public static final TileEntityGravestone GRAVE_PLACEHOLDER;
 
     static {
@@ -69,6 +71,7 @@ public class Constants {
         ICON_BAUBLES = new ItemStack(Items.gold_ingot);
         ICON_GALACTICRAFT = new ItemStack(Blocks.glass);
         ICON_MARICULTURE = new ItemStack(Items.fish);
+        ICON_COSMETIC_ARMOR = new ItemStack(Items.leather_chestplate);
         GRAVE_PLACEHOLDER = new TileEntityGravestone();
         GRAVE_PLACEHOLDER.isDecorativeGrave = true;
     }
