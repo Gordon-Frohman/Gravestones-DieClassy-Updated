@@ -17,6 +17,7 @@ import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.RecipeHandler;
 import net.subaraki.gravestone.integration.AetherIntegration;
+import net.subaraki.gravestone.integration.BattlegearIntegration;
 import net.subaraki.gravestone.integration.GalacticraftIntegration;
 import net.subaraki.gravestone.integration.MaricultureIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
@@ -57,6 +58,7 @@ public class GraveStones {
     public static boolean hasCosmeticArmor;
     public static boolean hasSatchels;
     public static boolean hasAether;
+    public static boolean hasBattlegear;
 
     public static Map<Integer, String> inventories = new HashMap<Integer, String>();
     public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
@@ -109,6 +111,8 @@ public class GraveStones {
         Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
         GraveStones.hasAether = GraveUtility.findClass("com.gildedgames.the_aether.Aether", "Aether");
         Constants.ICON_AETHER = AetherIntegration.getModIcon();
+        GraveStones.hasBattlegear = GraveUtility.findClass("mods.battlegear2.Battlegear", "Mine & Blade: Battlegear 2");
+        Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
     }
 
     public static void printDebugMessage(final String message) {
@@ -142,6 +146,7 @@ public class GraveStones {
         GraveStones.hasCosmeticArmor = false;
         GraveStones.hasSatchels = false;
         GraveStones.hasAether = false;
+        GraveStones.hasBattlegear = false;
         registerInventory(Constants.VANILLA, "Minecraft", 40);
         registerInventory(Constants.RPGI, "RPG Inventory", 7);
         registerInventory(Constants.TC, "Tinkers Construct", 34);
@@ -151,5 +156,6 @@ public class GraveStones {
         registerInventory(Constants.COSMETIC_ARMOR, "Cosmetic Armor", 4);
         registerInventory(Constants.SATCHELS, "Satchels", 3);
         registerInventory(Constants.AETHER, "Aether", 8);
+        registerInventory(Constants.BATTLEGEAR, "Battlegear", 18);
     }
 }

@@ -366,6 +366,18 @@ public class GravestoneEventHandler {
                 te.list[j + prevInvSize] = AetherIntegration.removeStackFromSlot(player, j);
             }
         }
+        if (GraveStones.hasBattlegear) {
+            invId = Constants.BATTLEGEAR;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
+            for (int j = 0; j < invSize; ++j) {
+                // Battlegear is using mixins, so that should (probably) work
+                final ItemStack is2 = player.inventory.getStackInSlot(j + 150);
+                te.list[j + prevInvSize] = is2;
+                player.inventory.setInventorySlotContents(j + 150, (ItemStack) null);
+                player.inventory.markDirty();
+            }
+        }
     }
 
     private IInventory accesInventoryContents(final EntityPlayer player, final String methodName, final String path,
