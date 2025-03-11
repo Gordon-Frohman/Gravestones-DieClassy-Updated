@@ -26,6 +26,7 @@ import net.subaraki.gravestone.client.ClientProxy;
 import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
+import net.subaraki.gravestone.integration.SextiarySectorIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.integration.TravellersGearIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
@@ -390,6 +391,14 @@ public class GravestoneEventHandler {
                 te.list[j + prevInvSize] = tgInv.get(j);
             }
             TravellersGearIntegration.clearTravellersGearInventory(player);
+        }
+        if (GraveStones.hasSextiarySector) {
+            invId = Constants.SEXTIARY_SECTOR;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            invSize = GraveStones.inventorySizes.get(invId);
+            for (int j = 0; j < invSize; ++j) {
+                te.list[j + prevInvSize] = SextiarySectorIntegration.removeStackFromSlot(player, j);
+            }
         }
     }
 

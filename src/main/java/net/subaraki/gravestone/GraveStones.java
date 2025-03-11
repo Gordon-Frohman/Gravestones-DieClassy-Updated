@@ -23,6 +23,7 @@ import net.subaraki.gravestone.integration.BattlegearIntegration;
 import net.subaraki.gravestone.integration.GalacticraftIntegration;
 import net.subaraki.gravestone.integration.MaricultureIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
+import net.subaraki.gravestone.integration.SextiarySectorIntegration;
 import net.subaraki.gravestone.integration.ThaumcraftIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
 import net.subaraki.gravestone.integration.TravellersGearIntegration;
@@ -64,6 +65,7 @@ public class GraveStones {
     public static boolean hasAether;
     public static boolean hasBattlegear;
     public static boolean hasTravellersGear;
+    public static boolean hasSextiarySector;
 
     public static Map<Integer, String> inventories = new HashMap<Integer, String>();
     public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
@@ -112,6 +114,8 @@ public class GraveStones {
         GraveStones.hasAether = GraveUtility.findClass("com.gildedgames.the_aether.Aether", "Aether");
         GraveStones.hasBattlegear = GraveUtility.findClass("mods.battlegear2.Battlegear", "Mine & Blade: Battlegear 2");
         GraveStones.hasTravellersGear = GraveUtility.findClass("travellersgear.TravellersGear", "Traveller's Gear");
+        GraveStones.hasSextiarySector = GraveUtility
+            .findClass("shift.sextiarysector.SextiarySector", "Sextiary Sector 2");
     }
 
     @Mod.EventHandler
@@ -125,6 +129,7 @@ public class GraveStones {
         Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
         Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear ? TravellersGearIntegration.getModIcon()
             : new ItemStack(Items.name_tag);
+        Constants.ICON_SEXTIARY_SECTOR = SextiarySectorIntegration.getModIcon();
     }
 
     public static void printDebugMessage(final String message) {
@@ -160,6 +165,7 @@ public class GraveStones {
         GraveStones.hasAether = false;
         GraveStones.hasBattlegear = false;
         GraveStones.hasTravellersGear = false;
+        GraveStones.hasSextiarySector = false;
         registerInventory(Constants.VANILLA, "Minecraft", 40);
         registerInventory(Constants.RPGI, "RPG Inventory", 7);
         registerInventory(Constants.TC, "Tinkers Construct", 34);
@@ -171,5 +177,6 @@ public class GraveStones {
         registerInventory(Constants.AETHER, "Aether", 8);
         registerInventory(Constants.BATTLEGEAR, "Battlegear", 18);
         registerInventory(Constants.TRAVELLERS_GEAR, "Traveller's Gear", 4);
+        registerInventory(Constants.SEXTIARY_SECTOR, "Sextiary Sector", 20);
     }
 }

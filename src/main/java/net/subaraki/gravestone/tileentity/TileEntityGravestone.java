@@ -102,10 +102,12 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
                     + GraveStones.inventories.get(this.tab)
                     + " inventory");
         }
-        this.slots[slot] = par2ItemStack;
-        this.list[slotID] = par2ItemStack;
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
+        if (slotID < this.list.length) {
+            this.slots[slot] = par2ItemStack;
+            this.list[slotID] = par2ItemStack;
+            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
+                par2ItemStack.stackSize = this.getInventoryStackLimit();
+            }
         }
     }
 

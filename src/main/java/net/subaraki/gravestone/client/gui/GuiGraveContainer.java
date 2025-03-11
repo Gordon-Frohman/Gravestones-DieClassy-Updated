@@ -188,6 +188,9 @@ public class GuiGraveContainer extends GuiContainer {
         if (GraveStones.hasTravellersGear) {
             registerInventory(Constants.TRAVELLERS_GEAR, Constants.ICON_TRAVELLERS_GEAR);
         }
+        if (GraveStones.hasSextiarySector) {
+            registerInventory(Constants.SEXTIARY_SECTOR, Constants.ICON_SEXTIARY_SECTOR);
+        }
     }
 
     @SuppressWarnings("unchecked")
