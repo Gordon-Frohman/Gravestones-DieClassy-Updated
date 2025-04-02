@@ -25,6 +25,7 @@ import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.ClientProxy;
 import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
+import net.subaraki.gravestone.integration.GalacticraftIntegration;
 import net.subaraki.gravestone.integration.SatchelsIntegration;
 import net.subaraki.gravestone.integration.SextiarySectorIntegration;
 import net.subaraki.gravestone.integration.TinkersConstructIntegration;
@@ -297,15 +298,16 @@ public class GravestoneEventHandler {
             invId = Constants.GALACTICRAFT;
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
-            final ItemStack[] inv3 = this.accesInventoryContentsStacks(
-                player,
-                "getExtendedInventory",
-                "micdoodle8.mods.galacticraft.core.inventory.InventoryExtended",
-                "Galacticraft");
-            for (int i = 0; i < invSize; ++i) {
-                final ItemStack is = inv3[i];
-                te.list[i + prevInvSize] = is;
-                inv3[i] = null;
+            final ItemStack[] inv3 = GalacticraftIntegration.getGalacticraftInventory(player);
+            if (inv3 != null) {
+                for (int i = 0; i < invSize; ++i) {
+                    final ItemStack is = inv3[i];
+                    te.list[i + prevInvSize] = is;
+                    inv3[i] = null;
+                }
+            } else {
+                GraveStones.printDebugMessage(
+                    "GraveStones Mod couldn't connect to Galacticraft inventory. Have these classes been modified ? Report to mod Author pleases.");
             }
         }
         if (GraveStones.hasMariculture) {
