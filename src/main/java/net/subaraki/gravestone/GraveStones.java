@@ -169,7 +169,7 @@ public class GraveStones {
         registerInventory(Constants.VANILLA, "Minecraft", 40);
         registerInventory(Constants.RPGI, "RPG Inventory", 7);
         registerInventory(Constants.TC, "Tinkers Construct", 34);
-        registerInventory(Constants.BAUBLES, "Baubles", 4);
+        registerInventory(Constants.BAUBLES, "Baubles", 20);
         registerInventory(Constants.GALACTICRAFT, "Galacticraft", 10);
         registerInventory(Constants.MARICULTURE, "Mariculture", 3);
         registerInventory(Constants.COSMETIC_ARMOR, "Cosmetic Armor", 4);
