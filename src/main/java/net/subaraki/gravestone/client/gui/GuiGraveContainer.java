@@ -1,6 +1,10 @@
 
 package net.subaraki.gravestone.client.gui;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,6 +38,8 @@ public class GuiGraveContainer extends GuiContainer {
     private static final ResourceLocation graveGui;
     private ModelBust modelBust;
     private ResourceLocation texture;
+    private Map<Integer, ItemStack> tabsList = new HashMap<Integer, ItemStack>();
+    private int currentPage = 0;
 
     int offsetX = 0;
     final int offsetSize = 33;
@@ -191,20 +197,58 @@ public class GuiGraveContainer extends GuiContainer {
         if (GraveStones.hasSextiarySector) {
             registerInventory(Constants.SEXTIARY_SECTOR, Constants.ICON_SEXTIARY_SECTOR);
         }
+        updateTabs(currentPage);
+    }
+
+    private void registerInventory(int id, ItemStack icon) {
+        tabsList.put(id, icon);
     }
 
     @SuppressWarnings("unchecked")
-    private void registerInventory(int id, ItemStack icon) {
-        this.buttonList
-            .add(new GuiTabButton(id, x + offsetX, y, 35, 20, "", this.te.tab == id, icon, this.fontRendererObj));
-        offsetX += offsetSize;
+    private void updateTabs(int pageId) {
+        if (pageId >= 0 && pageId <= (tabsList.size() - 1) / 5) {
+            this.buttonList.clear();
+            offsetX = 0;
+            Object[] entryArray = tabsList.entrySet()
+                .toArray();
+            for (int i = pageId * 5; i < (pageId + 1) * 5 && i < entryArray.length; i++) {
+                Entry<Integer, ItemStack> entry = (Entry<Integer, ItemStack>) entryArray[i];
+                this.buttonList.add(
+                    new GuiTabButton(
+                        entry.getKey(),
+                        x + offsetX,
+                        y,
+                        35,
+                        20,
+                        "",
+                        this.te.tab == entry.getKey(),
+                        entry.getValue(),
+                        this.fontRendererObj));
+                offsetX += offsetSize;
+            }
+            if (tabsList.size() > 5) {
+                buttonList.add(new GuiButton(101, guiLeft - 25, y - 3, 20, 20, "<"));
+                buttonList.add(new GuiButton(102, guiLeft + xSize - 20, y - 3, 20, 20, ">"));
+            }
+            currentPage = pageId;
+        }
     }
 
     protected void actionPerformed(final GuiButton button) {
         super.actionPerformed(button);
-        this.tabText = GraveStones.inventories.containsKey(button.id) ? GraveStones.inventories.get(button.id)
-            : tabText;
-        this.initGui(button.id);
+        switch (button.id) {
+            default:
+                this.tabText = GraveStones.inventories.containsKey(button.id) ? GraveStones.inventories.get(button.id)
+                    : tabText;
+                this.initGui(button.id);
+                break;
+            case 101:
+                updateTabs(currentPage - 1);
+                break;
+            case 102:
+                updateTabs(currentPage + 1);
+                break;
+        }
     }
 
     private void updateInventory(final byte i) {
