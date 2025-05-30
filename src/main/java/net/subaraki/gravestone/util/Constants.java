@@ -51,6 +51,7 @@ public class Constants {
     public static ItemStack ICON_BATTLEGEAR;
     public static ItemStack ICON_TRAVELLERS_GEAR;
     public static ItemStack ICON_SEXTIARY_SECTOR;
+    public static ItemStack ICON_ADVENTURE_BACKPACK;
     public static final byte VANILLA = 0;
     public static final byte RPGI = 1;
     public static final byte TC = 2;
@@ -63,6 +64,7 @@ public class Constants {
     public static final byte BATTLEGEAR = 9;
     public static final byte TRAVELLERS_GEAR = 10;
     public static final byte SEXTIARY_SECTOR = 11;
+    public static final byte ADVENTURE_BACKPACK = 12;
     public static final TileEntityGravestone GRAVE_PLACEHOLDER;
 
     static {
@@ -87,6 +89,7 @@ public class Constants {
         ICON_BATTLEGEAR = new ItemStack(Items.iron_chestplate);
         ICON_TRAVELLERS_GEAR = new ItemStack(Items.name_tag);
         ICON_SEXTIARY_SECTOR = new ItemStack(Items.golden_hoe);
+        ICON_ADVENTURE_BACKPACK = new ItemStack(Blocks.chest);
         GRAVE_PLACEHOLDER = new TileEntityGravestone();
         GRAVE_PLACEHOLDER.isDecorativeGrave = true;
     }

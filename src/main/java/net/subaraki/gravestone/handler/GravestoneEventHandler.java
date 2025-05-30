@@ -21,8 +21,10 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.ClientProxy;
+import net.subaraki.gravestone.integration.AdventureBackpackIntegration;
 import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
 import net.subaraki.gravestone.integration.GalacticraftIntegration;
@@ -88,7 +90,7 @@ public class GravestoneEventHandler {
         clone.setGraveModel(dead.getGraveModel());
     }
 
-    @SubscribeEvent(priority = EventPriority.NORMAL)
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDeathEvent(final LivingDeathEvent evt) {
         if (evt.entityLiving instanceof EntityPlayer) {
             final EntityPlayer player = (EntityPlayer) evt.entityLiving;
@@ -175,6 +177,16 @@ public class GravestoneEventHandler {
         }
     }
 
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public void playerDeathDrop(PlayerDropsEvent event) {
+        EntityPlayer player = event.entityPlayer;
+        if (player.worldObj.getGameRules()
+            .getGameRuleBooleanValue("keepInventory")) {
+            return;
+        }
+
+    }
+
     private void placeGrave(final EntityPlayer player, final int x, final int y, final int z) {
         player.worldObj.setBlock(x, y + 1, z, GraveStones.graveStone);
         final TileEntityGravestone te = new TileEntityGravestone();
@@ -219,7 +231,7 @@ public class GravestoneEventHandler {
             final IInventory inv = this
                 .accesInventoryContents(player, "get", "rpgInventory.gui.rpginv.PlayerRpgInventory", "Rpg Inventory");
             if (inv != null) {
-                for (int i = 0; i < invSize; ++i) {
+                for (int i = 0; i < invSize && i < inv.getSizeInventory(); ++i) {
                     final ItemStack is = inv.getStackInSlot(i);
                     te.list[i + prevInvSize] = is;
                     inv.setInventorySlotContents(i, (ItemStack) null);
@@ -263,7 +275,7 @@ public class GravestoneEventHandler {
             final IInventory inv = this
                 .accesInventoryContents(player, "getPlayerBaubles", "baubles.common.lib.PlayerHandler", "Baubles");
             if (inv != null) {
-                for (int i = 0; i < invSize; ++i) {
+                for (int i = 0; i < invSize && i < inv.getSizeInventory(); ++i) {
                     final ItemStack is = inv.getStackInSlot(i);
                     te.list[i + prevInvSize] = is;
                     inv.setInventorySlotContents(i, (ItemStack) null);
@@ -300,7 +312,7 @@ public class GravestoneEventHandler {
             invSize = GraveStones.inventorySizes.get(invId);
             final ItemStack[] inv3 = GalacticraftIntegration.getGalacticraftInventory(player);
             if (inv3 != null) {
-                for (int i = 0; i < invSize; ++i) {
+                for (int i = 0; i < invSize && i < inv3.length; ++i) {
                     final ItemStack is = inv3[i];
                     te.list[i + prevInvSize] = is;
                     inv3[i] = null;
@@ -316,7 +328,7 @@ public class GravestoneEventHandler {
             invSize = GraveStones.inventorySizes.get(invId);
             final ItemStack[] inv3 = this
                 .accesInventoryContentsStacks(player, "getInventory", "mariculture.magic.MirrorHelper", "Mariculture");
-            for (int i = 0; i < invSize; ++i) {
+            for (int i = 0; i < invSize && i < inv3.length; ++i) {
                 final ItemStack is = inv3[i];
                 te.list[i + prevInvSize] = is;
             }
@@ -335,7 +347,7 @@ public class GravestoneEventHandler {
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory cosmeticArmor = CosmeticArmorIntegration.getCosArmorInventory(player.getUniqueID());
             if (cosmeticArmor != null) {
-                for (int j = 0; j < invSize; ++j) {
+                for (int j = 0; j < invSize && j < cosmeticArmor.getSizeInventory(); ++j) {
                     final ItemStack is2 = cosmeticArmor.getStackInSlot(j);
                     te.list[j + prevInvSize] = is2;
                     cosmeticArmor.setInventorySlotContents(j, (ItemStack) null);
@@ -352,7 +364,7 @@ public class GravestoneEventHandler {
             invSize = GraveStones.inventorySizes.get(invId);
             final IInventory satchels = SatchelsIntegration.getSatchelsInventory(player);
             if (satchels != null) {
-                for (int j = 0; j < invSize; ++j) {
+                for (int j = 0; j < invSize && j < satchels.getSizeInventory(); ++j) {
                     final ItemStack is2 = satchels.getStackInSlot(j);
                     te.list[j + prevInvSize] = is2;
                     satchels.setInventorySlotContents(j, (ItemStack) null);
@@ -389,7 +401,7 @@ public class GravestoneEventHandler {
             prevInvSize = GraveStones.getPrevInventoriesSize(invId);
             invSize = GraveStones.inventorySizes.get(invId);
             List<ItemStack> tgInv = TravellersGearIntegration.getTravellersGearInventory(player);
-            for (int j = 0; j < invSize; ++j) {
+            for (int j = 0; j < invSize && j < tgInv.size(); ++j) {
                 te.list[j + prevInvSize] = tgInv.get(j);
             }
             TravellersGearIntegration.clearTravellersGearInventory(player);
@@ -401,6 +413,11 @@ public class GravestoneEventHandler {
             for (int j = 0; j < invSize; ++j) {
                 te.list[j + prevInvSize] = SextiarySectorIntegration.removeStackFromSlot(player, j);
             }
+        }
+        if (GraveStones.hasAdventureBackpack) {
+            invId = Constants.ADVENTURE_BACKPACK;
+            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
+            te.list[prevInvSize] = AdventureBackpackIntegration.getBackpack(player);
         }
     }
 

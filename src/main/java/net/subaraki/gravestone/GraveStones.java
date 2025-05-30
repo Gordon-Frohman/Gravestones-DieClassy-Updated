@@ -18,6 +18,7 @@ import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.RecipeHandler;
+import net.subaraki.gravestone.integration.AdventureBackpackIntegration;
 import net.subaraki.gravestone.integration.AetherIntegration;
 import net.subaraki.gravestone.integration.BattlegearIntegration;
 import net.subaraki.gravestone.integration.GalacticraftIntegration;
@@ -66,6 +67,7 @@ public class GraveStones {
     public static boolean hasBattlegear;
     public static boolean hasTravellersGear;
     public static boolean hasSextiarySector;
+    public static boolean hasAdventureBackpack;
 
     public static Map<Integer, String> inventories = new HashMap<Integer, String>();
     public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
@@ -95,7 +97,6 @@ public class GraveStones {
         GameRegistry.registerTileEntity((Class) TileEntityGravestone.class, "TileEntityGraveStone");
         GameRegistry.registerBlock(GraveStones.graveStone, (Class) ItemDecoGrave.class, "graveStone");
         RecipeHandler.registerBlockRecipe();
-        new GravestoneEventHandler();
         GraveStones.proxy.preInit();
     }
 
@@ -116,6 +117,8 @@ public class GraveStones {
         GraveStones.hasTravellersGear = GraveUtility.findClass("travellersgear.TravellersGear", "Traveller's Gear");
         GraveStones.hasSextiarySector = GraveUtility
             .findClass("shift.sextiarysector.SextiarySector", "Sextiary Sector 2");
+        GraveStones.hasAdventureBackpack = GraveUtility
+            .findClass("com.darkona.adventurebackpack.AdventureBackpack", "Adventure Backpack 2");
     }
 
     @Mod.EventHandler
@@ -130,6 +133,9 @@ public class GraveStones {
         Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear ? TravellersGearIntegration.getModIcon()
             : new ItemStack(Items.name_tag);
         Constants.ICON_SEXTIARY_SECTOR = SextiarySectorIntegration.getModIcon();
+        Constants.ICON_ADVENTURE_BACKPACK = AdventureBackpackIntegration.getModIcon();
+
+        new GravestoneEventHandler();
     }
 
     public static void printDebugMessage(final String message) {
@@ -166,6 +172,7 @@ public class GraveStones {
         GraveStones.hasBattlegear = false;
         GraveStones.hasTravellersGear = false;
         GraveStones.hasSextiarySector = false;
+        GraveStones.hasAdventureBackpack = false;
         registerInventory(Constants.VANILLA, "Minecraft", 40);
         registerInventory(Constants.RPGI, "RPG Inventory", 7);
         registerInventory(Constants.TC, "Tinkers Construct", 34);
@@ -178,5 +185,6 @@ public class GraveStones {
         registerInventory(Constants.BATTLEGEAR, "Battlegear", 18);
         registerInventory(Constants.TRAVELLERS_GEAR, "Traveller's Gear", 4);
         registerInventory(Constants.SEXTIARY_SECTOR, "Sextiary Sector", 20);
+        registerInventory(Constants.ADVENTURE_BACKPACK, "Adventure Backpack", 1);
     }
 }

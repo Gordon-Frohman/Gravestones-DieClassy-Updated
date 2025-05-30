@@ -197,6 +197,9 @@ public class GuiGraveContainer extends GuiContainer {
         if (GraveStones.hasSextiarySector) {
             registerInventory(Constants.SEXTIARY_SECTOR, Constants.ICON_SEXTIARY_SECTOR);
         }
+        if (GraveStones.hasAdventureBackpack) {
+            registerInventory(Constants.ADVENTURE_BACKPACK, Constants.ICON_ADVENTURE_BACKPACK);
+        }
         updateTabs(currentPage);
     }
 
