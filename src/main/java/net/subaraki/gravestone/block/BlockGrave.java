@@ -15,6 +15,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.StatCollector;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
@@ -23,8 +24,16 @@ import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockGrave extends Block {
+
+    IIcon iconCobblestone;
+    IIcon iconOakPlanks;
+    IIcon iconAcaciaPlanks;
+    IIcon iconStone;
+    IIcon iconQuartz;
 
     Random rand;
 
@@ -37,6 +46,11 @@ public class BlockGrave extends Block {
 
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("stonebrick");
+        this.iconCobblestone = par1IconRegister.registerIcon("cobblestone");
+        this.iconOakPlanks = par1IconRegister.registerIcon("planks_oak");
+        this.iconAcaciaPlanks = par1IconRegister.registerIcon("planks_acacia");
+        this.iconStone = par1IconRegister.registerIcon("stone");
+        this.iconQuartz = par1IconRegister.registerIcon("quartz_block_bottom");
     }
 
     public int quantityDropped(final Random par1Random) {
@@ -211,5 +225,31 @@ public class BlockGrave extends Block {
     public int getDamageValue(World worldIn, int x, int y, int z) {
         final TileEntityGravestone te = (TileEntityGravestone) worldIn.getTileEntity(x, y, z);
         return te.modelType;
+    }
+
+    /**
+     * Gets the block's texture. Args: side, meta
+     */
+    @SideOnly(Side.CLIENT)
+    public IIcon getIcon(int side, int meta) {
+        switch (meta) {
+            default:
+                return this.blockIcon;
+            case 1:
+            case 9:
+                return this.iconCobblestone;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 7:
+                return this.iconStone;
+            case 6:
+                return this.iconOakPlanks;
+            case 8:
+                return this.iconQuartz;
+            case 10:
+                return this.iconAcaciaPlanks;
+        }
     }
 }
