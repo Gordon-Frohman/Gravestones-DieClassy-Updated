@@ -4,48 +4,68 @@ package net.subaraki.gravestone.client.model;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 
+import org.lwjgl.opengl.GL11;
+
 public class ModelGraveSkeleton extends ModelBase {
 
-    ModelRenderer Shape18;
-    ModelRenderer Shape19;
-    ModelRenderer Shape20;
-    ModelRenderer Shape21;
-    ModelRenderer Shape22;
-    ModelRenderer Shape23;
+    ModelRenderer skeleton;
+    ModelRenderer head;
+    ModelRenderer ribs;
+    ModelRenderer arm1;
+    ModelRenderer arm2;
+    ModelRenderer forearm1;
+    ModelRenderer forearm2;
 
     public ModelGraveSkeleton() {
         this.textureHeight = 64;
         this.textureWidth = 64;
-        (this.Shape18 = new ModelRenderer((ModelBase) this, 0, 0)).addBox(-2.5f, -4.0f, -2.0f, 5, 5, 5);
-        this.Shape18.setRotationPoint(0.0f, -4.0f, 2.0f);
-        this.Shape18.setTextureSize(64, 64);
-        this.Shape18.mirror = true;
-        this.setRotation(this.Shape18, -0.2268928f, 0.0f, 0.0f);
-        (this.Shape19 = new ModelRenderer((ModelBase) this, 0, 10)).addBox(-2.5f, -3.0f, -1.0f, 5, 7, 2);
-        this.Shape19.setRotationPoint(0.0f, 0.0f, 0.0f);
-        this.Shape19.setTextureSize(64, 64);
-        this.Shape19.mirror = true;
-        this.setRotation(this.Shape19, 0.0f, 0.0f, 0.0f);
-        (this.Shape20 = new ModelRenderer((ModelBase) this, 20, 0)).addBox(-1.5f, 0.0f, 0.0f, 1, 5, 1);
-        this.Shape20.setRotationPoint(-2.0f, -2.0f, -1.0f);
-        this.Shape20.setTextureSize(64, 64);
-        this.Shape20.mirror = true;
-        this.setRotation(this.Shape20, 0.5759587f, 0.0f, 0.0f);
-        (this.Shape21 = new ModelRenderer((ModelBase) this, 20, 0)).addBox(0.5f, 0.0f, 0.0f, 1, 5, 1);
-        this.Shape21.setRotationPoint(2.0f, -2.0f, -1.0f);
-        this.Shape21.setTextureSize(64, 64);
-        this.Shape21.mirror = true;
-        this.setRotation(this.Shape21, 0.5759587f, 0.0f, 0.0f);
-        (this.Shape22 = new ModelRenderer((ModelBase) this, 24, 0)).addBox(-3.0f, -0.3f, 0.0f, 4, 1, 1);
-        this.Shape22.setRotationPoint(2.5f, 2.0f, 2.0f);
-        this.Shape22.setTextureSize(64, 64);
-        this.Shape22.mirror = true;
-        this.setRotation(this.Shape22, 0.0f, 0.0f, 0.4363323f);
-        (this.Shape23 = new ModelRenderer((ModelBase) this, 24, 0)).addBox(-1.0f, -0.3f, 0.0f, 4, 1, 1);
-        this.Shape23.setRotationPoint(-2.5f, 2.0f, 2.0f);
-        this.Shape23.setTextureSize(64, 64);
-        this.Shape23.mirror = true;
-        this.setRotation(this.Shape23, 0.0f, 0.0f, -0.4363323f);
+
+        skeleton = new ModelRenderer(this, 0, 0);
+        skeleton.setRotationPoint(0, 0, 0);
+
+        this.head = new ModelRenderer(this, 0, 0).addBox(-2.5f, -4.0f, -2.0f, 5, 5, 5);
+        this.head.setRotationPoint(0.0f, -4.0f, 2.0f);
+        this.head.setTextureSize(64, 64);
+        this.head.mirror = true;
+        this.setRotation(this.head, -0.2268928f, 0.0f, 0.0f);
+        skeleton.addChild(head);
+
+        this.ribs = new ModelRenderer(this, 0, 10).addBox(-2.5f, -3.0f, -1.0f, 5, 7, 2);
+        this.ribs.setRotationPoint(0.0f, 0.0f, 0.0f);
+        this.ribs.setTextureSize(64, 64);
+        this.ribs.mirror = true;
+        this.setRotation(this.ribs, 0.0f, 0.0f, 0.0f);
+        skeleton.addChild(ribs);
+
+        this.arm1 = new ModelRenderer(this, 20, 0).addBox(-1.5f, 0.0f, 0.0f, 1, 5, 1);
+        this.arm1.setRotationPoint(-2.0f, -2.0f, -1.0f);
+        this.arm1.setTextureSize(64, 64);
+        this.arm1.mirror = true;
+        this.setRotation(this.arm1, 0.5759587f, 0.0f, 0.0f);
+        skeleton.addChild(arm1);
+
+        this.arm2 = new ModelRenderer(this, 20, 0).addBox(0.5f, 0.0f, 0.0f, 1, 5, 1);
+        this.arm2.setRotationPoint(2.0f, -2.0f, -1.0f);
+        this.arm2.setTextureSize(64, 64);
+        this.arm2.mirror = true;
+        this.setRotation(this.arm2, 0.5759587f, 0.0f, 0.0f);
+        skeleton.addChild(arm2);
+
+        this.forearm1 = new ModelRenderer(this, 24, 0).addBox(-3.0f, -0.3f, 0.0f, 4, 1, 1);
+        this.forearm1.setRotationPoint(2.5f, 2.0f, 2.0f);
+        this.forearm1.setTextureSize(64, 64);
+        this.forearm1.mirror = true;
+        this.setRotation(this.forearm1, 0.0f, 0.0f, 0.4363323f);
+        skeleton.addChild(forearm1);
+
+        this.forearm2 = new ModelRenderer(this, 24, 0).addBox(-1.0f, -0.3f, 0.0f, 4, 1, 1);
+        this.forearm2.setRotationPoint(-2.5f, 2.0f, 2.0f);
+        this.forearm2.setTextureSize(64, 64);
+        this.forearm2.mirror = true;
+        this.setRotation(this.forearm2, 0.0f, 0.0f, -0.4363323f);
+        skeleton.addChild(forearm2);
+
+        skeleton.rotateAngleY = (float) Math.PI;
     }
 
     private void setRotation(final ModelRenderer model, final float x, final float y, final float z) {
@@ -55,11 +75,12 @@ public class ModelGraveSkeleton extends ModelBase {
     }
 
     public void render(final float f5) {
-        this.Shape18.render(f5);
-        this.Shape19.render(f5);
-        this.Shape20.render(f5);
-        this.Shape21.render(f5);
-        this.Shape22.render(f5);
-        this.Shape23.render(f5);
+        GL11.glPushMatrix();
+        GL11.glDisable(GL11.GL_CULL_FACE);
+
+        this.skeleton.render(f5);
+
+        GL11.glEnable(GL11.GL_CULL_FACE);
+        GL11.glPopMatrix();
     }
 }

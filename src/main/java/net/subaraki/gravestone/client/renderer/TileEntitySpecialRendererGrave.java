@@ -47,11 +47,18 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
         this.bindTexture(TextureHandler.getTextureFromMeta(modeltype));
         GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
         GL11.glScalef(1.0f, -1.0f, -1.0f);
-        if (modeltype == 2 || modeltype == 3 || modeltype == 6 || modeltype == 8 || modeltype == 9 || modeltype == 5) {
-            rot -= 90.0f;
-        }
-        if (modeltype == 4) {
-            rot = 90.0f;
+        switch (modeltype) {
+            default:
+                break;
+            case 2:
+            case 3:
+            case 4:
+            case 5:
+            case 6:
+            case 8:
+            case 9:
+                rot -= 90.0f;
+                break;
         }
         final float s = -0.75f;
         final float s2 = -0.4f;
