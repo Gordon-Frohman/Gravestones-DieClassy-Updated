@@ -11,8 +11,10 @@ import com.darkona.adventurebackpack.playerProperties.BackpackProperty;
 public class AdventureBackpackIntegration {
 
     public static ItemStack getModIcon() {
-        return GraveStones.hasAdventureBackpack && ModItems.machete != null ? new ItemStack(ModItems.machete)
-            : new ItemStack(Blocks.chest);
+        if (GraveStones.hasAdventureBackpack) {
+            if (ModItems.machete != null) return new ItemStack(ModItems.machete);
+        }
+        return new ItemStack(Blocks.chest);
     }
 
     public static ItemStack getBackpack(EntityPlayer player) {
