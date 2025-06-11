@@ -7,6 +7,7 @@ import java.util.Map;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.subaraki.gravestone.block.BlockGrave;
@@ -33,6 +34,7 @@ import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
 import net.subaraki.gravestone.util.GraveUtility;
 
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
@@ -103,22 +105,18 @@ public class GraveStones {
     @Mod.EventHandler
     public void init(final FMLInitializationEvent event) {
         GraveStones.hasRpgI = GraveUtility.findClass("rpgInventory.RpgInventoryMod", "RPG Inventory");
-        GraveStones.hasTiC = GraveUtility.findClass("tconstruct.TConstruct", "Tinkers Construct");
-        GraveStones.hasBaubles = GraveUtility.findClass("baubles.common.Baubles", "Baubles");
-        GraveStones.hasThaumcraft = GraveUtility.findClass("thaumcraft.common.Thaumcraft", "Thaumcraft");
-        GraveStones.hasGalacticraft = GraveUtility
-            .findClass("micdoodle8.mods.galacticraft.core.GalacticraftCore", "Galacticraft");
-        GraveStones.hasMariculture = GraveUtility.findClass("mariculture.Mariculture", "Mariculture");
-        GraveStones.hasCosmeticArmor = GraveUtility
-            .findClass("lain.mods.cos.CosmeticArmorReworked", "Cosmetic Armor Reworked");
-        GraveStones.hasSatchels = GraveUtility.findClass("makamys.satchels.Satchels", "Satchels");
-        GraveStones.hasAether = GraveUtility.findClass("com.gildedgames.the_aether.Aether", "Aether");
-        GraveStones.hasBattlegear = GraveUtility.findClass("mods.battlegear2.Battlegear", "Mine & Blade: Battlegear 2");
-        GraveStones.hasTravellersGear = GraveUtility.findClass("travellersgear.TravellersGear", "Traveller's Gear");
-        GraveStones.hasSextiarySector = GraveUtility
-            .findClass("shift.sextiarysector.SextiarySector", "Sextiary Sector 2");
-        GraveStones.hasAdventureBackpack = GraveUtility
-            .findClass("com.darkona.adventurebackpack.AdventureBackpack", "Adventure Backpack 2");
+        GraveStones.hasTiC = Loader.isModLoaded("TConstruct");
+        GraveStones.hasBaubles = Loader.isModLoaded("Baubles");
+        GraveStones.hasThaumcraft = Loader.isModLoaded("Thaumcraft");
+        GraveStones.hasGalacticraft = Loader.isModLoaded("GalacticraftCore");
+        GraveStones.hasMariculture = Loader.isModLoaded("Mariculture");
+        GraveStones.hasCosmeticArmor = Loader.isModLoaded("cosmeticarmorreworked");
+        GraveStones.hasSatchels = Loader.isModLoaded("satchels");
+        GraveStones.hasAether = Loader.isModLoaded("aether_legacy");
+        GraveStones.hasBattlegear = Loader.isModLoaded("battlegear2");
+        GraveStones.hasTravellersGear = Loader.isModLoaded("TravellersGear");
+        GraveStones.hasSextiarySector = Loader.isModLoaded("SextiarySector");
+        GraveStones.hasAdventureBackpack = Loader.isModLoaded("adventurebackpack");
     }
 
     @Mod.EventHandler
@@ -133,7 +131,8 @@ public class GraveStones {
         Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear ? TravellersGearIntegration.getModIcon()
             : new ItemStack(Items.name_tag);
         Constants.ICON_SEXTIARY_SECTOR = SextiarySectorIntegration.getModIcon();
-        Constants.ICON_ADVENTURE_BACKPACK = AdventureBackpackIntegration.getModIcon();
+        Constants.ICON_ADVENTURE_BACKPACK = GraveStones.hasAdventureBackpack ? AdventureBackpackIntegration.getModIcon()
+            : new ItemStack(Blocks.chest);
 
         new GravestoneEventHandler();
     }
