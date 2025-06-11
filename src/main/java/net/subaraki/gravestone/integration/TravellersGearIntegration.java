@@ -14,9 +14,10 @@ import travellersgear.api.TravellersGearAPI;
 public class TravellersGearIntegration {
 
     public static ItemStack getModIcon() {
-        return GraveStones.hasTravellersGear && TravellersGear.simpleGear != null
-            ? new ItemStack(TravellersGear.simpleGear, 1, 6)
-            : new ItemStack(Items.name_tag);
+        if (GraveStones.hasTravellersGear) {
+            if (TravellersGear.simpleGear != null) return new ItemStack(TravellersGear.simpleGear, 1, 6);
+        }
+        return new ItemStack(Items.name_tag);
     }
 
     public static List<ItemStack> getTravellersGearInventory(EntityPlayer player) {
