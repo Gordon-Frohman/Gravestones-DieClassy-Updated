@@ -4,6 +4,7 @@ package net.subaraki.gravestone.item;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -47,26 +48,36 @@ public class ItemDecoGrave extends ItemBlock {
             .isSolid()) {
             return false;
         }
-        if (meta == 1) {
-            ++y;
-        }
-        if (meta == 2) {
-            --z;
-        }
-        if (meta == 3) {
-            ++z;
-        }
-        if (meta == 4) {
-            --x;
-        }
-        if (meta == 5) {
-            ++x;
+        switch (meta) {
+            case 1:
+                ++y;
+                break;
+            case 2:
+                --z;
+                break;
+            case 3:
+                ++z;
+                break;
+            case 4:
+                --x;
+                break;
+            case 5:
+                ++x;
+                break;
         }
         if (!player.canPlayerEdit(x, y, z, meta, itemStack)) {
             return false;
         }
-        world.setBlock(x, y, z, GraveStones.graveStone, meta, 2);
-        final int i1 = 0;
+        world.setBlock(x, y, z, GraveStones.graveStone, itemStack.getItemDamage(), 2);
+        SoundType soundEffect = itemStack.getItemDamage() == 6 || itemStack.getItemDamage() == 10 ? Block.soundTypeWood
+            : Block.soundTypeStone;
+        world.playSoundEffect(
+            x + 0.5,
+            y + 0.5,
+            z + 0.5,
+            soundEffect.getBreakSound(),
+            (soundEffect.getVolume() + 1) / 2,
+            soundEffect.getPitch() * 0.8F);
         final TileEntityGravestone grave = new TileEntityGravestone();
         grave.setDeathMessage(StatCollector.translateToLocal("grave.decorative"));
         grave.setDeathMessage2("");
