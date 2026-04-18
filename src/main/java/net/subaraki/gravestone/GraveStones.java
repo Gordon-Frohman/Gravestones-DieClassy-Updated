@@ -78,26 +78,26 @@ public class GraveStones {
     public void preInit(final FMLPreInitializationEvent event) {
         new GraveUtility();
         (this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones")).registerMessage(
-            (Class) PacketSyncGraveModel.PacketSyncGraveModelHandler.class,
-            (Class) PacketSyncGraveModel.class,
+            PacketSyncGraveModel.PacketSyncGraveModelHandler.class,
+            PacketSyncGraveModel.class,
             0,
             Side.SERVER);
         this.network.registerMessage(
-            (Class) PacketSwitchSlotLayout.PacketSwitchSlotLayoutHandler.class,
-            (Class) PacketSwitchSlotLayout.class,
+            PacketSwitchSlotLayout.PacketSwitchSlotLayoutHandler.class,
+            PacketSwitchSlotLayout.class,
             1,
             Side.SERVER);
         this.network.registerMessage(
-            (Class) PacketSyncModelToClient.PacketSyncModelToClientHandler.class,
-            (Class) PacketSyncModelToClient.class,
+            PacketSyncModelToClient.PacketSyncModelToClientHandler.class,
+            PacketSyncModelToClient.class,
             2,
             Side.CLIENT);
         NetworkRegistry.INSTANCE.registerGuiHandler((Object) this, (IGuiHandler) new GuiHandler());
         ConfigHandler.instance.loadConfig(event.getSuggestedConfigurationFile());
         GraveStones.graveStone = new BlockGrave(Material.rock).setBlockName("gravestone")
             .setCreativeTab(CreativeTabs.tabDecorations);
-        GameRegistry.registerTileEntity((Class) TileEntityGravestone.class, "TileEntityGraveStone");
-        GameRegistry.registerBlock(GraveStones.graveStone, (Class) ItemDecoGrave.class, "graveStone");
+        GameRegistry.registerTileEntity(TileEntityGravestone.class, "TileEntityGraveStone");
+        GameRegistry.registerBlock(GraveStones.graveStone, ItemDecoGrave.class, "graveStone");
         RecipeHandler.registerBlockRecipe();
         GraveStones.proxy.preInit();
     }
