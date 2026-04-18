@@ -42,6 +42,7 @@ public class BlockGrave extends Block {
         this.rand = new Random();
         this.setBlockBounds(0.4f, 0.0f, 0.4f, 0.6f, 1.0f, 0.6f);
         this.setBlockUnbreakable();
+        this.setResistance(6000000.0F);
     }
 
     public void registerBlockIcons(final IIconRegister par1IconRegister) {
@@ -94,6 +95,12 @@ public class BlockGrave extends Block {
         return Float.MAX_VALUE;
     }
 
+    @Override
+    public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
+        TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
+        if (te.isDecorativeGrave || !te.hasItems) super.onBlockExploded(world, x, y, z, explosion);
+    }
+
     public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z,
         final Explosion p_149723_5_) {
         world.removeTileEntity(x, y, z);
@@ -112,7 +119,6 @@ public class BlockGrave extends Block {
         final TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
         if (te != null) {
             for (final ItemStack itemstack : te.list) {
-                final ItemStack element = itemstack;
                 if (itemstack != null) {
                     final float f = this.rand.nextFloat() * 0.8f + 0.1f;
                     final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;

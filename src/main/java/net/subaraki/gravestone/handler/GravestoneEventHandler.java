@@ -4,7 +4,11 @@ package net.subaraki.gravestone.handler;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -39,6 +43,7 @@ import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -90,105 +95,113 @@ public class GravestoneEventHandler {
         clone.setGraveModel(dead.getGraveModel());
     }
 
+    private Map<UUID, TileEntityGravestone> playerGraves = new HashMap<UUID, TileEntityGravestone>();
+
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void onDeathEvent(final LivingDeathEvent evt) {
-        if (evt.entityLiving instanceof EntityPlayer) {
-            final EntityPlayer player = (EntityPlayer) evt.entityLiving;
+        if (evt.entityLiving instanceof EntityPlayer player) {
             if (player.worldObj.getGameRules()
-                .getGameRuleBooleanValue("keepInventory")) {
-                return;
-            }
+                .getGameRuleBooleanValue("keepInventory")) return;
+            createGraveTE(player);
+            World world = player.worldObj;
             final int x = MathHelper.floor_double(player.posX);
             int y = MathHelper.floor_double(player.posY);
             final int z = MathHelper.floor_double(player.posZ);
-            if (player.worldObj.isAirBlock(x, y, z)) {
-                if (y < 0) {
-                    // When you die from falling into void, your gravestone should spawn above the bedrock
-                    if (player.worldObj.isAirBlock(x, 0, z)) player.worldObj.setBlock(x, 0, z, Blocks.bedrock);
-                    y = 1;
-                    while (!player.worldObj.isAirBlock(x, y, z) && y < 255) y++;
+            this.scheduleEvent(() -> {
+                int localY = y;
+                if (world.isAirBlock(x, localY, z)) {
+                    if (localY < 0) {
+                        // When you die from falling into void, your gravestone should spawn above the bedrock
+                        if (world.isAirBlock(x, 0, z)) world.setBlock(x, 0, z, Blocks.bedrock);
+                        localY = 1;
+                        while (!world.isAirBlock(x, localY, z) && localY < 255) localY++;
+                    }
+                    while (world.isAirBlock(x, localY, z)) --localY;
                 }
-                while (player.worldObj.isAirBlock(x, y, z)) {
-                    --y;
+                final int X = 100;
+                final int Z = 100;
+                int x2 = 0;
+                int z2 = 0;
+                int dx = 0;
+                int dz = -1;
+                int t = Math.max(X, Z);
+                final int maxI = t * t;
+                boolean flag = false;
+                boolean liquid = false;
+                for (int i = 0; i < maxI; ++i) {
+                    if (-X / 2 <= x2 && x2 <= X / 2 && -Z / 2 <= z2 && z2 <= Z / 2) {
+                        int y2;
+                        for (y2 = 0; !world.getBlock(x + x2, localY + 1 + y2, z + z2)
+                            .getMaterial()
+                            .equals(Material.air); ++y2) {}
+                        if (world.getBlock(x + x2, localY + y2, z + z2)
+                            .getMaterial()
+                            .isLiquid()) {
+                            GraveStones.printDebugMessage("You were standing in liquid !");
+                            --y2;
+                            liquid = true;
+                        }
+                        if (world.getBlock(x + x2, localY + y2, z + z2)
+                            .getMaterial()
+                            .isSolid()
+                            && (world.getBlock(x + x2, localY + 1 + y2, z + z2)
+                                .getMaterial()
+                                .equals(Material.air) || liquid)) {
+                            GraveStones.printDebugMessage(
+                                "Potential grave at " + (x + x2) + " " + (localY + y2) + " " + (z + z2));
+                            this.placeGrave(player, x + x2, localY + y2, z + z2);
+                            flag = true;
+                            break;
+                        }
+                    }
+                    if (x2 == z2 || (x2 < 0 && x2 == -z2) || (x2 > 0 && x2 == 1 - z2)) {
+                        t = dx;
+                        dx = -dz;
+                        dz = t;
+                    }
+                    x2 += dx;
+                    z2 += dz;
                 }
-            }
-            final int X = 100;
-            final int Z = 100;
-            int x2 = 0;
-            int z2 = 0;
-            int dx = 0;
-            int dz = -1;
-            int t = Math.max(X, Z);
-            final int maxI = t * t;
-            boolean flag = false;
-            boolean liquid = false;
-            for (int i = 0; i < maxI; ++i) {
-                if (-X / 2 <= x2 && x2 <= X / 2 && -Z / 2 <= z2 && z2 <= Z / 2) {
-                    int y2;
-                    for (y2 = 0; !player.worldObj.getBlock(x + x2, y + 1 + y2, z + z2)
+                if (!flag && liquid) {
+                    int y3;
+                    for (y3 = 0; !world.getBlock(x, localY + 1 + y3, z)
                         .getMaterial()
-                        .equals(Material.air); ++y2) {}
-                    if (player.worldObj.getBlock(x + x2, y + y2, z + z2)
+                        .equals(Material.air); ++y3) {}
+                    if (world.getBlock(x, localY + y3, z)
                         .getMaterial()
                         .isLiquid()) {
-                        GraveStones.printDebugMessage("You were standing in liquid !");
-                        --y2;
-                        liquid = true;
-                    }
-                    if (player.worldObj.getBlock(x + x2, y + y2, z + z2)
-                        .getMaterial()
-                        .isSolid()
-                        && (player.worldObj.getBlock(x + x2, y + 1 + y2, z + z2)
+                        if (world.getBlock(x, localY + 1 + y3, z)
                             .getMaterial()
-                            .equals(Material.air) || liquid)) {
-                        GraveStones
-                            .printDebugMessage("Potential grave at " + (x + x2) + " " + (y + y2) + " " + (z + z2));
-                        this.placeGrave(player, x + x2, y + y2, z + z2);
-                        flag = true;
-                        break;
+                            .equals(Material.air)) {
+                            world.setBlock(x, localY + y3, z, Blocks.cobblestone);
+                        }
+                        this.placeGrave(player, x, localY + y3, z);
                     }
+                } else if (!flag) {
+                    this.placeGrave(player, x, localY, z);
                 }
-                if (x2 == z2 || (x2 < 0 && x2 == -z2) || (x2 > 0 && x2 == 1 - z2)) {
-                    t = dx;
-                    dx = -dz;
-                    dz = t;
-                }
-                x2 += dx;
-                z2 += dz;
-            }
-            if (!flag && liquid) {
-                int y3;
-                for (y3 = 0; !player.worldObj.getBlock(x, y + 1 + y3, z)
-                    .getMaterial()
-                    .equals(Material.air); ++y3) {}
-                if (player.worldObj.getBlock(x, y + y3, z)
-                    .getMaterial()
-                    .isLiquid()) {
-                    if (player.worldObj.getBlock(x, y + 1 + y3, z)
-                        .getMaterial()
-                        .equals(Material.air)) {
-                        player.worldObj.setBlock(x, y + y3, z, Blocks.cobblestone);
-                    }
-                    this.placeGrave(player, x, y + y3, z);
-                }
-            } else if (!flag) {
-                this.placeGrave(player, x, y, z);
-            }
+                playerGraves.remove(player.getUniqueID());
+            }, 10);
         }
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public void playerDeathDrop(PlayerDropsEvent event) {
-        EntityPlayer player = event.entityPlayer;
-        if (player.worldObj.getGameRules()
-            .getGameRuleBooleanValue("keepInventory")) {
-            return;
-        }
-
+        if (event.entityLiving instanceof EntityPlayer player) {}
     }
 
     private void placeGrave(final EntityPlayer player, final int x, final int y, final int z) {
-        player.worldObj.setBlock(x, y + 1, z, GraveStones.graveStone);
+        World world = player.worldObj;
+        world.setBlock(x, y + 1, z, GraveStones.graveStone);
+        TileEntityGravestone te = playerGraves.get(player.getUniqueID());
+        if (te != null) {
+            world.setTileEntity(x, y + 1, z, (TileEntity) te);
+            world.markBlockForUpdate(x, y + 1, z);
+            te.markDirty();
+        }
+    }
+
+    private void createGraveTE(final EntityPlayer player) {
         final TileEntityGravestone te = new TileEntityGravestone();
         final InventoryPlayer inv = player.inventory;
         int graveID = PlayerGraveData.get(player)
@@ -207,6 +220,7 @@ public class GravestoneEventHandler {
             }
         }
         this.addOtherInventory(te, player);
+        te.checkForItems();
 
         Vec3 playerLookVec = player.getLookVec();
         double graveRotation = Math.toDegrees(Math.atan2(playerLookVec.zCoord, playerLookVec.xCoord));
@@ -214,10 +228,7 @@ public class GravestoneEventHandler {
             graveRotation += 360;
         }
         te.ModelRotation = (float) (Math.round(graveRotation / 15) * 15);
-
-        player.worldObj.setTileEntity(x, y + 1, z, (TileEntity) te);
-        player.worldObj.markBlockForUpdate(x, y + 1, z);
-        te.markDirty();
+        playerGraves.put(player.getUniqueID(), te);
     }
 
     private void addOtherInventory(final TileEntityGravestone te, final EntityPlayer player) {
@@ -451,6 +462,7 @@ public class GravestoneEventHandler {
         }
     }
 
+    @SuppressWarnings("unused")
     private IInventory accesInventoryContents(final EntityPlayer player, final String methodName, final String path,
         final String declaredField, final String modName) {
         try {
@@ -465,6 +477,32 @@ public class GravestoneEventHandler {
             GraveStones.printDebugMessage(
                 "Error Encountered trying to acces " + modName + "  Inventory Content. Please report to mod author");
             return null;
+        }
+    }
+
+    private List<ScheduledEvent> scheduledEvents = new ArrayList<ScheduledEvent>();
+
+    private void scheduleEvent(Runnable event, int delay) {
+        scheduledEvents.add(new ScheduledEvent(delay, event));
+    }
+
+    @SubscribeEvent
+    public void onWorldTick(WorldTickEvent event) {
+        for (ScheduledEvent scheduledEvent : scheduledEvents) scheduledEvent.tick();
+    }
+
+    private class ScheduledEvent {
+
+        private int delay;
+        private Runnable runnable;
+
+        public ScheduledEvent(int delay, Runnable runnable) {
+            this.delay = delay;
+            this.runnable = runnable;
+        }
+
+        public void tick() {
+            if (delay-- == 0) runnable.run();
         }
     }
 }

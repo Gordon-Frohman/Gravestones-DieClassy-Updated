@@ -1,16 +1,9 @@
 
 package net.subaraki.gravestone.tileentity;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.net.URL;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.imageio.ImageIO;
-import javax.net.ssl.HttpsURLConnection;
-
-import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -308,6 +301,10 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
 
     public void updateEntity() {
         super.updateEntity();
+        checkForItems();
+    }
+
+    public void checkForItems() {
         for (final ItemStack element : this.list) {
             if (element != null) {
                 this.hasItems = true;
@@ -379,37 +376,5 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     private void fixProfile() {
         this.profile = GraveUtility.fixProfile(this.profile);
         this.markDirty();
-    }
-
-    public void downloadSkin() {
-        HttpsURLConnection httpurlconnection = null;
-        ResourceLocation resourcelocation = null;
-        GraveStones.printDebugMessage("Downloading " + this.playername + "'s skin");
-        String skinPath = "";
-        try {
-            httpurlconnection = (HttpsURLConnection) (new URL("https://mineskin.eu/skin/" + this.playername))
-                .openConnection(
-                    Minecraft.getMinecraft()
-                        .getProxy());
-            httpurlconnection.setDoInput(true);
-            httpurlconnection.setDoOutput(false);
-            httpurlconnection.connect();
-
-            if (httpurlconnection.getResponseCode() / 100 != 2) {
-                GraveStones.printDebugMessage("Server response code did not return 200, skin servers might be down.");
-            }
-
-            BufferedImage bufferedimage;
-            bufferedimage = ImageIO.read(httpurlconnection.getInputStream());
-            skinPath = "./cachedImages/skins/" + this.playername + ".png";
-            File outputFile = new File(skinPath);
-            ImageIO.write(bufferedimage, "png", outputFile);
-        } catch (Exception exception) {
-            GraveStones.printDebugMessage("Error occurred when downloading skin, however, skin servers seem to be up.");
-        } finally {
-            if (httpurlconnection != null) {
-                httpurlconnection.disconnect();
-            }
-        }
     }
 }
