@@ -346,9 +346,9 @@ public class GravestoneEventHandler {
             }
             try {
                 final ItemStack[] newstack = new ItemStack[4];
-                final Class<?> clazz2 = Class.forName("mariculture.magic.MirrorHelper");
-                final Method m2 = clazz2.getDeclaredMethod("save", EntityPlayer.class, ItemStack[].class);
-                final Object saveEmptyArray = m2.invoke(null, player, newstack);
+                final Class<?> mirrorHelper = Class.forName("mariculture.magic.MirrorHelper");
+                final Method save = mirrorHelper.getDeclaredMethod("save", EntityPlayer.class, ItemStack[].class);
+                save.invoke(null, player, newstack);
             } catch (Exception e7) {
                 e7.printStackTrace();
             }
