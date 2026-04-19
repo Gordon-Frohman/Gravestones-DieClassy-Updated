@@ -56,10 +56,10 @@ public class TextureHandler {
     }
 
     static {
-        graveTexture = new ResourceLocation("grave:textures/entity/tile/grave_stone.png");
-        tombTexture = new ResourceLocation("grave:textures/entity/tile/grave_zerk.png");
-        pillarTexture = new ResourceLocation("grave:textures/entity/tile/grave_pillar.png");
-        woodTexture = new ResourceLocation("grave:textures/entity/tile/grave_wood.png");
-        knightTexture = new ResourceLocation("grave:textures/entity/tile/grave_knight.png");
+        graveTexture = new ResourceLocation(path + "grave_stone.png");
+        tombTexture = new ResourceLocation(path + "grave_zerk.png");
+        pillarTexture = new ResourceLocation(path + "grave_pillar.png");
+        woodTexture = new ResourceLocation(path + "grave_wood.png");
+        knightTexture = new ResourceLocation(path + "grave_knight.png");
     }
 }

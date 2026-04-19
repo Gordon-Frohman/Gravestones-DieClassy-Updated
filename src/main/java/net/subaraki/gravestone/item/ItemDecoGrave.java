@@ -27,6 +27,7 @@ public class ItemDecoGrave extends ItemBlock {
         this.setHasSubtypes(true);
     }
 
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @SideOnly(Side.CLIENT)
     public void getSubItems(final Item par1, final CreativeTabs tab, final List par3List) {
         for (int i = 1; i <= 10; ++i) {

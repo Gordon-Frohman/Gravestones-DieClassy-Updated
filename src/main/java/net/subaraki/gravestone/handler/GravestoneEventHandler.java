@@ -93,6 +93,7 @@ public class GravestoneEventHandler {
         final PlayerGraveData dead = PlayerGraveData.get(event.original);
         final PlayerGraveData clone = PlayerGraveData.get(event.entityPlayer);
         clone.setGraveModel(dead.getGraveModel());
+        clone.setMaleEpitaph(dead.shouldUseMaleEpitaph());
     }
 
     private Map<UUID, TileEntityGravestone> playerGraves = new HashMap<UUID, TileEntityGravestone>();
@@ -204,13 +205,13 @@ public class GravestoneEventHandler {
     private void createGraveTE(final EntityPlayer player) {
         final TileEntityGravestone te = new TileEntityGravestone();
         final InventoryPlayer inv = player.inventory;
-        int graveID = PlayerGraveData.get(player)
-            .getGraveModel();
+        PlayerGraveData pgd = PlayerGraveData.get(player);
+        int graveID = pgd.getGraveModel();
         final int max = 9;
         if (!ConfigHandler.enableGravesTroughKey) {
             graveID = ConfigHandler.graveOrder[Math.min(player.experienceLevel / ConfigHandler.graveLevel, max)];
         }
-        te.setGraveData(player.getCommandSenderName(), graveID);
+        te.setGraveData(player.getCommandSenderName(), graveID, pgd.shouldUseMaleEpitaph());
         for (int slot = 0; slot < inv.getSizeInventory(); ++slot) {
             final ItemStack is = inv.getStackInSlot(slot);
             if (is != null && slot < te.getSizeInventory()) {

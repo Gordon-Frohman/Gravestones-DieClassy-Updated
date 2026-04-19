@@ -132,7 +132,7 @@ public class ModelCubeWorld extends ModelBase {
         GL11.glDisable(3553);
         GL11.glEnable(32826);
         final float scale = 0.0625f;
-        GL11.glScalef(0.0625f, 0.0625f, 0.0625f);
+        GL11.glScalef(scale, scale, scale);
         GL11.glRotatef(-90.0f, 1.0f, 0.0f, 0.0f);
         for (final int i : this.pointers) {
             final int x = i & 0x3FF;

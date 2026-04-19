@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.common.network.PacketSyncModelToClient;
+import net.subaraki.gravestone.common.network.PacketSyncGraveDataToClient;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
@@ -16,10 +16,12 @@ public class PlayerGraveData implements IExtendedEntityProperties {
 
     EntityPlayer player;
     public static final String PROPS = "graveData";
+    private boolean maleEpitaph;
     private int graveID;
 
     public PlayerGraveData(final EntityPlayer player) {
         this.graveID = 1;
+        this.maleEpitaph = true;
         this.player = player;
     }
 
@@ -29,6 +31,14 @@ public class PlayerGraveData implements IExtendedEntityProperties {
 
     public static final PlayerGraveData get(final EntityPlayer p) {
         return (PlayerGraveData) p.getExtendedProperties("graveData");
+    }
+
+    public boolean shouldUseMaleEpitaph() {
+        return this.maleEpitaph;
+    }
+
+    public void setMaleEpitaph(boolean maleEpitaph) {
+        this.maleEpitaph = maleEpitaph;
     }
 
     public int getGraveModel() {
@@ -41,6 +51,7 @@ public class PlayerGraveData implements IExtendedEntityProperties {
 
     public void saveNBTData(final NBTTagCompound compound) {
         compound.setInteger("grave_ID", this.graveID);
+        compound.setBoolean("male_epitaph", this.maleEpitaph);
         if (this.player != null && this.player.worldObj.isRemote) {
             GraveStones.printDebugMessage("C save " + this.graveID + " ");
         }
@@ -51,6 +62,7 @@ public class PlayerGraveData implements IExtendedEntityProperties {
 
     public void loadNBTData(final NBTTagCompound compound) {
         this.graveID = compound.getInteger("grave_ID");
+        this.maleEpitaph = compound.getBoolean("male_epitaph");
         if (this.player != null && this.player.worldObj.isRemote) {
             GraveStones.printDebugMessage("C load " + this.graveID + " ");
         }
@@ -63,8 +75,9 @@ public class PlayerGraveData implements IExtendedEntityProperties {
 
     public void sync() {
         if (this.player != null && this.player instanceof EntityPlayerMP) {
-            GraveStones.instance.network
-                .sendTo((IMessage) new PacketSyncModelToClient(this.graveID), (EntityPlayerMP) this.player);
+            GraveStones.instance.network.sendTo(
+                (IMessage) new PacketSyncGraveDataToClient(this.maleEpitaph, this.graveID),
+                (EntityPlayerMP) this.player);
         }
     }
 }

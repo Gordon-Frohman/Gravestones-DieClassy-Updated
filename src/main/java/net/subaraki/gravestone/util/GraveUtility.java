@@ -40,7 +40,7 @@ public class GraveUtility {
 
     public static boolean findClass(final String classPath, final String modName) {
         try {
-            final Class classToFind = Class.forName(classPath);
+            final Class<?> classToFind = Class.forName(classPath);
             if (classToFind != null) {
                 GraveStones.printDebugMessage(
                     "GraveStones detected " + modName + ". Inventory Content will be dumped into grave");
@@ -50,6 +50,7 @@ public class GraveUtility {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     public ResourceLocation processPlayerTexture(final EntityPlayer player) {
         if (this.SKIN_ABSTRACT_PLAYER == null) {
@@ -60,7 +61,7 @@ public class GraveUtility {
                 .length() > 0) {
                 GameProfile gameprofile = player.getGameProfile();
                 Minecraft minecraft = Minecraft.getMinecraft();
-                Map map = minecraft.func_152342_ad()
+                Map<Type, MinecraftProfileTexture> map = minecraft.func_152342_ad()
                     .func_152788_a(gameprofile);
                 if (map.containsKey(Type.SKIN)) {
                     this.SKIN_ABSTRACT_PLAYER = minecraft.func_152342_ad()
@@ -73,6 +74,7 @@ public class GraveUtility {
         return this.SKIN_ABSTRACT_PLAYER;
     }
 
+    @SuppressWarnings("unchecked")
     @SideOnly(Side.CLIENT)
     public ResourceLocation processPlayerTexture(final String playername) {
         this.SKIN_ABSTRACT_PLAYER = null;
@@ -92,7 +94,7 @@ public class GraveUtility {
                     GameProfile profile = fixProfile(new GameProfile((UUID) null, playername));
                     if (profile != null) {
                         Minecraft minecraft = Minecraft.getMinecraft();
-                        Map map = minecraft.func_152342_ad()
+                        Map<Type, MinecraftProfileTexture> map = minecraft.func_152342_ad()
                             .func_152788_a(profile);
                         if (map.containsKey(Type.SKIN)) {
                             this.SKIN_ABSTRACT_PLAYER = minecraft.func_152342_ad()

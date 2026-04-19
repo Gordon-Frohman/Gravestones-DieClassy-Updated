@@ -13,8 +13,8 @@ import net.minecraft.item.ItemStack;
 import net.subaraki.gravestone.block.BlockGrave;
 import net.subaraki.gravestone.common.CommonProxy;
 import net.subaraki.gravestone.common.network.PacketSwitchSlotLayout;
-import net.subaraki.gravestone.common.network.PacketSyncGraveModel;
-import net.subaraki.gravestone.common.network.PacketSyncModelToClient;
+import net.subaraki.gravestone.common.network.PacketSyncGraveData;
+import net.subaraki.gravestone.common.network.PacketSyncGraveDataToClient;
 import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
@@ -77,19 +77,13 @@ public class GraveStones {
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         new GraveUtility();
-        (this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones")).registerMessage(
-            PacketSyncGraveModel.PacketSyncGraveModelHandler.class,
-            PacketSyncGraveModel.class,
-            0,
-            Side.SERVER);
+        (this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones"))
+            .registerMessage(PacketSyncGraveData.Handler.class, PacketSyncGraveData.class, 0, Side.SERVER);
+        this.network
+            .registerMessage(PacketSwitchSlotLayout.Handler.class, PacketSwitchSlotLayout.class, 1, Side.SERVER);
         this.network.registerMessage(
-            PacketSwitchSlotLayout.PacketSwitchSlotLayoutHandler.class,
-            PacketSwitchSlotLayout.class,
-            1,
-            Side.SERVER);
-        this.network.registerMessage(
-            PacketSyncModelToClient.PacketSyncModelToClientHandler.class,
-            PacketSyncModelToClient.class,
+            PacketSyncGraveDataToClient.Handler.class,
+            PacketSyncGraveDataToClient.class,
             2,
             Side.CLIENT);
         NetworkRegistry.INSTANCE.registerGuiHandler((Object) this, (IGuiHandler) new GuiHandler());

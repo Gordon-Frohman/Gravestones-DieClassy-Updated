@@ -9,7 +9,6 @@ import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 public class SlotArmorGrave extends Slot {
 
-    private int field_75228_b;
     TileEntityGravestone te;
 
     public SlotArmorGrave(final IInventory par1iInventory, final int par2, final int par3, final int par4) {
@@ -27,7 +26,7 @@ public class SlotArmorGrave extends Slot {
 
     public ItemStack decrStackSize(final int par1) {
         if (this.getHasStack()) {
-            this.field_75228_b += Math.min(par1, this.getStack().stackSize);
+            Math.min(par1, this.getStack().stackSize);
         }
         return super.decrStackSize(par1);
     }

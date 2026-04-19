@@ -12,7 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.client.model.ModelBust;
 import net.subaraki.gravestone.common.network.PacketSwitchSlotLayout;
 import net.subaraki.gravestone.handler.GraveTextHandler;
 import net.subaraki.gravestone.handler.ModelHandler;
@@ -36,8 +35,6 @@ public class GuiGraveContainer extends GuiContainer {
     private TileEntityGravestone te;
     private String tabText;
     private static final ResourceLocation graveGui;
-    private ModelBust modelBust;
-    private ResourceLocation texture;
     private Map<Integer, ItemStack> tabsList = new HashMap<Integer, ItemStack>();
     private int currentPage = 0;
 
@@ -51,7 +48,6 @@ public class GuiGraveContainer extends GuiContainer {
         this.rotationCounter = 0;
         this.gravetext = "";
         this.tabText = "Minecraft";
-        this.modelBust = new ModelBust();
         this.deathPlayer = player.worldObj.getPlayerEntityByName(grave.playername);
         this.playerOpenGui = player;
         this.nameOfDeathPlayer = grave.playername;
@@ -64,7 +60,8 @@ public class GuiGraveContainer extends GuiContainer {
                 if (this.nameOfDeathPlayer.equals("!Empty!")) {
                     this.gravetext = StatCollector.translateToLocal("grave.empty");
                 } else {
-                    this.gravetext = GraveTextHandler.getStringFromMeta(this.nameOfDeathPlayer, this.te.modelType);
+                    this.gravetext = GraveTextHandler
+                        .getStringFromMeta(this.nameOfDeathPlayer, this.te.modelType, this.te.maleEpitaph);
                 }
             } else {
                 this.gravetext = grave.message1 + grave.playername + grave.message2;

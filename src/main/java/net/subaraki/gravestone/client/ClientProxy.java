@@ -30,7 +30,7 @@ public class ClientProxy extends CommonProxy {
             ClientRegistry.registerKeyBinding(ClientProxy.keyGui);
         }
         ClientRegistry.bindTileEntitySpecialRenderer(
-            (Class) TileEntityGravestone.class,
+            TileEntityGravestone.class,
             (TileEntitySpecialRenderer) new TileEntitySpecialRendererGrave());
         Constants.angelStatue = new ModelCubeWorld(
             ModelCubeWorld.class.getResourceAsStream("/assets/grave/models/angelStatue.cub"));

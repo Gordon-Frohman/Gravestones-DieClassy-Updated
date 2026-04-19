@@ -41,7 +41,7 @@ public class PacketSwitchSlotLayout implements IMessage {
         buf.writeByte((int) this.graveSlotType);
     }
 
-    public static class PacketSwitchSlotLayoutHandler implements IMessageHandler<PacketSwitchSlotLayout, IMessage> {
+    public static class Handler implements IMessageHandler<PacketSwitchSlotLayout, IMessage> {
 
         public IMessage onMessage(final PacketSwitchSlotLayout message, final MessageContext ctx) {
             final World world = ctx.getServerHandler().playerEntity.worldObj;

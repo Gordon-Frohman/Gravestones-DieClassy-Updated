@@ -4,42 +4,63 @@ tile.gravestone.name=Gravestone
 is.Honored.To=This grave is honored to 
 
 grave.rest.1=Here rests 
-grave.rest.2=. May he rest in piece.
+grave.rest.2=. May he rest in peace.
+grave.rest.female.1=Here rests 
+grave.rest.female.2=. May she rest in peace.
 
 grave.friend.1=Our Dearest Friend
-grave.friend.2= rests here. May he rest in piece.
+grave.friend.2= rests here. May he rest in peace.
+grave.friend.female.1=Our Dearest Friend
+grave.friend.female.2= rests here. May she rest in peace.
 
 grave.hero.1=People die, but Hero's Live on. In memorial of 
 grave.hero.2=.
+grave.hero.female.1=People die, but Hero's Live on. In memorial of 
+grave.hero.female.2=.
 
 grave.glory.1=Here rests in honored glory 
 grave.glory.2=. You will always be remembered.
+grave.glory.female.1=Here rests in honored glory 
+grave.glory.female.2=. You will always be remembered.
 
 grave.passed.1=In your travels, pause a while to remember 
 grave.passed.2=, who passed away at this spot.
+grave.passed.female.1=In your travels, pause a while to remember 
+grave.passed.female.2=, who passed away at this spot.
 
 grave.silence.1=Please keep a moment of silence for 
-grave.silence.2=", who died at this very place."
+grave.silence.2=, who died at this very place.
+grave.silence.female.1=Please keep a moment of silence for 
+grave.silence.female.2=, who died at this very place.
 
 grave.memory.1=In memory of 
 grave.memory.2= who died here.
+grave.memory.female.1=In memory of 
+grave.memory.female.2= who died here.
 
-grave.angle.1=Ye frail mortals who gaze upon this sight, forget not the fate of 
-grave.angle.2=, once mighty, now surrendered to the inescapable grasp of destiny. Requiescat in pace.
+grave.angel.1=Ye frail mortals who gaze upon this sight, forget not the fate of 
+grave.angel.2=, once mighty, now surrendered to the inescapable grasp of destiny. Requiescat in pace.
+grave.angel.female.1=Ye frail mortals who gaze upon this sight, forget not the fate of 
+grave.angel.female.2=, once mighty, now surrendered to the inescapable grasp of destiny. Requiescat in pace.
 
 grave.knight.1=Here lies
 grave.knight.2=, a Knight of First Order. Great in life, glorious in death.
+grave.knight.female.1=Here lies
+grave.knight.female.2=, a Knight of First Order. Great in life, glorious in death.
 
 grave.barrel.1=Here lies 
 grave.barrel.2=. He really liked barrels.
+grave.barrel.female.1=Here lies 
+grave.barrel.female.2=. She really liked barrels.
 
 grave.empty=The Grave is empty!
 
 grave.decorative=Decorative grave.
 
 pickGrave.settings.category=Gravestones
-pickGrave.settings.0=Pick Grave Gui
+pickGrave.settings.0=Pick Grave GUI
 pickGrave.text=Choose the Grave you want to spawn when you die.
+pickGrave.sex=Choose the sex for the epitaph:
 pickGrave.cross=Cross
 pickGrave.classic=Classic Grave
 pickGrave.tomb=Tomb

@@ -38,6 +38,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
         this.texture = null;
     }
 
+    @SuppressWarnings("rawtypes")
     public void renderTileEntityAt(final TileEntity te, final double x, final double y, final double z, final float f) {
         final TileEntityGravestone tile = (TileEntityGravestone) te;
         float rot = tile.ModelRotation;
@@ -182,6 +183,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
         GL11.glPopMatrix();
     }
 
+    @SuppressWarnings({ "unused", "unchecked" })
     private void recursivelyCutModel(int treshold, ModelRenderer model) {
         Object[] boxes = model.cubeList.toArray();
         for (Object boxObject : boxes) {

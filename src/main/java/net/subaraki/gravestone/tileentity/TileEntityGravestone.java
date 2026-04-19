@@ -33,6 +33,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     public String playername;
     public GameProfile profile;
     public int modelType;
+    public boolean maleEpitaph;
     public float ModelRotation;
     public EntityPlayer entityPlayerStub;
     public String message1;
@@ -52,6 +53,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         this.tab = 0;
         this.playername = "";
         this.modelType = 0;
+        this.maleEpitaph = true;
         this.ModelRotation = 0.0f;
         this.message1 = "";
         this.message2 = "";
@@ -62,11 +64,11 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         this.rand = new Random();
     }
 
-    public void setGraveData(final String playername, final int modelid) {
+    public void setGraveData(final String playername, final int modelid, final boolean maleEpitaph) {
         this.playername = playername;
         this.modelType = modelid;
+        this.maleEpitaph = maleEpitaph;
         if (this.modelType == 5 && playername != "") {
-            // this.downloadSkin();
             this.profile = new GameProfile((UUID) null, playername);
             fixProfile();
         }
@@ -164,6 +166,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         this.message1 = nbt.getString("message");
         this.message2 = nbt.getString("message2");
         this.modelType = nbt.getInteger("Meta");
+        this.maleEpitaph = nbt.getBoolean("maleEpitaph");
         this.ModelRotation = nbt.getFloat("rotation");
         this.otherPlayerHasTakenItemStack = nbt.getBoolean("isLooted");
         this.isDecorativeGrave = nbt.getBoolean("decoGrave");
@@ -194,20 +197,16 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         }
     }
 
-    public void writeToNBT(final NBTTagCompound par1NBTTagCompound) {
-        super.writeToNBT(par1NBTTagCompound);
-        par1NBTTagCompound.setString("name", this.playername);
-        par1NBTTagCompound.setString("message", this.message1);
-        par1NBTTagCompound.setString("message2", this.message2);
-        par1NBTTagCompound.setInteger("Meta", this.modelType);
-        par1NBTTagCompound.setFloat("rotation", this.ModelRotation);
-        par1NBTTagCompound.setBoolean("isLooted", this.otherPlayerHasTakenItemStack);
-        par1NBTTagCompound.setBoolean("decoGrave", this.isDecorativeGrave);
-        /*
-         * if(skinLocation != null) {
-         * par1NBTTagCompound.setString("skinLocation", this.skinLocation.toString());
-         * }
-         */
+    public void writeToNBT(final NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setString("name", this.playername);
+        nbt.setString("message", this.message1);
+        nbt.setString("message2", this.message2);
+        nbt.setInteger("Meta", this.modelType);
+        nbt.setBoolean("maleEpitaph", this.maleEpitaph);
+        nbt.setFloat("rotation", this.ModelRotation);
+        nbt.setBoolean("isLooted", this.otherPlayerHasTakenItemStack);
+        nbt.setBoolean("decoGrave", this.isDecorativeGrave);
 
         final NBTTagList nbttaglist = new NBTTagList();
         for (int i = 0; i < this.slots.length; ++i) {
@@ -218,7 +217,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
                 nbttaglist.appendTag((NBTBase) nbttagcompound1);
             }
         }
-        par1NBTTagCompound.setTag("Items", (NBTBase) nbttaglist);
+        nbt.setTag("Items", (NBTBase) nbttaglist);
         final NBTTagList nbttaglist2 = new NBTTagList();
         for (int j = 0; j < this.list.length; ++j) {
             if (this.list[j] != null) {
@@ -228,7 +227,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
                 nbttaglist2.appendTag((NBTBase) nbttagcompound2);
             }
         }
-        par1NBTTagCompound.setTag("ListItems", (NBTBase) nbttaglist2);
+        nbt.setTag("ListItems", (NBTBase) nbttaglist2);
     }
 
     public void dropContents(final World world, final int x, final int y, final int z) {
