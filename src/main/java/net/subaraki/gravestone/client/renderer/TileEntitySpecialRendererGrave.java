@@ -92,12 +92,6 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
         final float sc = 0.75f;
         GL11.glScalef(sc, sc, sc);
         if (modeltype == 5) {
-            /*
-             * if(tile.skinLocation == null)
-             * tile.skinLocation = GraveUtility.instance.processPlayerTexture(tile.playername);
-             * this.bindTexture(tile.skinLocation);
-             */
-
             ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
 
             if (tile.profile != null) {
@@ -124,23 +118,27 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             ItemStack item = tile.getStackInList(itemId);
             if (GraveStones.hasCosmeticArmor && item == null) item = tile.getStackInList(tile.getSizeInventory() - 1);
             if (item != null && item.getItem() instanceof ItemArmor) {
-                GL11.glPushMatrix();
-                final float f2 = 1.2f;
-                GL11.glScalef(f2, f2, f2);
-                GL11.glTranslatef(0.0f, 0.05f, 0.0f);
-                GL11.glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
                 ItemArmor itemArmor = (ItemArmor) item.getItem();
                 // We're creating a zombie because some mods require actual entities to check for armor
                 ModelBiped modelArmor = itemArmor
                     .getArmorModel(new EntityZombie(te.getWorldObj()), item, itemArmor.armorType);
-                ModelHandler.modelArmorHead = modelArmor == null ? new ModelBust() : modelArmor;
+
+                GL11.glPushMatrix();
+                if (modelArmor == null) {
+                    final float scale = 1.2f;
+                    GL11.glScalef(scale, scale, scale);
+                    GL11.glTranslatef(0.0f, 0.05f, 0.0f);
+                    ModelHandler.modelArmorHead = new ModelBust();
+                } else {
+                    ModelHandler.modelArmorHead = modelArmor;
+                }
+
                 ModelHandler.helper.setArmorModel(
                     (ModelBiped) ModelHandler.modelArmorHead,
                     item,
                     ((ItemArmor) item.getItem()).armorType,
                     RenderBiped.bipedArmorFilenamePrefix[((ItemArmor) item.getItem()).renderIndex]);
                 ModelHandler.modelArmorHead.bipedHead.render(0.0625f);
-                ModelHandler.modelArmorHead.bipedHeadwear.render(0.0625f);
                 GL11.glPopMatrix();
             }
             itemId = GraveStones.hasCosmeticArmor ? GraveStones.getPrevInventoriesSize(6) + 3
@@ -148,16 +146,17 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             item = tile.getStackInList(itemId);
             if (GraveStones.hasCosmeticArmor && item == null) item = tile.getStackInList(tile.getSizeInventory() - 2);
             if (item != null && item.getItem() instanceof ItemArmor) {
-                GL11.glPushMatrix();
-                final float f2 = 1.1f;
-                GL11.glScalef(f2, f2, f2);
-                GL11.glTranslatef(0.0f, -0.02f, 0.0f);
-                GL11.glRotatef(0.0f, 0.0f, 1.0f, 0.0f);
                 ItemArmor itemArmor = (ItemArmor) item.getItem();
                 // We're creating a zombie because some mods require actual entities to check for armor
                 ModelBiped modelArmor = itemArmor
                     .getArmorModel(new EntityZombie(te.getWorldObj()), item, itemArmor.armorType);
+
+                GL11.glPushMatrix();
+
                 if (modelArmor == null) {
+                    final float scale = 1.1f;
+                    GL11.glScalef(scale, scale, scale);
+                    GL11.glTranslatef(0.0f, -0.02f, 0.0f);
                     ModelHandler.modelArmorChest = new ModelBust();
                 } else {
                     ModelHandler.modelArmorChest = modelArmor;
