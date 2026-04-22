@@ -1,7 +1,6 @@
 
 package net.subaraki.gravestone.inventory;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -30,45 +29,45 @@ public class ContainerGrave extends Container {
         this.slotCount = 0;
         this.te = te;
         this.player = p;
-        if (inv.player.capabilities.isCreativeMode) {
-            for (int i = 0; i < 4; ++i) {
-                for (int k = 0; k < 9; ++k) {
-                    this.addSlotToContainer(new Slot((IInventory) te, this.slotCount, 8 + k * 18, 18 + i * 18));
-                    ++this.slotCount;
-                }
-            }
-            for (int i = 0; i < 4; ++i) {
-                this.addSlotToContainer((Slot) new SlotArmorGrave((IInventory) te, this.slotCount, 174, 72 - i * 18));
-                ++this.slotCount;
-            }
-        } else {
-            for (int i = 0; i < 4; ++i) {
-                for (int k = 0; k < 9; ++k) {
-                    this.addSlotToContainer(
-                        (Slot) new SlotGrave((IInventory) te, this.slotCount, 8 + k * 18, 18 + i * 18));
-                    ++this.slotCount;
-                }
-            }
-            for (int i = 0; i < 4; ++i) {
-                this.addSlotToContainer((Slot) new SlotGrave((IInventory) te, this.slotCount, 174, 72 - i * 18));
+        boolean isCreative = inv.player.capabilities.isCreativeMode;
+        for (int i = 0; i < 4; ++i) {
+            for (int k = 0; k < 9; ++k) {
+                this.addSlotToContainer(getSlot(te, this.slotCount, 8 + k * 18, 18 + i * 18, false, isCreative));
                 ++this.slotCount;
             }
         }
+        for (int i = 0; i < 4; ++i) {
+            this.addSlotToContainer(getSlot(te, this.slotCount, 174, 72 - i * 18, true, isCreative));
+            ++this.slotCount;
+        }
         this.fillInv(inv);
+    }
+
+    private Slot getSlot(IInventory inv, int slotIndex, int xDisplayPosition, int yDisplayPosition, boolean isArmor,
+        boolean isCreative) {
+        if (isCreative) {
+            if (isArmor) {
+                return new SlotArmorGrave(inv, slotIndex, xDisplayPosition, yDisplayPosition);
+            } else {
+                return new Slot(inv, slotIndex, xDisplayPosition, yDisplayPosition);
+            }
+        } else {
+            return new SlotGrave(inv, slotIndex, xDisplayPosition, yDisplayPosition);
+        }
     }
 
     private void fillInv(final InventoryPlayer inv) {
         for (int i = 0; i < 3; ++i) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlotToContainer(new Slot((IInventory) inv, k + i * 9 + 9, 8 + k * 18, 104 + i * 18));
+                this.addSlotToContainer(new Slot(inv, k + i * 9 + 9, 8 + k * 18, 104 + i * 18));
             }
         }
         for (int j = 0; j < 9; ++j) {
-            this.addSlotToContainer(new Slot((IInventory) inv, j, 8 + j * 18, 162));
+            this.addSlotToContainer(new Slot(inv, j, 8 + j * 18, 162));
         }
         for (int i = 0; i < 4; ++i) {
             final int k = i;
-            this.addSlotToContainer((Slot) new Slot(inv, 36 + i, 174, 72 - i * 18 + 86) {
+            this.addSlotToContainer(new Slot(inv, 36 + i, 174, 72 - i * 18 + 86) {
 
                 public int getSlotStackLimit() {
                     return 1;
@@ -76,7 +75,7 @@ public class ContainerGrave extends Container {
 
                 public boolean isItemValid(final ItemStack par1ItemStack) {
                     return par1ItemStack != null && par1ItemStack.getItem()
-                        .isValidArmor(par1ItemStack, 3 - k, (Entity) ContainerGrave.this.player);
+                        .isValidArmor(par1ItemStack, 3 - k, ContainerGrave.this.player);
                 }
 
                 @SideOnly(Side.CLIENT)
@@ -124,10 +123,10 @@ public class ContainerGrave extends Container {
                 }
             }
             if (slotStack.stackSize != 1) {
-                slot.putStack((ItemStack) null);
+                slot.putStack(null);
                 return null;
             }
-            slot.putStack((ItemStack) null);
+            slot.putStack(null);
             if (slotStack.stackSize == stack.stackSize) {
                 return null;
             }
