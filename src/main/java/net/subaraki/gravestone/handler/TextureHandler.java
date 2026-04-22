@@ -5,7 +5,7 @@ import net.minecraft.util.ResourceLocation;
 
 public class TextureHandler {
 
-    private static final String path = "grave:textures/entity/tile/";
+    private static final String path = "grave:textures/entity/";
     private static final ResourceLocation graveTexture;
     private static final ResourceLocation tombTexture;
     private static final ResourceLocation pillarTexture;

@@ -270,6 +270,6 @@ public class GuiGraveContainer extends GuiContainer {
     }
 
     static {
-        graveGui = new ResourceLocation("grave:textures/entity/tile/grave_chest.png");
+        graveGui = new ResourceLocation("grave:textures/gui/grave_chest.png");
     }
 }
