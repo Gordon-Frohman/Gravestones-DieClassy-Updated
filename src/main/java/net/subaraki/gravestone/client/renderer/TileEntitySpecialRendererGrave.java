@@ -217,7 +217,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
     }
 
     private void renderBeam(final TileEntityGravestone tileentity, final double d, final double d1, final double d2) {
-        if (tileentity.hasItems) {
+        if (!tileentity.isDecorativeGrave && tileentity.hasItems) {
             final Tessellator tesselator = Tessellator.instance;
             GL11.glDisable(3553);
             GL11.glDisable(2896);
