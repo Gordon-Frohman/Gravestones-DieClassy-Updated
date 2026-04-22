@@ -90,7 +90,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         final int slotID = this.getListSlotID(slot);
         if (slotID == -1) {
             GraveStones.printDebugMessage(
-                "Tab id was not recognized ! This is a bug or inimplemented feature. please report to mod author !");
+                "Tab id was not recognized ! This is a bug or an unimplemented feature. please report to mod author !");
             GraveStones.printDebugMessage(
                 "Tried getting content of tab #" + this.tab
                     + " this should be the "
@@ -174,11 +174,6 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
             this.profile = new GameProfile((UUID) null, playername);
             fixProfile();
         }
-        /*
-         * if(nbt.hasKey("skinLocation")) {
-         * this.skinLocation = new ResourceLocation(nbt.getString("skinLocation"));
-         * }
-         */
         final NBTTagList tagList = nbt.getTagList("Items", 10);
         for (int i = 0; i < tagList.tagCount(); ++i) {
             final NBTTagCompound tag = tagList.getCompoundTagAt(i);
@@ -270,8 +265,6 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     public String setName(final String name) {
         this.playername = name;
         if (this.modelType == 5 && playername != "") {
-            // this.downloadSkin();
-            // this.skinLocation = GraveUtility.instance.processPlayerTexture(this.playername);
             this.profile = new GameProfile((UUID) null, name);
             fixProfile();
         }
