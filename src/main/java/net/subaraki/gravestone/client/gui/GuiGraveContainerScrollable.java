@@ -1,15 +1,14 @@
 package net.subaraki.gravestone.client.gui;
 
-import java.util.Iterator;
-
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.common.network.C01PacketOpenGui;
+import net.subaraki.gravestone.common.network.C02PacketGraveScroll;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.inventory.ContainerGraveScrollable;
-import net.subaraki.gravestone.inventory.GraveInventory;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import org.lwjgl.input.Mouse;
@@ -27,13 +26,12 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
     /** True if the left mouse button was held down last time drawScreen was called. */
     private boolean wasClicking;
 
-    private Boolean[] enableSlots = new Boolean[36];
+    private ContainerGraveScrollable container;
 
-    public GuiGraveContainerScrollable(EntityPlayer player, TileEntityGravestone te) {
-        super(player, te, new ContainerGraveScrollable(te, player));
+    public GuiGraveContainerScrollable(TileEntityGravestone te) {
+        super(te, new ContainerGraveScrollable(te, Minecraft.getMinecraft().thePlayer));
         graveGui = new ResourceLocation("grave:textures/gui/grave_chest_scrollable.png");
-        resetSlots();
-        scrollTo(0);
+        container = (ContainerGraveScrollable) this.inventorySlots;
     }
 
     /**
@@ -41,30 +39,24 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
      */
     public void updateScreen() {
         if (this.te.inventories.isEmpty()) {
-            playerOpenGui.openGui(
-                GraveStones.instance,
-                GuiHandler.GRAVE_CONTAINER,
-                playerOpenGui.worldObj,
-                te.xCoord,
-                te.yCoord,
-                te.zCoord);
+            // Minecraft mc = Minecraft.getMinecraft();
+            // mc.thePlayer.openGui(
+            // GraveStones.instance,
+            // GuiHandler.GRAVE_CONTAINER,
+            // mc.theWorld,
+            // te.xCoord,
+            // te.yCoord,
+            // te.zCoord);
+            GraveStones.instance.network
+                .sendToServer(new C01PacketOpenGui(GuiHandler.GRAVE_CONTAINER, te.xCoord, te.yCoord, te.zCoord));
         }
     }
 
     @Override
     public boolean isMouseOverSlot(Slot slotIn, int mouseX, int mouseY) {
-        return (slotIn.slotNumber >= enableSlots.length || enableSlots[slotIn.slotNumber])
+        return (slotIn.slotNumber >= container.enableSlots.length || container.enableSlots[slotIn.slotNumber])
             ? super.isMouseOverSlot(slotIn, mouseX, mouseY)
             : false;
-    }
-
-    private void resetSlots() {
-        for (int i = 0; i < enableSlots.length; i++) {
-            enableSlots[i] = false;
-            Slot slot = ((ContainerGraveScrollable) this.inventorySlots).getSlot(i);
-            slot.inventory = ContainerGraveScrollable.placeholderInv;
-            slot.slotIndex = i;
-        }
     }
 
     @Override
@@ -73,19 +65,11 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
         super.drawGuiContainerForegroundLayer(par1, par2);
     }
 
-    private int getRowsCount() {
-        int rowsCount = 0;
-        for (GraveInventory inv : te.inventories) {
-            rowsCount += inv.getRowsCount() + 1;
-        }
-        return rowsCount;
-    }
-
     /**
      * returns (if you are not on the inventoryTab) and (the flag isn't set) and (you have more than 1 page of items)
      */
     private boolean needsScrollBars() {
-        return getRowsCount() > 5;
+        return container.getRowsCount() > 5;
     }
 
     /**
@@ -97,7 +81,7 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
         int scroll = Mouse.getEventDWheel();
 
         if (scroll != 0 && this.needsScrollBars()) {
-            int rows = getRowsCount() - 5;
+            int rows = container.getRowsCount() - 5;
 
             if (scroll > 0) {
                 scroll = 1;
@@ -161,52 +145,9 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
     }
 
     private void scrollTo(float scroll) {
-        this.resetSlots();
-
-        int rows = this.getRowsCount() - 5;
-        int offset = (int) ((double) (scroll * (float) rows) + 0.5D) + 1;
-
-        if (offset < 0) offset = 0;
-
-        ContainerGraveScrollable container = (ContainerGraveScrollable) this.inventorySlots;
-
-        boolean skipRow = true; // Skipping one row when we need to draw new inventory
-        Iterator<GraveInventory> i$ = this.te.inventories.iterator();
-        GraveInventory currentInv = i$.next();
-        int currentInvSlot = 0;
-        int totalInvSlot = 0;
-        int currentRow = 0;
-        while (currentRow < offset + 4) {
-            if (skipRow) {
-                currentRow++;
-                totalInvSlot = currentRow * 9;
-                skipRow = false;
-                continue;
-            } else {
-                if (currentRow >= offset) {
-                    int index = totalInvSlot - offset * 9;
-                    this.enableSlots[index] = true;
-                    Slot slot = container.getSlot(index);
-                    slot.inventory = currentInv;
-                    slot.slotIndex = currentInvSlot;
-                }
-                if (currentInvSlot + 1 < currentInv.getSizeInventory()) {
-                    if (currentInvSlot % 9 == 8) currentRow++;
-                    currentInvSlot++;
-                    totalInvSlot++;
-                } else {
-                    if (i$.hasNext()) {
-                        currentInv = i$.next();
-                        currentInvSlot = 0;
-                        currentRow++;
-                        totalInvSlot = currentRow * 9;
-                        skipRow = true;
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
+        container.scrollTo(scroll);
+        GraveStones.instance.network
+            .sendToServer(new C02PacketGraveScroll(Minecraft.getMinecraft().thePlayer.openContainer.windowId, scroll));
     }
 
     @Override
@@ -219,7 +160,7 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 9; j++) {
                 int slotId = i * 9 + j;
-                if (enableSlots[slotId]) {
+                if (container.enableSlots[slotId]) {
                     this.drawTexturedModalRect(xMin + 18 * j, yMin + 18 * i, 7, 104, 18, 18);
                 }
             }

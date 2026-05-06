@@ -36,11 +36,11 @@ public class GuiHandler implements IGuiHandler {
             default:
                 return null;
             case GRAVE_CONTAINER:
-                return new GuiGraveContainer(player, te);
+                return new GuiGraveContainer(te);
             case GRAVE_CONTAINER_SCROLLABLE:
-                return new GuiGraveContainerScrollable(player, te);
+                return new GuiGraveContainerScrollable(te);
             case GRAVE_SELECTOR:
-                return new GuiGraveSelector(player);
+                return new GuiGraveSelector();
         }
     }
 }

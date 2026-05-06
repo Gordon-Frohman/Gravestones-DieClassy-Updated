@@ -1,9 +1,9 @@
 
 package net.subaraki.gravestone.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.common.network.C00PacketSyncGraveData;
@@ -14,25 +14,21 @@ import net.subaraki.gravestone.util.GraveUtility;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.simpleimpl.IMessage;
-
 public class GuiGraveSelector extends GuiScreen {
 
     private int xSize;
     private int ySize;
     private short rotationCounter;
-    private EntityPlayer player;
     public int graveType;
     public boolean maleEpitaph;
     private GuiButton maleSex;
     private GuiButton femaleSex;
 
-    public GuiGraveSelector(final EntityPlayer player) {
+    public GuiGraveSelector() {
         this.xSize = 0;
         this.ySize = 0;
         this.rotationCounter = 0;
-        this.player = player;
-        PlayerGraveData pgd = PlayerGraveData.get(player);
+        PlayerGraveData pgd = PlayerGraveData.get(Minecraft.getMinecraft().thePlayer);
         this.graveType = pgd.getGraveModel();
         this.maleEpitaph = pgd.shouldUseMaleEpitaph();
     }
@@ -40,8 +36,8 @@ public class GuiGraveSelector extends GuiScreen {
     @SuppressWarnings("unchecked")
     public void initGui() {
         this.buttonList.clear();
-        final int posX = (this.width - this.xSize) / 2;
-        final int posY = (this.height - this.ySize) / 2;
+        int posX = (this.width - this.xSize) / 2;
+        int posY = (this.height - this.ySize) / 2;
         this.buttonList.add(new GuiButton(0, posX + 150, posY - 100, 20, 20, "X"));
         this.buttonList
             .add(new GuiButton(1, posX + 90, posY - 70, 80, 20, StatCollector.translateToLocal("pickGrave.cross")));
@@ -71,11 +67,11 @@ public class GuiGraveSelector extends GuiScreen {
         this.buttonList.add(femaleSex);
     }
 
-    public void drawScreen(final int par1, final int par2, final float par3) {
+    public void drawScreen(int par1, int par2, float par3) {
         super.drawScreen(par1, par2, par3);
         GL11.glColor4f(0.0f, 0.0f, 0.0f, 5.0f);
-        final int posX = (this.width - this.xSize) / 2;
-        final int posY = (this.height - this.ySize) / 2;
+        int posX = (this.width - this.xSize) / 2;
+        int posY = (this.height - this.ySize) / 2;
         this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
         this.fontRendererObj.drawSplitString(
             StatCollector.translateToLocal("pickGrave.text"),
@@ -105,8 +101,8 @@ public class GuiGraveSelector extends GuiScreen {
         }
         GL11.glTranslatef((float) (this.width / 4), (float) (this.height / 2 - height), 40.0f);
         GL11.glScaled((double) scale, (double) scale, (double) (-scale));
-        final float s = -0.65f;
-        final float s2 = -0.4f;
+        float s = -0.65f;
+        float s2 = -0.4f;
         if (this.graveType == 8) {
             GL11.glScalef(1.0f, -1.0f, 1.0f);
             GL11.glRotatef(-10.0f, 1.0f, 0.0f, 0.0f);
@@ -120,7 +116,7 @@ public class GuiGraveSelector extends GuiScreen {
             GL11.glTranslatef(-s2, 0.0f, s2);
         }
         GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
-        final short rotationCounter = this.rotationCounter;
+        short rotationCounter = this.rotationCounter;
         this.rotationCounter = (short) (rotationCounter + 1);
         GL11.glRotatef((float) rotationCounter, 0.0f, 1.0f, 0.0f);
         if (this.graveType == 8) {
@@ -138,21 +134,20 @@ public class GuiGraveSelector extends GuiScreen {
 
     private void renderBust() {
         GL11.glPushMatrix();
-        if (this.player != null) {
-            this.mc.renderEngine.bindTexture(GraveUtility.instance.processPlayerTexture(this.player.getDisplayName()));
-            GL11.glTranslatef((float) (this.width / 4), (float) (this.height / 2 - 40), 40.0f);
-            GL11.glScaled(50.0, 50.0, -50.0);
-            GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
-            GL11.glRotatef((float) this.rotationCounter, 0.0f, 1.0f, 0.0f);
-            ModelHandler.modelBust.renderBust(0.0625f);
-        }
+        this.mc.renderEngine.bindTexture(
+            GraveUtility.instance.processPlayerTexture(Minecraft.getMinecraft().thePlayer.getDisplayName()));
+        GL11.glTranslatef((float) (this.width / 4), (float) (this.height / 2 - 40), 40.0f);
+        GL11.glScaled(50.0, 50.0, -50.0);
+        GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
+        GL11.glRotatef((float) this.rotationCounter, 0.0f, 1.0f, 0.0f);
+        ModelHandler.modelBust.renderBust(0.0625f);
         GL11.glPopMatrix();
     }
 
-    protected void actionPerformed(final GuiButton b) {
+    protected void actionPerformed(GuiButton b) {
         super.actionPerformed(b);
         if (b.id == 0) {
-            this.player.closeScreen();
+            Minecraft.getMinecraft().thePlayer.closeScreen();
         } else {
             if (b.id < 11) {
                 this.graveType = b.id;
@@ -165,11 +160,11 @@ public class GuiGraveSelector extends GuiScreen {
         }
     }
 
-    private void sendPacket(final boolean maleEpitaph, final int id) {
-        PlayerGraveData pgd = PlayerGraveData.get(this.player);
+    private void sendPacket(boolean maleEpitaph, int id) {
+        PlayerGraveData pgd = PlayerGraveData.get(Minecraft.getMinecraft().thePlayer);
         pgd.setMaleEpitaph(maleEpitaph);
         pgd.setGraveModel(id);
-        GraveStones.instance.network.sendToServer((IMessage) new C00PacketSyncGraveData(maleEpitaph, id));
+        GraveStones.instance.network.sendToServer(new C00PacketSyncGraveData(maleEpitaph, id));
     }
 
     public boolean doesGuiPauseGame() {

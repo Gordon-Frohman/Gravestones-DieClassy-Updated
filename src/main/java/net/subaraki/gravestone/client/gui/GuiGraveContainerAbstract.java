@@ -8,6 +8,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.common.network.C01PacketOpenGui;
 import net.subaraki.gravestone.handler.GraveTextHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.ModelHandler;
@@ -28,7 +29,6 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
     static short rotationCounter = 0;
     public String epitaph = "";
     public EntityPlayer deadPlayer;
-    public EntityPlayer playerOpenGui;
     public String nameOfDeadPlayer;
     protected TileEntityGravestone te;
     protected String tabText = "";
@@ -38,10 +38,10 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
     int x = this.width / 2 - this.xSize / 2 + 4;
     int y = this.height / 2 - this.ySize / 2 - 19;
 
-    public GuiGraveContainerAbstract(EntityPlayer player, TileEntityGravestone te, ContainerGraveAbstract grave) {
+    public GuiGraveContainerAbstract(TileEntityGravestone te, ContainerGraveAbstract grave) {
         super(grave);
-        this.deadPlayer = player.worldObj.getPlayerEntityByName(te.playername);
-        this.playerOpenGui = player;
+        this.deadPlayer = te.getWorldObj()
+            .getPlayerEntityByName(te.playername);
         this.nameOfDeadPlayer = te.playername;
         this.te = te;
         this.xSize = 198;
@@ -175,23 +175,11 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
     @Override
     protected void actionPerformed(GuiButton button) {
         super.actionPerformed(button);
-        if (button.id == GuiHandler.GRAVE_CONTAINER && this instanceof GuiGraveContainerScrollable) {
-            playerOpenGui.openGui(
-                GraveStones.instance,
-                GuiHandler.GRAVE_CONTAINER,
-                playerOpenGui.worldObj,
-                te.xCoord,
-                te.yCoord,
-                te.zCoord);
-        }
-        if (button.id == GuiHandler.GRAVE_CONTAINER_SCROLLABLE && this instanceof GuiGraveContainer) {
-            playerOpenGui.openGui(
-                GraveStones.instance,
-                GuiHandler.GRAVE_CONTAINER_SCROLLABLE,
-                playerOpenGui.worldObj,
-                te.xCoord,
-                te.yCoord,
-                te.zCoord);
+        if ((button.id == GuiHandler.GRAVE_CONTAINER && this instanceof GuiGraveContainerScrollable)
+            || (button.id == GuiHandler.GRAVE_CONTAINER_SCROLLABLE && this instanceof GuiGraveContainer)) {
+            // Minecraft mc = Minecraft.getMinecraft();
+            // mc.thePlayer.openGui(GraveStones.instance, button.id, mc.theWorld, te.xCoord, te.yCoord, te.zCoord);
+            GraveStones.instance.network.sendToServer(new C01PacketOpenGui(button.id, te.xCoord, te.yCoord, te.zCoord));
         }
     }
 

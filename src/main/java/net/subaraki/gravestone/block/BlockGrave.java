@@ -39,7 +39,7 @@ public class BlockGrave extends Block {
 
     Random rand;
 
-    public BlockGrave(final Material mat) {
+    public BlockGrave(Material mat) {
         super(mat);
         this.rand = new Random();
         this.setBlockBounds(0.4f, 0.0f, 0.4f, 0.6f, 1.0f, 0.6f);
@@ -47,7 +47,7 @@ public class BlockGrave extends Block {
         this.setResistance(6000000.0F);
     }
 
-    public void registerBlockIcons(final IIconRegister par1IconRegister) {
+    public void registerBlockIcons(IIconRegister par1IconRegister) {
         this.blockIcon = par1IconRegister.registerIcon("stonebrick");
         this.iconCobblestone = par1IconRegister.registerIcon("cobblestone");
         this.iconOakPlanks = par1IconRegister.registerIcon("planks_oak");
@@ -56,25 +56,25 @@ public class BlockGrave extends Block {
         this.iconQuartz = par1IconRegister.registerIcon("quartz_block_bottom");
     }
 
-    public int quantityDropped(final Random par1Random) {
+    public int quantityDropped(Random par1Random) {
         return -1;
     }
 
-    public boolean onBlockActivated(final World world, final int x, final int y, final int z, final EntityPlayer player,
-        final int meta, final float p_149727_7_, final float p_149727_8_, final float p_149727_9_) {
-        final TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
+    public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int meta, float p_149727_7_,
+        float p_149727_8_, float p_149727_9_) {
+        TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
         if (player.getCurrentEquippedItem() == null || !(player.getCurrentEquippedItem()
             .getItem() instanceof ItemNameTag)) {
             if (!player.isSneaking()) {
                 player.openGui(GraveStones.instance, GuiHandler.GRAVE_CONTAINER, world, x, y, z);
             } else {
-                final TileEntityGravestone tileEntityGravestone = te;
+                TileEntityGravestone tileEntityGravestone = te;
                 tileEntityGravestone.ModelRotation += 15.0f;
             }
             return true;
         }
         if (te.isDecorativeGrave) {
-            final String s = player.getCurrentEquippedItem()
+            String s = player.getCurrentEquippedItem()
                 .getDisplayName();
             te.setName(s);
             te.setDeathMessage(StatCollector.translateToLocal("is.Honored.To"));
@@ -88,12 +88,12 @@ public class BlockGrave extends Block {
         return true;
     }
 
-    public float getExplosionResistance(final Entity par1Entity, final World world, final int x, final int y,
-        final int z, final double explosionX, final double explosionY, final double explosionZ) {
+    public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX,
+        double explosionY, double explosionZ) {
         return this.getExplosionResistance(par1Entity);
     }
 
-    public float getExplosionResistance(final Entity par1Entity) {
+    public float getExplosionResistance(Entity par1Entity) {
         return Float.MAX_VALUE;
     }
 
@@ -103,12 +103,11 @@ public class BlockGrave extends Block {
         if (te.isDecorativeGrave || !te.hasItems) super.onBlockExploded(world, x, y, z, explosion);
     }
 
-    public void onBlockDestroyedByExplosion(final World world, final int x, final int y, final int z,
-        final Explosion p_149723_5_) {
+    public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion p_149723_5_) {
         world.removeTileEntity(x, y, z);
     }
 
-    public void onBlockClicked(final World world, final int x, final int y, final int z, final EntityPlayer player) {
+    public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
         TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
         if (te.hasItems && !te.isDecorativeGrave) {
             this.setBlockUnbreakable();
@@ -117,24 +116,24 @@ public class BlockGrave extends Block {
         }
     }
 
-    public void breakBlock(final World world, final int x, final int y, final int z, final Block block, final int a) {
-        final TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
+    public void breakBlock(World world, int x, int y, int z, Block block, int a) {
+        TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
         if (te != null) {
             for (GraveInventory inventory : te.getAllInventories()) {
                 for (int i = 0; i < inventory.getSizeInventory(); i++) {
                     ItemStack stack = inventory.getStackInSlot(i);
                     if (stack != null) {
-                        final float f = this.rand.nextFloat() * 0.8f + 0.1f;
-                        final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
-                        final float f3 = this.rand.nextFloat() * 0.8f + 0.1f;
+                        float f = this.rand.nextFloat() * 0.8f + 0.1f;
+                        float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
+                        float f3 = this.rand.nextFloat() * 0.8f + 0.1f;
                         while (stack.stackSize > 0) {
                             int k1 = this.rand.nextInt(21) + 10;
                             if (k1 > stack.stackSize) {
                                 k1 = stack.stackSize;
                             }
-                            final ItemStack itemStack = stack;
+                            ItemStack itemStack = stack;
                             itemStack.stackSize -= k1;
-                            final EntityItem entityitem = new EntityItem(
+                            EntityItem entityitem = new EntityItem(
                                 world,
                                 (double) (x + f),
                                 (double) (y + f2),
@@ -146,7 +145,7 @@ public class BlockGrave extends Block {
                                         (NBTTagCompound) stack.getTagCompound()
                                             .copy());
                             }
-                            final float f4 = 0.05f;
+                            float f4 = 0.05f;
                             entityitem.motionX = (float) this.rand.nextGaussian() * f4;
                             entityitem.motionY = (float) this.rand.nextGaussian() * f4 + 0.2f;
                             entityitem.motionZ = (float) this.rand.nextGaussian() * f4;
@@ -162,9 +161,9 @@ public class BlockGrave extends Block {
         super.breakBlock(world, x, y, z, block, a);
     }
 
-    public void setBlockBoundsBasedOnState(final IBlockAccess par1IBlockAccess, final int x, final int y, final int z) {
-        final TileEntityGravestone te = (TileEntityGravestone) par1IBlockAccess.getTileEntity(x, y, z);
-        final int meta = te.modelType;
+    public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z) {
+        TileEntityGravestone te = (TileEntityGravestone) par1IBlockAccess.getTileEntity(x, y, z);
+        int meta = te.modelType;
         switch (meta) {
             case 1: {
                 this.setBlockBounds(0.4f, 0.0f, 0.4f, 0.6f, 1.0f, 0.6f);
@@ -225,16 +224,16 @@ public class BlockGrave extends Block {
         return false;
     }
 
-    public boolean hasTileEntity(final int metadata) {
+    public boolean hasTileEntity(int metadata) {
         return true;
     }
 
-    public TileEntity createTileEntity(final World world, final int metadata) {
+    public TileEntity createTileEntity(World world, int metadata) {
         return new TileEntityGravestone();
     }
 
     public int getDamageValue(World worldIn, int x, int y, int z) {
-        final TileEntityGravestone te = (TileEntityGravestone) worldIn.getTileEntity(x, y, z);
+        TileEntityGravestone te = (TileEntityGravestone) worldIn.getTileEntity(x, y, z);
         return te.modelType;
     }
 

@@ -16,26 +16,26 @@ public class C00PacketSyncGraveData implements IMessage {
 
     public C00PacketSyncGraveData() {}
 
-    public C00PacketSyncGraveData(final boolean maleEpitaph, final int meta) {
+    public C00PacketSyncGraveData(boolean maleEpitaph, int meta) {
         this.maleEpitaph = maleEpitaph;
         this.meta = meta;
     }
 
-    public void fromBytes(final ByteBuf buf) {
+    public void fromBytes(ByteBuf buf) {
         this.maleEpitaph = buf.readBoolean();
         this.meta = buf.readInt();
     }
 
-    public void toBytes(final ByteBuf buf) {
+    public void toBytes(ByteBuf buf) {
         buf.writeBoolean(this.maleEpitaph);
         buf.writeInt(this.meta);
     }
 
     public static class Handler implements IMessageHandler<C00PacketSyncGraveData, IMessage> {
 
-        public IMessage onMessage(final C00PacketSyncGraveData message, final MessageContext ctx) {
-            final EntityPlayer player = (EntityPlayer) ctx.getServerHandler().playerEntity;
-            final PlayerGraveData pgd = PlayerGraveData.get(player);
+        public IMessage onMessage(C00PacketSyncGraveData message, MessageContext ctx) {
+            EntityPlayer player = ctx.getServerHandler().playerEntity;
+            PlayerGraveData pgd = PlayerGraveData.get(player);
             pgd.setMaleEpitaph(message.maleEpitaph);
             pgd.setGraveModel(message.meta);
             return null;

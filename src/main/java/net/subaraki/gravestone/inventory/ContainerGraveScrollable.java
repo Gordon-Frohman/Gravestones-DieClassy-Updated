@@ -1,12 +1,17 @@
 
 package net.subaraki.gravestone.inventory;
 
+import java.util.Iterator;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 public class ContainerGraveScrollable extends ContainerGraveAbstract {
+
+    public Boolean[] enableSlots = new Boolean[36];
 
     public ContainerGraveScrollable(TileEntityGravestone te, EntityPlayer player) {
         super(te, player);
@@ -19,9 +24,74 @@ public class ContainerGraveScrollable extends ContainerGraveAbstract {
             }
         }
         this.fillInv(player.inventory);
+        scrollTo(0);
     }
 
-    public static IInventory placeholderInv = new IInventory() {
+    private void resetSlots() {
+        for (int i = 0; i < enableSlots.length; i++) {
+            enableSlots[i] = false;
+            Slot slot = getSlot(i);
+            slot.inventory = placeholderInv;
+            slot.slotIndex = i;
+        }
+    }
+
+    public void scrollTo(float scroll) {
+        this.resetSlots();
+
+        int rows = this.getRowsCount() - 5;
+        int offset = (int) ((double) (scroll * (float) rows) + 0.5D) + 1;
+
+        if (offset < 0) offset = 0;
+
+        boolean skipRow = true; // Skipping one row when we need to draw new inventory
+        Iterator<GraveInventory> i$ = this.te.inventories.iterator();
+        GraveInventory currentInv = i$.next();
+        int currentInvSlot = 0;
+        int totalInvSlot = 0;
+        int currentRow = 0;
+        while (currentRow < offset + 4) {
+            if (skipRow) {
+                currentRow++;
+                totalInvSlot = currentRow * 9;
+                skipRow = false;
+                continue;
+            } else {
+                if (currentRow >= offset) {
+                    int index = totalInvSlot - offset * 9;
+                    this.enableSlots[index] = true;
+                    Slot slot = getSlot(index);
+                    slot.inventory = currentInv;
+                    slot.slotIndex = currentInvSlot;
+                }
+                if (currentInvSlot + 1 < currentInv.getSizeInventory()) {
+                    if (currentInvSlot % 9 == 8) currentRow++;
+                    currentInvSlot++;
+                    totalInvSlot++;
+                } else {
+                    if (i$.hasNext()) {
+                        currentInv = i$.next();
+                        currentInvSlot = 0;
+                        currentRow++;
+                        totalInvSlot = currentRow * 9;
+                        skipRow = true;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    public int getRowsCount() {
+        int rowsCount = 0;
+        for (GraveInventory inv : te.inventories) {
+            rowsCount += inv.getRowsCount() + 1;
+        }
+        return rowsCount;
+    }
+
+    private static IInventory placeholderInv = new IInventory() {
 
         @Override
         public int getSizeInventory() {

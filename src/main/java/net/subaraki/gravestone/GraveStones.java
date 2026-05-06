@@ -10,6 +10,8 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.subaraki.gravestone.block.BlockGrave;
 import net.subaraki.gravestone.common.CommonProxy;
 import net.subaraki.gravestone.common.network.C00PacketSyncGraveData;
+import net.subaraki.gravestone.common.network.C01PacketOpenGui;
+import net.subaraki.gravestone.common.network.C02PacketGraveScroll;
 import net.subaraki.gravestone.common.network.S00PacketSyncGraveData;
 import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
@@ -81,8 +83,10 @@ public class GraveStones {
         this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones");
         this.network
             .registerMessage(C00PacketSyncGraveData.Handler.class, C00PacketSyncGraveData.class, 0, Side.SERVER);
+        this.network.registerMessage(C01PacketOpenGui.Handler.class, C01PacketOpenGui.class, 1, Side.SERVER);
+        this.network.registerMessage(C02PacketGraveScroll.Handler.class, C02PacketGraveScroll.class, 2, Side.SERVER);
         this.network
-            .registerMessage(S00PacketSyncGraveData.Handler.class, S00PacketSyncGraveData.class, 1, Side.CLIENT);
+            .registerMessage(S00PacketSyncGraveData.Handler.class, S00PacketSyncGraveData.class, 3, Side.CLIENT);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         ConfigHandler.instance.loadConfig(event.getSuggestedConfigurationFile());
