@@ -1,4 +1,4 @@
-package net.subaraki.gravestone.integration;
+package net.subaraki.gravestone.integration.baubles;
 
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;

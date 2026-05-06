@@ -53,4 +53,5 @@ dependencies {
     compileOnly(rfg.deobf(files("libs/MCEconomy2-2.5.4.a-1.7.0.jar"))) // For SextiarySector runtime
     //implementation("com.github.GTNewHorizons:AdventureBackpack2:1.3.7-GTNH:dev")
     compileOnly(files("libs/adventurebackpack-1.3.7-GTNH-dev.jar"))
+    compileOnly(rfg.deobf("curse.maven:rpginventory-1-7-10-1483929:7745442"))
 }

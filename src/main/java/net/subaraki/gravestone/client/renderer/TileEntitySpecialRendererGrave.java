@@ -21,6 +21,8 @@ import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.model.ModelBust;
 import net.subaraki.gravestone.handler.ModelHandler;
 import net.subaraki.gravestone.handler.TextureHandler;
+import net.subaraki.gravestone.integration.cosmeticarmor.CosmeticArmorIntegration;
+import net.subaraki.gravestone.inventory.GraveInventory;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import org.lwjgl.opengl.GL11;
@@ -39,10 +41,10 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
     }
 
     @SuppressWarnings("rawtypes")
-    public void renderTileEntityAt(final TileEntity te, final double x, final double y, final double z, final float f) {
-        final TileEntityGravestone tile = (TileEntityGravestone) te;
+    public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
+        TileEntityGravestone tile = (TileEntityGravestone) te;
         float rot = tile.ModelRotation;
-        final int modeltype = tile.modelType;
+        int modeltype = tile.modelType;
         this.renderBeam(tile, x, y, z);
         GL11.glPushMatrix();
         this.bindTexture(TextureHandler.getTextureFromMeta(modeltype));
@@ -61,8 +63,8 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 rot -= 90.0f;
                 break;
         }
-        final float s = -0.75f;
-        final float s2 = -0.4f;
+        float s = -0.75f;
+        float s2 = -0.4f;
         if (modeltype == 8) {
             GL11.glScalef(0.75f, 0.75f, 0.75f);
             GL11.glTranslatef(-0.75f, 2.0f, 0.75f);
@@ -89,7 +91,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
         GL11.glPushMatrix();
         GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
         GL11.glScalef(1.0f, -1.0f, -1.0f);
-        final float sc = 0.75f;
+        float sc = 0.75f;
         GL11.glScalef(sc, sc, sc);
         if (modeltype == 5) {
             ResourceLocation resourcelocation = AbstractClientPlayer.locationStevePng;
@@ -113,10 +115,12 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             } else {
                 ModelHandler.modelBust.renderBust(0.0625f);
             }
-            int itemId = GraveStones.hasCosmeticArmor ? GraveStones.getPrevInventoriesSize(6) + 3
-                : tile.getSizeInventory() - 1;
-            ItemStack item = tile.getStackInList(itemId);
-            if (GraveStones.hasCosmeticArmor && item == null) item = tile.getStackInList(tile.getSizeInventory() - 1);
+            GraveInventory armorInv = tile.armor;
+            GraveInventory cosArmorInv = GraveStones.hasCosmeticArmor ? CosmeticArmorIntegration.getGraveInventory(tile)
+                : null;
+            int slotId = 3;
+            ItemStack item = cosArmorInv != null ? cosArmorInv.getStackInSlot(slotId) : null;
+            if (item == null) armorInv.getStackInSlot(slotId);
             if (item != null && item.getItem() instanceof ItemArmor) {
                 ItemArmor itemArmor = (ItemArmor) item.getItem();
                 // We're creating a zombie because some mods require actual entities to check for armor
@@ -125,7 +129,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
 
                 GL11.glPushMatrix();
                 if (modelArmor == null) {
-                    final float scale = 1.2f;
+                    float scale = 1.2f;
                     GL11.glScalef(scale, scale, scale);
                     GL11.glTranslatef(0.0f, 0.05f, 0.0f);
                     ModelHandler.modelArmorHead = new ModelBust();
@@ -141,10 +145,9 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 ModelHandler.modelArmorHead.bipedHead.render(0.0625f);
                 GL11.glPopMatrix();
             }
-            itemId = GraveStones.hasCosmeticArmor ? GraveStones.getPrevInventoriesSize(6) + 3
-                : tile.getSizeInventory() - 2;
-            item = tile.getStackInList(itemId);
-            if (GraveStones.hasCosmeticArmor && item == null) item = tile.getStackInList(tile.getSizeInventory() - 2);
+            slotId = 2;
+            item = cosArmorInv != null ? cosArmorInv.getStackInSlot(slotId) : null;
+            if (item == null) armorInv.getStackInSlot(slotId);
             if (item != null && item.getItem() instanceof ItemArmor) {
                 ItemArmor itemArmor = (ItemArmor) item.getItem();
                 // We're creating a zombie because some mods require actual entities to check for armor
@@ -154,7 +157,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 GL11.glPushMatrix();
 
                 if (modelArmor == null) {
-                    final float scale = 1.1f;
+                    float scale = 1.1f;
                     GL11.glScalef(scale, scale, scale);
                     GL11.glTranslatef(0.0f, -0.02f, 0.0f);
                     ModelHandler.modelArmorChest = new ModelBust();
@@ -216,9 +219,9 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
         }
     }
 
-    private void renderBeam(final TileEntityGravestone tileentity, final double d, final double d1, final double d2) {
+    private void renderBeam(TileEntityGravestone tileentity, double d, double d1, double d2) {
         if (!tileentity.isDecorativeGrave && tileentity.hasItems) {
-            final Tessellator tesselator = Tessellator.instance;
+            Tessellator tesselator = Tessellator.instance;
             GL11.glDisable(3553);
             GL11.glDisable(2896);
             GL11.glDisable(2912);
@@ -226,18 +229,16 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             GL11.glDisable(2884);
             GL11.glEnable(3042);
             GL11.glBlendFunc(770, 1);
-            final char var5 = '\u00f0';
-            final int var6 = var5 % 65536;
-            final int var7 = var5 / 65536;
+            char var5 = '\u00f0';
+            int var6 = var5 % 65536;
+            int var7 = var5 / 65536;
             OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, var6 / 1.0f, var7 / 1.0f);
-            final int height = 256;
-            final double topWidthFactor = 0.5;
-            final double bottomWidthFactor = 0.5;
-            final boolean other = !tileentity.playername
-                .equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
-            final float otherFloat = 0.0f;
-            final float color = (other && !Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) ? 0.0f
-                : 0.7f;
+            int height = 256;
+            double topWidthFactor = 0.5;
+            double bottomWidthFactor = 0.5;
+            boolean other = !tileentity.playername.equals(Minecraft.getMinecraft().thePlayer.getCommandSenderName());
+            float otherFloat = 0.0f;
+            float color = (other && !Minecraft.getMinecraft().thePlayer.capabilities.isCreativeMode) ? 0.0f : 0.7f;
             for (int width = 0; width < (other ? 2 : 5); ++width) {
                 tesselator.startDrawing(5);
                 tesselator.setColorRGBA_F(color - otherFloat, color - otherFloat, color, 0.11f);

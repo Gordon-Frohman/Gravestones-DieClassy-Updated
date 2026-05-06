@@ -21,6 +21,8 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.handler.GuiHandler;
+import net.subaraki.gravestone.inventory.GraveInventory;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -64,7 +66,7 @@ public class BlockGrave extends Block {
         if (player.getCurrentEquippedItem() == null || !(player.getCurrentEquippedItem()
             .getItem() instanceof ItemNameTag)) {
             if (!player.isSneaking()) {
-                player.openGui((Object) GraveStones.instance, 0, world, x, y, z);
+                player.openGui(GraveStones.instance, GuiHandler.GRAVE_CONTAINER, world, x, y, z);
             } else {
                 final TileEntityGravestone tileEntityGravestone = te;
                 tileEntityGravestone.ModelRotation += 15.0f;
@@ -118,36 +120,39 @@ public class BlockGrave extends Block {
     public void breakBlock(final World world, final int x, final int y, final int z, final Block block, final int a) {
         final TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
         if (te != null) {
-            for (final ItemStack itemstack : te.list) {
-                if (itemstack != null) {
-                    final float f = this.rand.nextFloat() * 0.8f + 0.1f;
-                    final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
-                    final float f3 = this.rand.nextFloat() * 0.8f + 0.1f;
-                    while (itemstack.stackSize > 0) {
-                        int k1 = this.rand.nextInt(21) + 10;
-                        if (k1 > itemstack.stackSize) {
-                            k1 = itemstack.stackSize;
-                        }
-                        final ItemStack itemStack = itemstack;
-                        itemStack.stackSize -= k1;
-                        final EntityItem entityitem = new EntityItem(
-                            world,
-                            (double) (x + f),
-                            (double) (y + f2),
-                            (double) (z + f3),
-                            new ItemStack(itemstack.getItem(), k1, itemstack.getItemDamage()));
-                        if (itemstack.hasTagCompound()) {
-                            entityitem.getEntityItem()
-                                .setTagCompound(
-                                    (NBTTagCompound) itemstack.getTagCompound()
-                                        .copy());
-                        }
-                        final float f4 = 0.05f;
-                        entityitem.motionX = (float) this.rand.nextGaussian() * f4;
-                        entityitem.motionY = (float) this.rand.nextGaussian() * f4 + 0.2f;
-                        entityitem.motionZ = (float) this.rand.nextGaussian() * f4;
-                        if (!world.isRemote) {
-                            world.spawnEntityInWorld((Entity) entityitem);
+            for (GraveInventory inventory : te.getAllInventories()) {
+                for (int i = 0; i < inventory.getSizeInventory(); i++) {
+                    ItemStack stack = inventory.getStackInSlot(i);
+                    if (stack != null) {
+                        final float f = this.rand.nextFloat() * 0.8f + 0.1f;
+                        final float f2 = this.rand.nextFloat() * 0.8f + 0.1f;
+                        final float f3 = this.rand.nextFloat() * 0.8f + 0.1f;
+                        while (stack.stackSize > 0) {
+                            int k1 = this.rand.nextInt(21) + 10;
+                            if (k1 > stack.stackSize) {
+                                k1 = stack.stackSize;
+                            }
+                            final ItemStack itemStack = stack;
+                            itemStack.stackSize -= k1;
+                            final EntityItem entityitem = new EntityItem(
+                                world,
+                                (double) (x + f),
+                                (double) (y + f2),
+                                (double) (z + f3),
+                                new ItemStack(stack.getItem(), k1, stack.getItemDamage()));
+                            if (stack.hasTagCompound()) {
+                                entityitem.getEntityItem()
+                                    .setTagCompound(
+                                        (NBTTagCompound) stack.getTagCompound()
+                                            .copy());
+                            }
+                            final float f4 = 0.05f;
+                            entityitem.motionX = (float) this.rand.nextGaussian() * f4;
+                            entityitem.motionY = (float) this.rand.nextGaussian() * f4 + 0.2f;
+                            entityitem.motionZ = (float) this.rand.nextGaussian() * f4;
+                            if (!world.isRemote) {
+                                world.spawnEntityInWorld((Entity) entityitem);
+                            }
                         }
                     }
                 }

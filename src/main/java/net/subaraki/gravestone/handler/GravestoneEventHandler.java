@@ -1,9 +1,6 @@
 
 package net.subaraki.gravestone.handler;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
@@ -28,16 +23,8 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.client.ClientProxy;
-import net.subaraki.gravestone.integration.AdventureBackpackIntegration;
-import net.subaraki.gravestone.integration.AetherIntegration;
-import net.subaraki.gravestone.integration.CosmeticArmorIntegration;
-import net.subaraki.gravestone.integration.GalacticraftIntegration;
-import net.subaraki.gravestone.integration.SatchelsIntegration;
-import net.subaraki.gravestone.integration.SextiarySectorIntegration;
-import net.subaraki.gravestone.integration.TinkersConstructIntegration;
-import net.subaraki.gravestone.integration.TravellersGearIntegration;
+import net.subaraki.gravestone.integration.ModIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
-import net.subaraki.gravestone.util.Constants;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.EventPriority;
@@ -57,7 +44,7 @@ public class GravestoneEventHandler {
     }
 
     @SubscribeEvent
-    public void onEntityJoinWorld(final EntityJoinWorldEvent event) {
+    public void onEntityJoinWorld(EntityJoinWorldEvent event) {
         if (event.entity instanceof EntityPlayer && !event.entity.worldObj.isRemote
             && PlayerGraveData.get((EntityPlayer) event.entity) != null) {
             PlayerGraveData.get((EntityPlayer) event.entity)
@@ -66,7 +53,7 @@ public class GravestoneEventHandler {
     }
 
     @SubscribeEvent
-    public void onEntityConstruction(final EntityEvent.EntityConstructing event) {
+    public void onEntityConstruction(EntityEvent.EntityConstructing event) {
         if (event.entity instanceof EntityPlayer && PlayerGraveData.get((EntityPlayer) event.entity) == null) {
             PlayerGraveData.register((EntityPlayer) event.entity);
         }
@@ -74,14 +61,14 @@ public class GravestoneEventHandler {
 
     @SubscribeEvent
     @SideOnly(Side.CLIENT)
-    public void keyHandling(final InputEvent.KeyInputEvent evt) {
+    public void keyHandling(InputEvent.KeyInputEvent evt) {
         if (ConfigHandler.enableGravesTroughKey && ClientProxy.keyGui.isPressed()
             && Minecraft.getMinecraft().currentScreen == null) {
-            final EntityPlayer p = (EntityPlayer) Minecraft.getMinecraft().thePlayer;
+            EntityPlayer p = Minecraft.getMinecraft().thePlayer;
             p.openGui(
-                (Object) GraveStones.instance,
-                1,
-                (World) Minecraft.getMinecraft().theWorld,
+                GraveStones.instance,
+                GuiHandler.GRAVE_SELECTOR,
+                Minecraft.getMinecraft().theWorld,
                 (int) p.posX,
                 (int) p.posY,
                 (int) p.posZ);
@@ -89,9 +76,9 @@ public class GravestoneEventHandler {
     }
 
     @SubscribeEvent
-    public void onCloneEvent(final net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
-        final PlayerGraveData dead = PlayerGraveData.get(event.original);
-        final PlayerGraveData clone = PlayerGraveData.get(event.entityPlayer);
+    public void onCloneEvent(net.minecraftforge.event.entity.player.PlayerEvent.Clone event) {
+        PlayerGraveData dead = PlayerGraveData.get(event.original);
+        PlayerGraveData clone = PlayerGraveData.get(event.entityPlayer);
         clone.setGraveModel(dead.getGraveModel());
         clone.setMaleEpitaph(dead.shouldUseMaleEpitaph());
     }
@@ -99,15 +86,15 @@ public class GravestoneEventHandler {
     private Map<UUID, TileEntityGravestone> playerGraves = new HashMap<UUID, TileEntityGravestone>();
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
-    public void onDeathEvent(final LivingDeathEvent evt) {
+    public void onDeathEvent(LivingDeathEvent evt) {
         if (evt.entityLiving instanceof EntityPlayer player) {
             if (player.worldObj.getGameRules()
                 .getGameRuleBooleanValue("keepInventory")) return;
             createGraveTE(player);
             World world = player.worldObj;
-            final int x = MathHelper.floor_double(player.posX);
+            int x = MathHelper.floor_double(player.posX);
             int y = MathHelper.floor_double(player.posY);
-            final int z = MathHelper.floor_double(player.posZ);
+            int z = MathHelper.floor_double(player.posZ);
             this.scheduleEvent(() -> {
                 int localY = y;
                 if (world.isAirBlock(x, localY, z)) {
@@ -119,14 +106,14 @@ public class GravestoneEventHandler {
                     }
                     while (world.isAirBlock(x, localY, z)) --localY;
                 }
-                final int X = 100;
-                final int Z = 100;
+                int X = 100;
+                int Z = 100;
                 int x2 = 0;
                 int z2 = 0;
                 int dx = 0;
                 int dz = -1;
                 int t = Math.max(X, Z);
-                final int maxI = t * t;
+                int maxI = t * t;
                 boolean flag = false;
                 boolean liquid = false;
                 for (int i = 0; i < maxI; ++i) {
@@ -191,7 +178,7 @@ public class GravestoneEventHandler {
         if (event.entityLiving instanceof EntityPlayer player) {}
     }
 
-    private void placeGrave(final EntityPlayer player, final int x, final int y, final int z) {
+    private void placeGrave(EntityPlayer player, int x, int y, int z) {
         World world = player.worldObj;
         world.setBlock(x, y + 1, z, GraveStones.graveStone);
         TileEntityGravestone te = playerGraves.get(player.getUniqueID());
@@ -202,25 +189,28 @@ public class GravestoneEventHandler {
         }
     }
 
-    private void createGraveTE(final EntityPlayer player) {
-        final TileEntityGravestone te = new TileEntityGravestone();
-        final InventoryPlayer inv = player.inventory;
+    private void createGraveTE(EntityPlayer player) {
+        TileEntityGravestone te = new TileEntityGravestone();
+        InventoryPlayer inv = player.inventory;
         PlayerGraveData pgd = PlayerGraveData.get(player);
         int graveID = pgd.getGraveModel();
-        final int max = 9;
+        int max = 9;
         if (!ConfigHandler.enableGravesTroughKey) {
             graveID = ConfigHandler.graveOrder[Math.min(player.experienceLevel / ConfigHandler.graveLevel, max)];
         }
         te.setGraveData(player.getCommandSenderName(), graveID, pgd.shouldUseMaleEpitaph());
-        for (int slot = 0; slot < inv.getSizeInventory(); ++slot) {
-            final ItemStack is = inv.getStackInSlot(slot);
-            if (is != null && slot < te.getSizeInventory()) {
-                te.tab = 0;
-                te.setInventorySlotContents(slot, is);
-                inv.setInventorySlotContents(slot, (ItemStack) null);
-            }
+
+        for (int i = 0; i < 36; i++) {
+            te.mainInv.setInventorySlotContents(i, inv.mainInventory[i]);
+            inv.setInventorySlotContents(i, null);
         }
-        this.addOtherInventory(te, player);
+
+        for (int i = 0; i < 4; i++) {
+            te.armor.setInventorySlotContents(i, inv.armorItemInSlot(i));
+            inv.setInventorySlotContents(36 + i, null);
+        }
+
+        this.addOtherInventories(te, player);
         te.checkForItems();
 
         Vec3 playerLookVec = player.getLookVec();
@@ -232,253 +222,8 @@ public class GravestoneEventHandler {
         playerGraves.put(player.getUniqueID(), te);
     }
 
-    private void addOtherInventory(final TileEntityGravestone te, final EntityPlayer player) {
-        int invId = Constants.VANILLA;
-        int prevInvSize = 0;
-        int invSize = 40;
-        if (GraveStones.hasRpgI) {
-            invId = Constants.RPGI;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final IInventory inv = this
-                .accesInventoryContents(player, "get", "rpgInventory.gui.rpginv.PlayerRpgInventory", "Rpg Inventory");
-            if (inv != null) {
-                for (int i = 0; i < invSize && i < inv.getSizeInventory(); ++i) {
-                    final ItemStack is = inv.getStackInSlot(i);
-                    te.list[i + prevInvSize] = is;
-                    inv.setInventorySlotContents(i, (ItemStack) null);
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Rpg Inventory. Have these classes been modified ? Report to mod Author pleases.");
-            }
-        }
-        if (GraveStones.hasTiC) {
-            invId = Constants.TC;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final IInventory sack = TinkersConstructIntegration.getKnapsackInventory(player);
-            final IInventory inv2 = TinkersConstructIntegration.getAccessoryInventory(player);
-            if (sack != null) {
-                for (int j = 0; j < 27; ++j) {
-                    final ItemStack is2 = sack.getStackInSlot(j);
-                    te.list[j + prevInvSize] = is2;
-                    sack.setInventorySlotContents(j, (ItemStack) null);
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Tinkers Construct's Knapsack. Have these classes been modified ? Report to mod Author pleases.");
-            }
-            if (inv2 != null) {
-                for (int j = 0; j < 7; ++j) {
-                    final ItemStack is2 = inv2.getStackInSlot(j);
-                    te.list[j + prevInvSize + 27] = is2;
-                    inv2.setInventorySlotContents(j, (ItemStack) null);
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Tinkers Construct's Armor. Have these classes been modified ? Report to mod Author pleases.");
-            }
-        }
-        if (GraveStones.hasBaubles) {
-            invId = Constants.BAUBLES;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final IInventory inv = this
-                .accesInventoryContents(player, "getPlayerBaubles", "baubles.common.lib.PlayerHandler", "Baubles");
-            if (inv != null) {
-                for (int i = 0; i < invSize && i < inv.getSizeInventory(); ++i) {
-                    final ItemStack is = inv.getStackInSlot(i);
-                    te.list[i + prevInvSize] = is;
-                    inv.setInventorySlotContents(i, (ItemStack) null);
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Baubles. Have these classes been modified ? Report to mod Author pleases.");
-            }
-            try {
-                final Class<?> clazz = Class.forName("baubles.common.container.InventoryBaubles");
-                final Method m = clazz.getDeclaredMethod("syncSlotToClients", Integer.TYPE);
-                for (int k = 0; k < 7; ++k) {
-                    m.invoke(inv, k);
-                }
-                GraveStones.printDebugMessage(
-                    "Gravestones was able to access Baubles' save mechanicism ! This print is proof that it got saved correctly.");
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            } catch (NoSuchMethodException e2) {
-                e2.printStackTrace();
-            } catch (SecurityException e3) {
-                e3.printStackTrace();
-            } catch (IllegalAccessException e4) {
-                e4.printStackTrace();
-            } catch (IllegalArgumentException e5) {
-                e5.printStackTrace();
-            } catch (InvocationTargetException e6) {
-                e6.printStackTrace();
-            }
-        }
-        if (GraveStones.hasGalacticraft) {
-            invId = Constants.GALACTICRAFT;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final ItemStack[] inv3 = GalacticraftIntegration.getGalacticraftInventory(player);
-            if (inv3 != null) {
-                for (int i = 0; i < invSize && i < inv3.length; ++i) {
-                    final ItemStack is = inv3[i];
-                    te.list[i + prevInvSize] = is;
-                    inv3[i] = null;
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Galacticraft inventory. Have these classes been modified ? Report to mod Author pleases.");
-            }
-        }
-        if (GraveStones.hasMariculture) {
-            invId = Constants.MARICULTURE;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final ItemStack[] inv3 = this
-                .accesInventoryContentsStacks(player, "getInventory", "mariculture.magic.MirrorHelper", "Mariculture");
-            for (int i = 0; i < invSize && i < inv3.length; ++i) {
-                final ItemStack is = inv3[i];
-                te.list[i + prevInvSize] = is;
-            }
-            try {
-                final ItemStack[] newstack = new ItemStack[4];
-                final Class<?> mirrorHelper = Class.forName("mariculture.magic.MirrorHelper");
-                final Method save = mirrorHelper.getDeclaredMethod("save", EntityPlayer.class, ItemStack[].class);
-                save.invoke(null, player, newstack);
-            } catch (Exception e7) {
-                e7.printStackTrace();
-            }
-        }
-        if (GraveStones.hasCosmeticArmor) {
-            invId = Constants.COSMETIC_ARMOR;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final IInventory cosmeticArmor = CosmeticArmorIntegration.getCosArmorInventory(player.getUniqueID());
-            if (cosmeticArmor != null) {
-                for (int j = 0; j < invSize && j < cosmeticArmor.getSizeInventory(); ++j) {
-                    final ItemStack is2 = cosmeticArmor.getStackInSlot(j);
-                    te.list[j + prevInvSize] = is2;
-                    cosmeticArmor.setInventorySlotContents(j, (ItemStack) null);
-                    cosmeticArmor.markDirty();
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Cosmetic Armor inventory. Have these classes been modified ? Report to mod Author pleases.");
-            }
-        }
-        if (GraveStones.hasSatchels) {
-            invId = Constants.SATCHELS;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            final IInventory satchels = SatchelsIntegration.getSatchelsInventory(player);
-            if (satchels != null) {
-                for (int j = 0; j < invSize && j < satchels.getSizeInventory(); ++j) {
-                    final ItemStack is2 = satchels.getStackInSlot(j);
-                    te.list[j + prevInvSize] = is2;
-                    satchels.setInventorySlotContents(j, (ItemStack) null);
-                    satchels.markDirty();
-                }
-            } else {
-                GraveStones.printDebugMessage(
-                    "GraveStones Mod couldn't connect to Satchels inventory. Have these classes been modified ? Report to mod Author pleases.");
-            }
-        }
-        if (GraveStones.hasAether) {
-            invId = Constants.AETHER;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            for (int j = 0; j < invSize; ++j) {
-                te.list[j + prevInvSize] = AetherIntegration.removeStackFromSlot(player, j);
-            }
-        }
-        if (GraveStones.hasBattlegear) {
-            invId = Constants.BATTLEGEAR;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            for (int j = 0; j < invSize; ++j) {
-                // Battlegear is using mixins, so that should (probably) work
-                final ItemStack is2 = player.inventory.getStackInSlot(j + 150);
-                te.list[j + prevInvSize] = is2;
-                player.inventory.setInventorySlotContents(j + 150, (ItemStack) null);
-                player.inventory.markDirty();
-            }
-        }
-        if (GraveStones.hasTravellersGear) {
-            // Stuff from Mariculture and Baubles will be already taken out by this point
-            invId = Constants.TRAVELLERS_GEAR;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            List<ItemStack> tgInv = TravellersGearIntegration.getTravellersGearInventory(player);
-            for (int j = 0; j < invSize && j < tgInv.size(); ++j) {
-                te.list[j + prevInvSize] = tgInv.get(j);
-            }
-            TravellersGearIntegration.clearTravellersGearInventory(player);
-        }
-        if (GraveStones.hasSextiarySector) {
-            invId = Constants.SEXTIARY_SECTOR;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            invSize = GraveStones.inventorySizes.get(invId);
-            for (int j = 0; j < invSize; ++j) {
-                te.list[j + prevInvSize] = SextiarySectorIntegration.removeStackFromSlot(player, j);
-            }
-        }
-        if (GraveStones.hasAdventureBackpack) {
-            invId = Constants.ADVENTURE_BACKPACK;
-            prevInvSize = GraveStones.getPrevInventoriesSize(invId);
-            te.list[prevInvSize] = AdventureBackpackIntegration.getBackpack(player);
-        }
-    }
-
-    private IInventory accesInventoryContents(final EntityPlayer player, final String methodName, final String path,
-        final String modName) {
-        try {
-            final Class<?> clazz = Class.forName(path);
-            final Method m = clazz.getDeclaredMethod(methodName, EntityPlayer.class);
-            final Object result = m.invoke(null, player);
-            GraveStones.printDebugMessage("Dumping all " + modName + " content into grave");
-            return (IInventory) result;
-        } catch (Exception e) {
-            GraveStones.printDebugMessage(
-                "Error Encountered trying to acces " + modName + "  Inventory Content. Please report to mod author");
-            return null;
-        }
-    }
-
-    private ItemStack[] accesInventoryContentsStacks(final EntityPlayer player, final String methodName,
-        final String path, final String modName) {
-        try {
-            final Class<?> clazz = Class.forName(path);
-            final Method m = clazz.getDeclaredMethod(methodName, EntityPlayer.class);
-            final Object result = m.invoke(null, player);
-            GraveStones.printDebugMessage("Dumping all " + modName + " content into grave");
-            return (ItemStack[]) result;
-        } catch (Exception e) {
-            GraveStones.printDebugMessage(
-                "Error Encountered trying to acces " + modName + "  Inventory Content. Please report to mod author");
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unused")
-    private IInventory accesInventoryContents(final EntityPlayer player, final String methodName, final String path,
-        final String declaredField, final String modName) {
-        try {
-            final Class<?> clazz = Class.forName(path);
-            final Method m = clazz.getDeclaredMethod(methodName, EntityPlayer.class);
-            final Object result = m.invoke(null, player);
-            final Field f = clazz.getDeclaredField(declaredField);
-            final IInventory inv = (IInventory) f.get(result);
-            GraveStones.printDebugMessage("Dumping all " + modName + " content into grave");
-            return inv;
-        } catch (Exception e) {
-            GraveStones.printDebugMessage(
-                "Error Encountered trying to acces " + modName + "  Inventory Content. Please report to mod author");
-            return null;
-        }
+    private void addOtherInventories(TileEntityGravestone te, EntityPlayer player) {
+        for (ModIntegration integration : GraveStones.integrations) integration.storeItems(te, player);
     }
 
     private List<ScheduledEvent> scheduledEvents = new ArrayList<ScheduledEvent>();

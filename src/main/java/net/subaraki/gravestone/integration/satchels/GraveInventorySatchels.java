@@ -1,0 +1,32 @@
+package net.subaraki.gravestone.integration.satchels;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
+import net.subaraki.gravestone.inventory.GraveInventory;
+import net.subaraki.gravestone.tileentity.TileEntityGravestone;
+
+public abstract class GraveInventorySatchels extends GraveInventory {
+
+    public GraveInventorySatchels() {
+        super();
+    }
+
+    public GraveInventorySatchels(String name, int size, TileEntityGravestone grave) {
+        super(name, SatchelsIntegration.modId, size, grave);
+    }
+
+    @Override
+    public void autoEquipItems(EntityPlayer player) {
+        IInventory sack = getInventory(player);
+        for (int i = 0; i < sack.getSizeInventory(); i++) {
+            if (sack.getStackInSlot(i) == null) {
+                sack.setInventorySlotContents(i, this.getStackInSlot(i));
+                this.setInventorySlotContents(i, null);
+            }
+        }
+        super.autoEquipItems(player);
+    }
+
+    protected abstract IInventory getInventory(EntityPlayer player);
+
+}

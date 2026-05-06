@@ -13,30 +13,31 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiTabButton extends GuiButton {
 
-    protected static RenderItem itemRender;
-    protected static final ResourceLocation button;
+    protected static RenderItem itemRender = new RenderItem();
+    protected static final ResourceLocation button = new ResourceLocation(
+        "textures/gui/container/creative_inventory/tabs.png");
     private boolean page;
     private final ItemStack stack;
     private final FontRenderer fontRendererObj;
 
-    public GuiTabButton(final int par1, final int par2, final int par3, final int par4, final int par5,
-        final String par6Str, final boolean page, final ItemStack stack, final FontRenderer font) {
-        super(par1, par2, par3, par4, par5, par6Str);
+    public GuiTabButton(int id, int xPosition, int yPosition, int width, int height, String displayString, boolean page,
+        ItemStack stack, FontRenderer font) {
+        super(id, xPosition, yPosition, width, height, displayString);
         this.page = page;
         this.stack = stack;
         this.fontRendererObj = font;
     }
 
-    public void drawButton(final Minecraft p_146112_1_, final int p_146112_2_, final int p_146112_3_) {
+    public void drawButton(Minecraft minecraft, int x, int y) {
         if (this.visible) {
-            final FontRenderer fontrenderer = p_146112_1_.fontRenderer;
-            p_146112_1_.getTextureManager()
+            FontRenderer fontrenderer = minecraft.fontRenderer;
+            minecraft.getTextureManager()
                 .bindTexture(GuiTabButton.button);
             GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            this.field_146123_n = (p_146112_2_ >= this.xPosition && p_146112_3_ >= this.yPosition
-                && p_146112_2_ < this.xPosition + this.width
-                && p_146112_3_ < this.yPosition + this.height);
-            final int k = this.page ? 1 : 2;
+            this.field_146123_n = (x >= this.xPosition && y >= this.yPosition
+                && x < this.xPosition + this.width
+                && y < this.yPosition + this.height);
+            int k = this.page ? 1 : 2;
             GL11.glEnable(3042);
             OpenGlHelper.glBlendFunc(770, 771, 1, 0);
             GL11.glBlendFunc(770, 771);
@@ -54,7 +55,7 @@ public class GuiTabButton extends GuiButton {
                 32 - k * 32 + 32,
                 24,
                 this.page ? 32 : 28);
-            this.mouseDragged(p_146112_1_, p_146112_2_, p_146112_3_);
+            this.mouseDragged(minecraft, x, y);
             int l = 14737632;
             if (this.packedFGColour != 0) {
                 l = this.packedFGColour;
@@ -93,10 +94,5 @@ public class GuiTabButton extends GuiButton {
             GL11.glDisable(2896);
             GuiTabButton.itemRender.zLevel = 0.0f;
         }
-    }
-
-    static {
-        GuiTabButton.itemRender = new RenderItem();
-        button = new ResourceLocation("textures/gui/container/creative_inventory/tabs.png");
     }
 }

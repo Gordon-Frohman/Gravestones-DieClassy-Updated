@@ -11,19 +11,20 @@ public class SlotGrave extends Slot {
 
     TileEntityGravestone te;
 
-    public SlotGrave(final IInventory par1iInventory, final int par2, final int par3, final int par4) {
-        super(par1iInventory, par2, par3, par4);
-        this.te = (TileEntityGravestone) par1iInventory;
+    public SlotGrave(IInventory inventory, int slotIndex, int xDisplayPosition, int yDisplayPosition,
+        TileEntityGravestone grave) {
+        super(inventory, slotIndex, xDisplayPosition, yDisplayPosition);
+        this.te = grave;
     }
 
-    public boolean isItemValid(final ItemStack par1ItemStack) {
+    public boolean isItemValid(ItemStack par1ItemStack) {
         return false;
     }
 
-    public boolean canTakeStack(final EntityPlayer par1EntityPlayer) {
+    public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
         if (!this.te.playername.equals(par1EntityPlayer.getCommandSenderName())) {
-            if (!this.te.otherPlayerHasTakenItemStack) {
-                this.te.otherPlayerHasTakenItemStack = true;
+            if (!this.te.looted) {
+                this.te.looted = true;
                 this.te.locked = "You loot " + this.te.getStackInSlot(this.getSlotIndex())
                     .getDisplayName() + " from " + this.te.playername + "'s grave.";
                 return true;
@@ -33,15 +34,8 @@ public class SlotGrave extends Slot {
         return this.te.playername.equals(par1EntityPlayer.getCommandSenderName());
     }
 
-    public ItemStack decrStackSize(final int par1) {
-        if (this.getHasStack()) {
-            Math.min(par1, this.getStack().stackSize);
-        }
-        return super.decrStackSize(par1);
-    }
-
-    public void onPickupFromSlot(final EntityPlayer par1EntityPlayer, final ItemStack par2ItemStack) {
-        this.onCrafting(par2ItemStack);
-        super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
+    public ItemStack decrStackSize(int amount) {
+        if (this.getHasStack()) amount = Math.min(amount, this.getStack().stackSize);
+        return super.decrStackSize(amount);
     }
 }

@@ -12,18 +12,18 @@ import org.lwjgl.opengl.GL11;
 
 public class RenderGrave implements IItemRenderer {
 
-    public boolean handleRenderType(final ItemStack item, final IItemRenderer.ItemRenderType type) {
+    public boolean handleRenderType(ItemStack item, IItemRenderer.ItemRenderType type) {
         return true;
     }
 
-    public boolean shouldUseRenderHelper(final IItemRenderer.ItemRenderType type, final ItemStack item,
-        final IItemRenderer.ItemRendererHelper helper) {
+    public boolean shouldUseRenderHelper(IItemRenderer.ItemRenderType type, ItemStack item,
+        IItemRenderer.ItemRendererHelper helper) {
         return true;
     }
 
-    public void renderItem(final IItemRenderer.ItemRenderType type, final ItemStack item, final Object... data) {
+    public void renderItem(IItemRenderer.ItemRenderType type, ItemStack item, Object... data) {
         Constants.GRAVE_PLACEHOLDER.modelType = item.getItemDamage();
-        final TileEntitySpecialRenderer tesr = TileEntityRendererDispatcher.instance
+        TileEntitySpecialRenderer tesr = TileEntityRendererDispatcher.instance
             .getSpecialRenderer((TileEntity) Constants.GRAVE_PLACEHOLDER);
         TileEntitySpecialRendererGrave.inventoryRender = true;
         GL11.glPushMatrix();

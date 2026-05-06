@@ -6,7 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.common.network.PacketSyncGraveData;
+import net.subaraki.gravestone.common.network.C00PacketSyncGraveData;
 import net.subaraki.gravestone.handler.ModelHandler;
 import net.subaraki.gravestone.handler.PlayerGraveData;
 import net.subaraki.gravestone.handler.TextureHandler;
@@ -16,7 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 
-public class GuiPickGrave extends GuiScreen {
+public class GuiGraveSelector extends GuiScreen {
 
     private int xSize;
     private int ySize;
@@ -27,7 +27,7 @@ public class GuiPickGrave extends GuiScreen {
     private GuiButton maleSex;
     private GuiButton femaleSex;
 
-    public GuiPickGrave(final EntityPlayer player) {
+    public GuiGraveSelector(final EntityPlayer player) {
         this.xSize = 0;
         this.ySize = 0;
         this.rotationCounter = 0;
@@ -169,7 +169,7 @@ public class GuiPickGrave extends GuiScreen {
         PlayerGraveData pgd = PlayerGraveData.get(this.player);
         pgd.setMaleEpitaph(maleEpitaph);
         pgd.setGraveModel(id);
-        GraveStones.instance.network.sendToServer((IMessage) new PacketSyncGraveData(maleEpitaph, id));
+        GraveStones.instance.network.sendToServer((IMessage) new C00PacketSyncGraveData(maleEpitaph, id));
     }
 
     public boolean doesGuiPauseGame() {
