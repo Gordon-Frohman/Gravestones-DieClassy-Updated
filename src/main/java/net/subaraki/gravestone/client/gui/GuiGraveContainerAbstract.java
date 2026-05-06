@@ -80,7 +80,7 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         }
         this.fontRendererObj.drawString(
             this.tabText,
-            this.width / 2 - this.xSize / 2 + 5,
+            this.width / 2 - this.xSize / 2 + 8,
             this.height / 2 - this.ySize / 2 + 5,
             4210752);
         int render = this.te.modelType;
@@ -177,8 +177,6 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         super.actionPerformed(button);
         if ((button.id == GuiHandler.GRAVE_CONTAINER && this instanceof GuiGraveContainerScrollable)
             || (button.id == GuiHandler.GRAVE_CONTAINER_SCROLLABLE && this instanceof GuiGraveContainer)) {
-            // Minecraft mc = Minecraft.getMinecraft();
-            // mc.thePlayer.openGui(GraveStones.instance, button.id, mc.theWorld, te.xCoord, te.yCoord, te.zCoord);
             GraveStones.instance.network.sendToServer(new C01PacketOpenGui(button.id, te.xCoord, te.yCoord, te.zCoord));
         }
     }

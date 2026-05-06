@@ -39,14 +39,6 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
      */
     public void updateScreen() {
         if (this.te.inventories.isEmpty()) {
-            // Minecraft mc = Minecraft.getMinecraft();
-            // mc.thePlayer.openGui(
-            // GraveStones.instance,
-            // GuiHandler.GRAVE_CONTAINER,
-            // mc.theWorld,
-            // te.xCoord,
-            // te.yCoord,
-            // te.zCoord);
             GraveStones.instance.network
                 .sendToServer(new C01PacketOpenGui(GuiHandler.GRAVE_CONTAINER, te.xCoord, te.yCoord, te.zCoord));
         }
@@ -57,12 +49,6 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
         return (slotIn.slotNumber >= container.enableSlots.length || container.enableSlots[slotIn.slotNumber])
             ? super.isMouseOverSlot(slotIn, mouseX, mouseY)
             : false;
-    }
-
-    @Override
-    protected void drawGuiContainerForegroundLayer(int par1, int par2) {
-        // TODO Do we need this?
-        super.drawGuiContainerForegroundLayer(par1, par2);
     }
 
     /**
@@ -152,17 +138,29 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
 
     @Override
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
+        this.tabText = container.tabNames[0];
+
         super.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
+
         this.mc.getTextureManager()
             .bindTexture(this.graveGui);
         int xMin = this.guiLeft + 7;
         int yMin = this.guiTop + 17;
         for (int i = 0; i < 4; i++) {
+            boolean skipRow = true;
             for (int j = 0; j < 9; j++) {
                 int slotId = i * 9 + j;
                 if (container.enableSlots[slotId]) {
                     this.drawTexturedModalRect(xMin + 18 * j, yMin + 18 * i, 7, 104, 18, 18);
+                    skipRow = false;
                 }
+            }
+            if (skipRow) {
+                this.fontRendererObj.drawString(
+                    container.tabNames[i + 1],
+                    this.width / 2 - this.xSize / 2 + 8,
+                    this.height / 2 - this.ySize / 2 + 4 + (i + 1) * 18,
+                    4210752);
             }
         }
 

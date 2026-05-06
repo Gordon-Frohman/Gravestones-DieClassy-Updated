@@ -12,6 +12,7 @@ import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 public class ContainerGraveScrollable extends ContainerGraveAbstract {
 
     public Boolean[] enableSlots = new Boolean[36];
+    public String[] tabNames = new String[5];
 
     public ContainerGraveScrollable(TileEntityGravestone te, EntityPlayer player) {
         super(te, player);
@@ -34,6 +35,7 @@ public class ContainerGraveScrollable extends ContainerGraveAbstract {
             slot.inventory = placeholderInv;
             slot.slotIndex = i;
         }
+        for (int i = 0; i < 5; i++) this.tabNames[i] = "";
     }
 
     public void scrollTo(float scroll) {
@@ -52,12 +54,18 @@ public class ContainerGraveScrollable extends ContainerGraveAbstract {
         int currentRow = 0;
         while (currentRow < offset + 4) {
             if (skipRow) {
+                if (currentRow == offset + 3) this.tabNames[4] = currentInv.name;
                 currentRow++;
                 totalInvSlot = currentRow * 9;
                 skipRow = false;
                 continue;
             } else {
                 if (currentRow >= offset) {
+                    if (currentRow == offset) {
+                        this.tabNames[0] = currentInv.name;
+                    } else {
+                        if (currentInvSlot == 0) this.tabNames[currentRow - offset] = currentInv.name;
+                    }
                     int index = totalInvSlot - offset * 9;
                     this.enableSlots[index] = true;
                     Slot slot = getSlot(index);
