@@ -216,42 +216,11 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
             .bindTexture(this.graveGui);
         int xMin = this.guiLeft + 7;
         int yMin = this.guiTop + 17;
-        boolean[] disableRows = new boolean[4];
         for (int i = 0; i < 4; i++) {
-            disableRows[i] = true;
             for (int j = 0; j < 9; j++) {
-                if (enableSlots[i * 9 + j]) {
-                    disableRows[i] = false;
-                    break;
-                }
-            }
-            if (disableRows[i]) {
-                if (i != 0) this.drawTexturedModalRect(xMin, yMin + 18 * i - 1, 0, 186, 162, 1);
-                this.drawTexturedModalRect(xMin, yMin + 18 * i, 0, 187, 162, 18);
-                if (i != 3) this.drawTexturedModalRect(xMin, yMin + 18 * (i + 1), 0, 205, 162, 1);
-            }
-        }
-        for (int i = 0; i < 4; i++) {
-            if (disableRows[i]) {
-                continue;
-            } else {
-                for (int j = 0; j < 9; j++) {
-                    int slotId = i * 9 + j;
-                    if (enableSlots[slotId]) {
-                        this.drawTexturedModalRect(xMin + 18 * j, yMin + 18 * i, 7, 104, 18, 18);
-                        if (j < 8 && !enableSlots[slotId + 1]) {
-                            this.drawTexturedModalRect(xMin + 18 * (j + 1), yMin + 18 * i, 25, 104, 1, 18);
-                        }
-                        if (i < 3 && !enableSlots[slotId + 9] && !disableRows[i + 1]) {
-                            this.drawTexturedModalRect(
-                                xMin + 18 * j,
-                                yMin + 18 * (i + 1),
-                                j == 8 ? 151 : 150,
-                                17,
-                                18,
-                                1);
-                        }
-                    }
+                int slotId = i * 9 + j;
+                if (enableSlots[slotId]) {
+                    this.drawTexturedModalRect(xMin + 18 * j, yMin + 18 * i, 7, 104, 18, 18);
                 }
             }
         }
