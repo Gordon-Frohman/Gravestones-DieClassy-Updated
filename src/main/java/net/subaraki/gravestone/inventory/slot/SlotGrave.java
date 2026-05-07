@@ -21,7 +21,8 @@ public class SlotGrave extends Slot {
     }
 
     public boolean isItemValid(ItemStack itemStack) {
-        return this.inventory instanceof GraveInventoryArmor && itemStack != null
+        return te.isDecorativeGrave && this.inventory instanceof GraveInventoryArmor
+            && itemStack != null
             && itemStack.getItem() instanceof ItemArmor
             && EntityLiving.getArmorPosition(itemStack) == (this.slotIndex + 1);
     }
