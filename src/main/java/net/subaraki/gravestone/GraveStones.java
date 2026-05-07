@@ -30,6 +30,7 @@ import net.subaraki.gravestone.network.play.client.C00PacketSyncGraveData;
 import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
 import net.subaraki.gravestone.network.play.client.C02PacketGraveScroll;
 import net.subaraki.gravestone.network.play.server.S00PacketSyncGraveData;
+import net.subaraki.gravestone.network.play.server.S01PacketGraveScroll;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
 import net.subaraki.gravestone.util.GraveUtility;
@@ -48,9 +49,7 @@ import cpw.mods.fml.relauncher.Side;
 @Mod(modid = "gravestonemod")
 public class GraveStones {
 
-    @SidedProxy(
-        serverSide = "net.subaraki.gravestone.common.CommonProxy",
-        clientSide = "net.subaraki.gravestone.client.ClientProxy")
+    @SidedProxy(serverSide = "net.subaraki.gravestone.CommonProxy", clientSide = "net.subaraki.gravestone.ClientProxy")
     public static CommonProxy proxy;
 
     @Mod.Instance("gravestonemod")
@@ -88,6 +87,8 @@ public class GraveStones {
 
         this.network
             .registerMessage(S00PacketSyncGraveData.Handler.class, S00PacketSyncGraveData.class, 3, Side.CLIENT);
+        this.network.registerMessage(S01PacketGraveScroll.Handler.class, S01PacketGraveScroll.class, 4, Side.CLIENT);
+
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 
         ConfigHandler.instance.loadConfig(event.getSuggestedConfigurationFile());

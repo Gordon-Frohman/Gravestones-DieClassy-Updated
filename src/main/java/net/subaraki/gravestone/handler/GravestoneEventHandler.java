@@ -21,8 +21,8 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
+import net.subaraki.gravestone.ClientProxy;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.client.ClientProxy;
 import net.subaraki.gravestone.integration.ModIntegration;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
