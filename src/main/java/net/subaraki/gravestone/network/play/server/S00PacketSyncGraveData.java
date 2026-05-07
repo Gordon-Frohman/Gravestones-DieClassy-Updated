@@ -1,5 +1,5 @@
 
-package net.subaraki.gravestone.common.network;
+package net.subaraki.gravestone.network.play.server;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.subaraki.gravestone.GraveStones;

@@ -8,11 +8,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.subaraki.gravestone.block.BlockGrave;
-import net.subaraki.gravestone.common.CommonProxy;
-import net.subaraki.gravestone.common.network.C00PacketSyncGraveData;
-import net.subaraki.gravestone.common.network.C01PacketOpenGui;
-import net.subaraki.gravestone.common.network.C02PacketGraveScroll;
-import net.subaraki.gravestone.common.network.S00PacketSyncGraveData;
 import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
@@ -31,6 +26,10 @@ import net.subaraki.gravestone.integration.sextiarysextor.SextiarySectorIntegrat
 import net.subaraki.gravestone.integration.tconstruct.TinkersConstructIntegration;
 import net.subaraki.gravestone.integration.travellersgear.TravellersGearIntegration;
 import net.subaraki.gravestone.item.ItemDecoGrave;
+import net.subaraki.gravestone.network.play.client.C00PacketSyncGraveData;
+import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
+import net.subaraki.gravestone.network.play.client.C02PacketGraveScroll;
+import net.subaraki.gravestone.network.play.server.S00PacketSyncGraveData;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
 import net.subaraki.gravestone.util.GraveUtility;
@@ -81,10 +80,12 @@ public class GraveStones {
     public void preInit(final FMLPreInitializationEvent event) {
         new GraveUtility();
         this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones");
+
         this.network
             .registerMessage(C00PacketSyncGraveData.Handler.class, C00PacketSyncGraveData.class, 0, Side.SERVER);
         this.network.registerMessage(C01PacketOpenGui.Handler.class, C01PacketOpenGui.class, 1, Side.SERVER);
         this.network.registerMessage(C02PacketGraveScroll.Handler.class, C02PacketGraveScroll.class, 2, Side.SERVER);
+
         this.network
             .registerMessage(S00PacketSyncGraveData.Handler.class, S00PacketSyncGraveData.class, 3, Side.CLIENT);
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());

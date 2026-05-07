@@ -5,10 +5,10 @@ import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.common.network.C01PacketOpenGui;
-import net.subaraki.gravestone.common.network.C02PacketGraveScroll;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.inventory.ContainerGraveScrollable;
+import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
+import net.subaraki.gravestone.network.play.client.C02PacketGraveScroll;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import org.lwjgl.input.Mouse;
@@ -131,7 +131,6 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
     }
 
     private void scrollTo(float scroll) {
-        container.scrollTo(scroll);
         GraveStones.instance.network
             .sendToServer(new C02PacketGraveScroll(Minecraft.getMinecraft().thePlayer.openContainer.windowId, scroll));
     }

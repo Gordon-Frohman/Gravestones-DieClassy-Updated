@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.IExtendedEntityProperties;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.common.network.S00PacketSyncGraveData;
+import net.subaraki.gravestone.network.play.server.S00PacketSyncGraveData;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 

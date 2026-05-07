@@ -1,8 +1,11 @@
 
-package net.subaraki.gravestone.common.network;
+package net.subaraki.gravestone.network.play.client;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.inventory.ContainerGraveScrollable;
+import net.subaraki.gravestone.network.play.server.S01PacketGraveScroll;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;

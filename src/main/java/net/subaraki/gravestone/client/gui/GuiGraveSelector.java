@@ -6,10 +6,10 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
-import net.subaraki.gravestone.common.network.C00PacketSyncGraveData;
 import net.subaraki.gravestone.handler.ModelHandler;
 import net.subaraki.gravestone.handler.PlayerGraveData;
 import net.subaraki.gravestone.handler.TextureHandler;
+import net.subaraki.gravestone.network.play.client.C00PacketSyncGraveData;
 import net.subaraki.gravestone.util.GraveUtility;
 
 import org.lwjgl.opengl.GL11;
