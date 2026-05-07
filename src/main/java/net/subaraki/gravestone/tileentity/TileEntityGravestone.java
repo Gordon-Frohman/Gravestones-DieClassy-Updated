@@ -98,17 +98,16 @@ public class TileEntityGravestone extends TileEntity {
                 this.inventories.add(inv);
             }
         } else {
-            GraveInventory inv = GraveInventory.loadFromNBT(nbt.getCompoundTag("mainInv"));
-            if (inv != null) {
-                this.mainInv = inv;
-                inv.grave = this;
-            }
-            inv = GraveInventory.loadFromNBT(nbt.getCompoundTag("armor"));
-            if (inv != null) {
-                this.armor = inv;
-                inv.grave = this;
-            }
+            this.mainInv = new GraveInventory();
+            this.mainInv.grave = this;
+            if (nbt.hasKey("mainInv")) this.mainInv.readFromNBT(nbt.getCompoundTag("mainInv"));
 
+            this.armor = new GraveInventoryArmor();
+            this.armor.grave = this;
+            if (nbt.hasKey("armor")) this.armor.readFromNBT(nbt.getCompoundTag("armor"));
+
+            GraveInventory inv;
+            this.inventories.clear();
             NBTTagList inventories = (NBTTagList) nbt.getTag("inventories");
             for (int i = 0; i < inventories.tagCount(); i++) {
                 inv = GraveInventory.loadFromNBT(inventories.getCompoundTagAt(i));
@@ -145,6 +144,14 @@ public class TileEntityGravestone extends TileEntity {
         invList.add(armor);
         invList.addAll(inventories);
         return invList;
+    }
+
+    public void autoEquipItems(EntityPlayer player) {
+        for (GraveInventory inv : getAllInventories()) {
+            inv.autoEquipItems(player);
+            if (inv.isEmpty() && this.inventories.contains(inv)) this.inventories.remove(inv);
+        }
+        markDirty();
     }
 
     public void dropContents(World world, int x, int y, int z) {

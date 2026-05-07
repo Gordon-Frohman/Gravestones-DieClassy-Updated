@@ -22,7 +22,7 @@ public class GraveInventory implements IInventory {
     protected Map<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
     public TileEntityGravestone grave;
 
-    protected GraveInventory() {}
+    public GraveInventory() {}
 
     public GraveInventory(String name, String modID, int size, TileEntityGravestone grave) {
         this.name = name;
@@ -32,7 +32,20 @@ public class GraveInventory implements IInventory {
     }
 
     public void autoEquipItems(EntityPlayer player) {
-        for (ItemStack item : items.values()) if (!player.inventory.addItemStackToInventory(item)) break;
+        for (int i = 0; i < size; i++) {
+            ItemStack item = items.get(i);
+            if (item != null) {
+                boolean removeItem = false;
+                if (player.inventory.getStackInSlot(i) == null) {
+                    player.inventory.setInventorySlotContents(i, item);
+                    removeItem = true;
+                } else {
+                    removeItem = player.inventory.addItemStackToInventory(item);
+                }
+                if (!removeItem) break;
+                else items.put(i, null);
+            }
+        }
     }
 
     public boolean isEmpty() {

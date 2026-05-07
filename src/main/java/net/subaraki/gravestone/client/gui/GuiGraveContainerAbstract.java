@@ -1,6 +1,7 @@
 
 package net.subaraki.gravestone.client.gui;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +15,7 @@ import net.subaraki.gravestone.handler.ModelHandler;
 import net.subaraki.gravestone.handler.TextureHandler;
 import net.subaraki.gravestone.inventory.ContainerGraveAbstract;
 import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
+import net.subaraki.gravestone.network.play.client.C03PacketAutoEquip;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
 import net.subaraki.gravestone.util.GraveUtility;
@@ -152,23 +154,23 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
                     GuiHandler.GRAVE_CONTAINER,
                     x,
                     y,
-                    35,
-                    20,
-                    "",
                     this instanceof GuiGraveContainer,
-                    Constants.ICON_VANILLA,
-                    this.fontRendererObj));
+                    Constants.ICON_VANILLA));
             this.buttonList.add(
                 new GuiTabButton(
                     GuiHandler.GRAVE_CONTAINER_SCROLLABLE,
                     x + offsetSize,
                     y,
-                    35,
-                    20,
-                    "",
                     this instanceof GuiGraveContainerScrollable,
-                    Constants.ICON_MISC,
-                    this.fontRendererObj));
+                    Constants.ICON_MISC));
+        }
+        EntityPlayer player = Minecraft.getMinecraft().thePlayer;
+        if (this.te.playername.equals(player.getCommandSenderName()) || player.capabilities.isCreativeMode) {
+            this.buttonList.add(
+                new GuiAutoEquipButton(
+                    GuiAutoEquipButton.BUTTON_ID,
+                    this.width / 2 + this.xSize / 2 - 22,
+                    this.height / 2 - this.ySize / 2 + 90));
         }
     }
 
@@ -179,10 +181,41 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
             || (button.id == GuiHandler.GRAVE_CONTAINER_SCROLLABLE && this instanceof GuiGraveContainer)) {
             GraveStones.instance.network.sendToServer(new C01PacketOpenGui(button.id, te.xCoord, te.yCoord, te.zCoord));
         }
+        if (button.id == GuiAutoEquipButton.BUTTON_ID) {
+            GraveStones.instance.network.sendToServer(new C03PacketAutoEquip(te.xCoord, te.yCoord, te.zCoord));
+        }
     }
 
     @Override
     public void func_146977_a(Slot slotIn) {
         if (slotIn.inventory != null) super.func_146977_a(slotIn);
+    }
+
+    @Override
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+        super.drawScreen(mouseX, mouseY, partialTicks);
+
+        for (Object buttonObj : this.buttonList) {
+            GuiButton button = (GuiButton) buttonObj;
+            if (button.func_146115_a()) {
+                String textToRender = null;
+                switch (button.id) {
+                    default:
+                        break;
+                    case GuiHandler.GRAVE_CONTAINER:
+                        textToRender = "Minecraft";
+                        break;
+                    case GuiHandler.GRAVE_CONTAINER_SCROLLABLE:
+                        textToRender = "Modded inventories";
+                        break;
+                    case GuiAutoEquipButton.BUTTON_ID:
+                        textToRender = "Equip all the items";
+                        break;
+                }
+                if (textToRender != null) {
+                    drawCreativeTabHoveringText(textToRender, mouseX, mouseY);
+                }
+            }
+        }
     }
 }

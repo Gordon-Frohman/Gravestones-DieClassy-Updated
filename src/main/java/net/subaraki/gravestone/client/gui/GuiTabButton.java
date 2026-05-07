@@ -18,14 +18,11 @@ public class GuiTabButton extends GuiButton {
         "textures/gui/container/creative_inventory/tabs.png");
     private boolean page;
     private final ItemStack stack;
-    private final FontRenderer fontRendererObj;
 
-    public GuiTabButton(int id, int xPosition, int yPosition, int width, int height, String displayString, boolean page,
-        ItemStack stack, FontRenderer font) {
-        super(id, xPosition, yPosition, width, height, displayString);
+    public GuiTabButton(int id, int xPosition, int yPosition, boolean page, ItemStack stack) {
+        super(id, xPosition, yPosition, 35, 20, "");
         this.page = page;
         this.stack = stack;
-        this.fontRendererObj = font;
     }
 
     public void drawButton(Minecraft minecraft, int x, int y) {
@@ -78,14 +75,14 @@ public class GuiTabButton extends GuiButton {
             GL11.glEnable(32826);
             final ItemStack itemstack = this.stack;
             GuiTabButton.itemRender.renderItemAndEffectIntoGUI(
-                this.fontRendererObj,
+                fontrenderer,
                 Minecraft.getMinecraft()
                     .getTextureManager(),
                 itemstack,
                 this.xPosition + 9,
                 this.yPosition);
             GuiTabButton.itemRender.renderItemOverlayIntoGUI(
-                this.fontRendererObj,
+                fontrenderer,
                 Minecraft.getMinecraft()
                     .getTextureManager(),
                 itemstack,

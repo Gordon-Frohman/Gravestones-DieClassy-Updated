@@ -29,6 +29,7 @@ import net.subaraki.gravestone.item.ItemDecoGrave;
 import net.subaraki.gravestone.network.play.client.C00PacketSyncGraveData;
 import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
 import net.subaraki.gravestone.network.play.client.C02PacketGraveScroll;
+import net.subaraki.gravestone.network.play.client.C03PacketAutoEquip;
 import net.subaraki.gravestone.network.play.server.S00PacketSyncGraveData;
 import net.subaraki.gravestone.network.play.server.S01PacketGraveScroll;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
@@ -80,14 +81,32 @@ public class GraveStones {
         new GraveUtility();
         this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones");
 
+        int discriminator = 0;
+        this.network.registerMessage(
+            C00PacketSyncGraveData.Handler.class,
+            C00PacketSyncGraveData.class,
+            discriminator++,
+            Side.SERVER);
         this.network
-            .registerMessage(C00PacketSyncGraveData.Handler.class, C00PacketSyncGraveData.class, 0, Side.SERVER);
-        this.network.registerMessage(C01PacketOpenGui.Handler.class, C01PacketOpenGui.class, 1, Side.SERVER);
-        this.network.registerMessage(C02PacketGraveScroll.Handler.class, C02PacketGraveScroll.class, 2, Side.SERVER);
+            .registerMessage(C01PacketOpenGui.Handler.class, C01PacketOpenGui.class, discriminator++, Side.SERVER);
+        this.network.registerMessage(
+            C02PacketGraveScroll.Handler.class,
+            C02PacketGraveScroll.class,
+            discriminator++,
+            Side.SERVER);
+        this.network
+            .registerMessage(C03PacketAutoEquip.Handler.class, C03PacketAutoEquip.class, discriminator++, Side.SERVER);
 
-        this.network
-            .registerMessage(S00PacketSyncGraveData.Handler.class, S00PacketSyncGraveData.class, 3, Side.CLIENT);
-        this.network.registerMessage(S01PacketGraveScroll.Handler.class, S01PacketGraveScroll.class, 4, Side.CLIENT);
+        this.network.registerMessage(
+            S00PacketSyncGraveData.Handler.class,
+            S00PacketSyncGraveData.class,
+            discriminator++,
+            Side.CLIENT);
+        this.network.registerMessage(
+            S01PacketGraveScroll.Handler.class,
+            S01PacketGraveScroll.class,
+            discriminator++,
+            Side.CLIENT);
 
         NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
 

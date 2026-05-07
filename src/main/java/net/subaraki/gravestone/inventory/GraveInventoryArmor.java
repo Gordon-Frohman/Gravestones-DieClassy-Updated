@@ -16,8 +16,11 @@ public class GraveInventoryArmor extends GraveInventory {
     @Override
     public void autoEquipItems(EntityPlayer player) {
         for (int i = 0; i < 4; i++) {
-            if (player.getCurrentArmor(i) == null) {
-                player.inventory.armorInventory[i] = this.getStackInSlot(i);
+            if (player.getCurrentArmor(i) == null && this.getStackInSlot(i) != null) {
+                player.setCurrentItemOrArmor(
+                    i + 1,
+                    this.getStackInSlot(i)
+                        .copy());
                 this.setInventorySlotContents(i, null);
             }
         }

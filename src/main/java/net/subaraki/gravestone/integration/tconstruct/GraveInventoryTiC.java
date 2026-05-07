@@ -17,10 +17,10 @@ public abstract class GraveInventoryTiC extends GraveInventory {
 
     @Override
     public void autoEquipItems(EntityPlayer player) {
-        IInventory sack = getInventory(player);
-        for (int i = 0; i < sack.getSizeInventory(); i++) {
-            if (sack.getStackInSlot(i) == null) {
-                sack.setInventorySlotContents(i, this.getStackInSlot(i));
+        IInventory inv = getInventory(player);
+        for (int i = 0; i < inv.getSizeInventory(); i++) {
+            if (inv.getStackInSlot(i) == null) {
+                inv.setInventorySlotContents(i, this.getStackInSlot(i));
                 this.setInventorySlotContents(i, null);
             }
         }

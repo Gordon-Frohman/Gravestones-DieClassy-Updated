@@ -40,6 +40,7 @@ public class ContainerGraveScrollable extends ContainerGraveAbstract {
 
     public void scrollTo(float scroll) {
         this.resetSlots();
+        if (this.te.inventories.isEmpty()) return;
 
         int rows = this.getRowsCount() - 5;
         int offset = (int) ((double) (scroll * (float) rows) + 0.5D) + 1;
