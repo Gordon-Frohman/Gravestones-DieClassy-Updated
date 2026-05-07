@@ -45,23 +45,6 @@ public class TinkersConstructIntegration extends ModIntegration {
     @Override
     public boolean storeItems(TileEntityGravestone te, EntityPlayer player) {
         boolean result = false;
-        IInventory sack = getKnapsackInventory(player);
-        if (sack != null) {
-            int size = sack.getSizeInventory();
-            GraveInventory sackInv = new GraveInventoryTiCKnapsack(size, te);
-            for (int i = 0; i < size; ++i) {
-                ItemStack stack = sack.getStackInSlot(i);
-                sackInv.setInventorySlotContents(i, stack);
-                sack.setInventorySlotContents(i, null);
-            }
-            if (!sackInv.isEmpty()) {
-                te.inventories.add(sackInv);
-                result = true;
-            }
-        } else {
-            GraveStones.printDebugMessage(
-                "GraveStones Mod couldn't connect to Tinkers Construct's Knapsack. Have these classes been modified? Report to mod Author pleases.");
-        }
         IInventory accessories = getAccessoryInventory(player);
         if (accessories != null) {
             int size = accessories.getSizeInventory();
@@ -78,6 +61,23 @@ public class TinkersConstructIntegration extends ModIntegration {
         } else {
             GraveStones.printDebugMessage(
                 "GraveStones Mod couldn't connect to Tinkers Construct's Accessories. Have these classes been modified? Report to mod Author pleases.");
+        }
+        IInventory sack = getKnapsackInventory(player);
+        if (sack != null) {
+            int size = sack.getSizeInventory();
+            GraveInventory sackInv = new GraveInventoryTiCKnapsack(size, te);
+            for (int i = 0; i < size; ++i) {
+                ItemStack stack = sack.getStackInSlot(i);
+                sackInv.setInventorySlotContents(i, stack);
+                sack.setInventorySlotContents(i, null);
+            }
+            if (!sackInv.isEmpty()) {
+                te.inventories.add(sackInv);
+                result = true;
+            }
+        } else {
+            GraveStones.printDebugMessage(
+                "GraveStones Mod couldn't connect to Tinkers Construct's Knapsack. Have these classes been modified? Report to mod Author pleases.");
         }
         return result;
     }

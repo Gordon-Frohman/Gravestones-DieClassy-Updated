@@ -24,7 +24,6 @@ public class GraveInventoryBaubles extends GraveInventory {
             if (inv.getStackInSlot(i) == null) {
                 inv.setInventorySlotContents(i, this.getStackInSlot(i));
                 this.setInventorySlotContents(i, null);
-                inv.syncSlotToClients(i);
             }
         }
         super.autoEquipItems(player);

@@ -1,10 +1,13 @@
 
 package net.subaraki.gravestone.inventory.slot;
 
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
+import net.subaraki.gravestone.inventory.GraveInventoryArmor;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 public class SlotGrave extends Slot {
@@ -17,8 +20,10 @@ public class SlotGrave extends Slot {
         this.te = grave;
     }
 
-    public boolean isItemValid(ItemStack par1ItemStack) {
-        return false;
+    public boolean isItemValid(ItemStack itemStack) {
+        return this.inventory instanceof GraveInventoryArmor && itemStack != null
+            && itemStack.getItem() instanceof ItemArmor
+            && EntityLiving.getArmorPosition(itemStack) == (this.slotIndex + 1);
     }
 
     public boolean canTakeStack(EntityPlayer par1EntityPlayer) {

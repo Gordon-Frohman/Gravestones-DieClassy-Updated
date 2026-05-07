@@ -119,7 +119,7 @@ public class SatchelsIntegration extends ModIntegration {
             }
         } else {
             GraveStones.printDebugMessage(
-                "GraveStones Mod couldn't connect to Satchel. Have these classes been modified? Report to mod Author pleases.");
+                "GraveStones Mod couldn't connect to Satchels' Satchel. Have these classes been modified? Report to mod Author pleases.");
         }
         return result;
     }
