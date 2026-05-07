@@ -120,9 +120,8 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
                 : null;
             int slotId = 3;
             ItemStack item = cosArmorInv != null ? cosArmorInv.getStackInSlot(slotId) : null;
-            if (item == null) armorInv.getStackInSlot(slotId);
-            if (item != null && item.getItem() instanceof ItemArmor) {
-                ItemArmor itemArmor = (ItemArmor) item.getItem();
+            if (item == null) item = armorInv.getStackInSlot(slotId);
+            if (item != null && item.getItem() instanceof ItemArmor itemArmor) {
                 // We're creating a zombie because some mods require actual entities to check for armor
                 ModelBiped modelArmor = itemArmor
                     .getArmorModel(new EntityZombie(te.getWorldObj()), item, itemArmor.armorType);
@@ -147,9 +146,8 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
             }
             slotId = 2;
             item = cosArmorInv != null ? cosArmorInv.getStackInSlot(slotId) : null;
-            if (item == null) armorInv.getStackInSlot(slotId);
-            if (item != null && item.getItem() instanceof ItemArmor) {
-                ItemArmor itemArmor = (ItemArmor) item.getItem();
+            if (item == null) item = armorInv.getStackInSlot(slotId);
+            if (item != null && item.getItem() instanceof ItemArmor itemArmor) {
                 // We're creating a zombie because some mods require actual entities to check for armor
                 ModelBiped modelArmor = itemArmor
                     .getArmorModel(new EntityZombie(te.getWorldObj()), item, itemArmor.armorType);
