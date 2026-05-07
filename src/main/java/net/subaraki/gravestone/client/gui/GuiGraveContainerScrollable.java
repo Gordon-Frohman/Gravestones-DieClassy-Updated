@@ -63,7 +63,6 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
      */
     @Override
     public void handleMouseInput() {
-        super.handleMouseInput();
         int scroll = Mouse.getEventDWheel();
 
         if (scroll != 0 && this.needsScrollBars()) {
@@ -88,7 +87,9 @@ public class GuiGraveContainerScrollable extends GuiGraveContainerAbstract {
             }
 
             scrollTo(this.currentScroll);
+            return;
         }
+        super.handleMouseInput();
     }
 
     /**
