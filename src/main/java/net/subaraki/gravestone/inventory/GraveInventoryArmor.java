@@ -10,7 +10,7 @@ public class GraveInventoryArmor extends GraveInventory {
     }
 
     public GraveInventoryArmor(String modID, TileEntityGravestone grave) {
-        super("Armor", modID, 4, grave);
+        super("armor", modID, 4, grave);
     }
 
     @Override

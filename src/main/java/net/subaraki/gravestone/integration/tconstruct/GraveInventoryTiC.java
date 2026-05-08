@@ -12,7 +12,7 @@ public abstract class GraveInventoryTiC extends GraveInventory {
     }
 
     public GraveInventoryTiC(String name, int size, TileEntityGravestone grave) {
-        super(name, TinkersConstructIntegration.modId, size, grave);
+        super(TinkersConstructIntegration.inventoryGroup + "." + name, TinkersConstructIntegration.modId, size, grave);
     }
 
     @Override

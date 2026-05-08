@@ -13,7 +13,7 @@ public class GraveInventoryRPGI extends GraveInventory {
     }
 
     public GraveInventoryRPGI(int size, TileEntityGravestone grave) {
-        super(RPGInventoryIntegration.modName, RPGInventoryIntegration.modId, size, grave);
+        super(RPGInventoryIntegration.inventoryName, RPGInventoryIntegration.modId, size, grave);
     }
 
     @Override

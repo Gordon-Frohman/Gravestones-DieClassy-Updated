@@ -14,7 +14,7 @@ public class GraveInventoryMariculture extends GraveInventory {
     }
 
     public GraveInventoryMariculture(int size, TileEntityGravestone grave) {
-        super(MaricultureIntegration.modName, MaricultureIntegration.modName, size, grave);
+        super(MaricultureIntegration.inventoryName, MaricultureIntegration.modName, size, grave);
     }
 
     @Override

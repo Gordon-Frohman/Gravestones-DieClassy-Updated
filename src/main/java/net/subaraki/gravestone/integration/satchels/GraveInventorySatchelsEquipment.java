@@ -11,7 +11,7 @@ public class GraveInventorySatchelsEquipment extends GraveInventorySatchels {
     }
 
     public GraveInventorySatchelsEquipment(int size, TileEntityGravestone grave) {
-        super(SatchelsIntegration.modName, size, grave);
+        super(SatchelsIntegration.modId, size, grave);
     }
 
     @Override

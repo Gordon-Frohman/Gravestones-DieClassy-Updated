@@ -218,7 +218,7 @@ public class GravestoneEventHandler {
         if (graveRotation < 0) {
             graveRotation += 360;
         }
-        te.ModelRotation = (float) (Math.round(graveRotation / 15) * 15);
+        te.rotation = (float) (Math.round(graveRotation / 15) * 15);
         playerGraves.put(player.getUniqueID(), te);
     }
 

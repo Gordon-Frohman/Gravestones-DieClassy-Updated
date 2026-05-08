@@ -15,9 +15,10 @@ import mariculture.magic.MirrorHelper;
 public class MaricultureIntegration extends ModIntegration {
 
     public static final String modName = "Mariculture";
+    public static final String inventoryName = "mariculture";
 
     public MaricultureIntegration() {
-        super(modName, modName, GraveInventoryMariculture.class);
+        super(modName, modName, inventoryName, GraveInventoryMariculture.class);
     }
 
     public ItemStack getModIcon() {

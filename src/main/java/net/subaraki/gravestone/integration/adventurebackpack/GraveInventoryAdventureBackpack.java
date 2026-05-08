@@ -14,7 +14,7 @@ public class GraveInventoryAdventureBackpack extends GraveInventory {
     }
 
     public GraveInventoryAdventureBackpack(TileEntityGravestone grave) {
-        super(AdventureBackpackIntegration.modName, AdventureBackpackIntegration.modId, 1, grave);
+        super(AdventureBackpackIntegration.modId, AdventureBackpackIntegration.modId, 1, grave);
     }
 
     @Override

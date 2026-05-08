@@ -14,7 +14,7 @@ public class GraveInventoryTravellersGear extends GraveInventory {
     }
 
     public GraveInventoryTravellersGear(int size, TileEntityGravestone grave) {
-        super(TravellersGearIntegration.modName, TravellersGearIntegration.modId, size, grave);
+        super(TravellersGearIntegration.inventoryName, TravellersGearIntegration.modId, size, grave);
     }
 
     @Override

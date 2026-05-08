@@ -34,6 +34,7 @@
  * For more details, see https://docs.gradle.org/8.0.1/userguide/java_library_plugin.html#sec:java_library_configurations_graph
  */
 dependencies {
+	shadowImplementation(files("libs/padeg-3.3.0.24.jar"))
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:NotEnoughItems:2.7.49-GTNH:dev")
     runtimeOnlyNonPublishable("com.github.GTNewHorizons:Angelica:2.1.16:dev")
 	compileOnly("com.github.GTNewHorizons:twilightforest:2.7.28:dev")
@@ -41,6 +42,7 @@ dependencies {
     compileOnly("com.github.GTNewHorizons:Baubles-Expanded:2.1.9-GTNH:dev") // For Thaumcraft runtime
 	compileOnly("com.github.GTNewHorizons:TinkersConstruct:1.14.46-GTNH:dev") { transitive = false }
     compileOnly("com.github.GTNewHorizons:Battlegear2:1.4.3:dev") { transitive = false } // For TiC runtime
+    runtimeOnlyNonPublishable("com.github.GTNewHorizons:Hodgepodge:2.7.134:dev")
     compileOnly("com.github.GTNewHorizons:Galacticraft:3.2.9-GTNH:dev") { transitive = false }
     compileOnly(rfg.deobf(files("libs/Mariculture-Deluxe-1.7.10-1.3.0-6.jar")))
     compileOnly(rfg.deobf(files("libs/Enchiridion 2-1.7.10-2.0.2a.jar"))) // For Mariculture runtime

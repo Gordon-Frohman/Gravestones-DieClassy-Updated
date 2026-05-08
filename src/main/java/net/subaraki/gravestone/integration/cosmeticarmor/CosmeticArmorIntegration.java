@@ -14,9 +14,10 @@ public class CosmeticArmorIntegration extends ModIntegration {
 
     public static final String modName = "Cosmetic Armor";
     public static final String modId = "cosmeticarmorreworked";
+    public static final String inventoryName = "cosmeticarmor";
 
     public CosmeticArmorIntegration() {
-        super(modName, modId, GraveInventoryCosmeticArmor.class);
+        super(modName, modId, inventoryName, GraveInventoryCosmeticArmor.class);
     }
 
     @Override

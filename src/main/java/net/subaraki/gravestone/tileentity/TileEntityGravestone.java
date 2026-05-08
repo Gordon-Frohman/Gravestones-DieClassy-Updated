@@ -34,11 +34,11 @@ public class TileEntityGravestone extends TileEntity {
     public GameProfile profile;
     public int modelType;
     public boolean maleEpitaph;
-    public float ModelRotation;
+    public float rotation;
     public EntityPlayer entityPlayerStub;
     public String message1;
     public String message2;
-    public boolean isDecorativeGrave;
+    public boolean isDecorative;
     public boolean hasItems;
     public String locked;
     public boolean looted;
@@ -48,10 +48,10 @@ public class TileEntityGravestone extends TileEntity {
         this.playername = "";
         this.modelType = 0;
         this.maleEpitaph = true;
-        this.ModelRotation = 0.0f;
+        this.rotation = 0.0f;
         this.message1 = "";
         this.message2 = "";
-        this.isDecorativeGrave = false;
+        this.isDecorative = false;
         this.hasItems = false;
         this.locked = "";
         this.looted = false;
@@ -75,9 +75,9 @@ public class TileEntityGravestone extends TileEntity {
         this.message2 = nbt.getString("message2");
         this.modelType = nbt.getInteger("Meta");
         this.maleEpitaph = nbt.getBoolean("maleEpitaph");
-        this.ModelRotation = nbt.getFloat("rotation");
+        this.rotation = nbt.getFloat("rotation");
         this.looted = nbt.getBoolean("isLooted");
-        this.isDecorativeGrave = nbt.getBoolean("decoGrave");
+        this.isDecorative = nbt.getBoolean("decoGrave");
         if (this.modelType == 5 && playername.length() > 0) {
             this.profile = new GameProfile((UUID) null, playername);
             fixProfile();
@@ -91,7 +91,7 @@ public class TileEntityGravestone extends TileEntity {
             }
             if (!items.isEmpty()) {
                 int size = items.size();
-                GraveInventory inv = new GraveInventory("Outdated", "", size, this);
+                GraveInventory inv = new GraveInventory("outdated", "", size, this);
                 for (int i = 0; i < size; i++) {
                     inv.setInventorySlotContents(i, items.get(i));
                 }
@@ -124,9 +124,9 @@ public class TileEntityGravestone extends TileEntity {
         nbt.setString("message2", this.message2);
         nbt.setInteger("Meta", this.modelType);
         nbt.setBoolean("maleEpitaph", this.maleEpitaph);
-        nbt.setFloat("rotation", this.ModelRotation);
+        nbt.setFloat("rotation", this.rotation);
         nbt.setBoolean("isLooted", this.looted);
-        nbt.setBoolean("decoGrave", this.isDecorativeGrave);
+        nbt.setBoolean("decoGrave", this.isDecorative);
 
         if (this.mainInv != null) nbt.setTag("mainInv", this.mainInv.writeToNBT());
         if (this.armor != null) nbt.setTag("armor", this.armor.writeToNBT());
@@ -263,10 +263,5 @@ public class TileEntityGravestone extends TileEntity {
     private void fixProfile() {
         this.profile = GraveUtility.fixProfile(this.profile);
         this.markDirty();
-    }
-
-    public ItemStack getStackInSlot(int slotIndex) {
-        // TODO Auto-generated method stub
-        return null;
     }
 }

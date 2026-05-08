@@ -15,9 +15,10 @@ import baubles.common.lib.PlayerHandler;
 public class BaublesIntegration extends ModIntegration {
 
     public static final String modName = "Baubles";
+    public static final String inventoryName = "baubles";
 
     public BaublesIntegration() {
-        super(modName, modName, GraveInventoryBaubles.class);
+        super(modName, modName, inventoryName, GraveInventoryBaubles.class);
     }
 
     @Override

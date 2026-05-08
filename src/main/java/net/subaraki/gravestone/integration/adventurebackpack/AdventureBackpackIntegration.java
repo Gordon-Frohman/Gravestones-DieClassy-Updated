@@ -18,7 +18,7 @@ public class AdventureBackpackIntegration extends ModIntegration {
     public static final String modId = "adventurebackpack";
 
     public AdventureBackpackIntegration() {
-        super(modName, modId, GraveInventoryAdventureBackpack.class);
+        super(modName, modId, modId, GraveInventoryAdventureBackpack.class);
     }
 
     public ItemStack getModIcon() {

@@ -16,9 +16,10 @@ public class RPGInventoryIntegration extends ModIntegration {
 
     public static final String modName = "RPG Inventory";
     public static final String modId = "rpginventorymod";
+    public static final String inventoryName = "rpginventory";
 
     public RPGInventoryIntegration() {
-        super(modName, modId, GraveInventoryRPGI.class);
+        super(modName, modId, inventoryName, GraveInventoryRPGI.class);
     }
 
     public ItemStack getModIcon() {

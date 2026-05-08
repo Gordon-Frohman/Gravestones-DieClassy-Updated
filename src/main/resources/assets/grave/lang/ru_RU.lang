@@ -57,6 +57,37 @@ grave.empty=Эта могила пуста!
 
 grave.decorative=Декоративная могила.
 
+grave.loot.1=Вы украли 
+grave.loot.2= из могилы 
+grave.loot.3=.
+
+grave.loot.forbidden.1=Вы с восхищением рассматриваете предметы в могиле 
+grave.loot.forbidden.2=...
+
+grave.button.autoEquip=Надеть все предметы
+
+grave.inventory.minecraft=Minecraft
+grave.inventory.armor=Броня
+grave.inventory.outdated=Устаревшая могила
+grave.inventory.modded=Экипировка из модификаций
+
+grave.inventory.adventurebackpack=Adventure Backpack
+grave.inventory.aether=Aether
+grave.inventory.battlegear=Battlegear
+grave.inventory.baubles=Baubles
+grave.inventory.cosmeticarmor=Декоративная броня
+grave.inventory.galacticraft=Galacticraft
+grave.inventory.mariculture=Mariculture
+grave.inventory.rpginventory=RPG Inventory
+grave.inventory.satchels.satchels=Satchels
+grave.inventory.satchels.leftPouch=Левый мешок
+grave.inventory.satchels.rightPouch=Правый мешок
+grave.inventory.satchels.satchel=Сумка
+grave.inventory.sextiarysector=Sextiary Sector
+grave.inventory.tconstruct.accessories=Tinkers Construct - Аксессуары
+grave.inventory.tconstruct.knapsack=Tinkers Construct - Ранец
+grave.inventory.travellersgear=Traveller's Gear
+
 pickGrave.settings.category=Надгробные камни
 pickGrave.settings.0=Меню выбора надгробия
 pickGrave.text=Выберите могилу, которая будет хранить ваши вещи после смерти.

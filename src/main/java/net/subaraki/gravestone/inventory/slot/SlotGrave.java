@@ -1,14 +1,15 @@
 
 package net.subaraki.gravestone.inventory.slot;
 
-import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
-import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
-import net.subaraki.gravestone.inventory.GraveInventoryArmor;
+import net.minecraft.util.StatCollector;
+import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
+
+import padeg.lib.Padeg;
 
 public class SlotGrave extends Slot {
 
@@ -21,23 +22,31 @@ public class SlotGrave extends Slot {
     }
 
     public boolean isItemValid(ItemStack itemStack) {
-        return te.isDecorativeGrave && this.inventory instanceof GraveInventoryArmor
-            && itemStack != null
-            && itemStack.getItem() instanceof ItemArmor
-            && EntityLiving.getArmorPosition(itemStack) == (this.slotIndex + 1);
+        return false;
     }
 
-    public boolean canTakeStack(EntityPlayer par1EntityPlayer) {
-        if (!this.te.playername.equals(par1EntityPlayer.getCommandSenderName())) {
+    public boolean canTakeStack(EntityPlayer player) {
+        if (this.te.playername.equals(player.getCommandSenderName())) {
+            return true;
+        } else {
             if (!this.te.looted) {
                 this.te.looted = true;
-                this.te.locked = "You loot " + this.te.getStackInSlot(this.getSlotIndex())
-                    .getDisplayName() + " from " + this.te.playername + "'s grave.";
+                String itemName = this.inventory.getStackInSlot(this.getSlotIndex())
+                    .getDisplayName();
+                if (GraveStones.proxy.usingRussianLanguage()) {
+                    String firstLetter = "" + itemName.charAt(0);
+                    itemName = Padeg.getOfficePadeg(itemName.replaceFirst(firstLetter, firstLetter.toLowerCase()), 4);
+                }
+                this.te.locked = StatCollector.translateToLocal("grave.loot.1") + itemName
+                    + StatCollector.translateToLocal("grave.loot.2")
+                    + this.te.playername
+                    + StatCollector.translateToLocal("grave.loot.3");
                 return true;
             }
-            this.te.locked = "You admire the items from " + this.te.playername + "'s grave...";
+            this.te.locked = StatCollector.translateToLocal("grave.loot.forbidden.1") + this.te.playername
+                + StatCollector.translateToLocal("grave.loot.forbidden.2");
         }
-        return this.te.playername.equals(par1EntityPlayer.getCommandSenderName());
+        return false;
     }
 
     public ItemStack decrStackSize(int amount) {

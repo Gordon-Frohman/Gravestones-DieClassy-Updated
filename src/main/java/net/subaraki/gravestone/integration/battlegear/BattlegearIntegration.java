@@ -15,9 +15,10 @@ public class BattlegearIntegration extends ModIntegration {
 
     public static final String modName = "Battlegear";
     public static final String modId = "battlegear2";
+    public static final String inventoryName = "battlegear";
 
     public BattlegearIntegration() {
-        super(modName, modId, GraveInventoryBattlegear.class);
+        super(modName, modId, inventoryName, GraveInventoryBattlegear.class);
     }
 
     public ItemStack getModIcon() {

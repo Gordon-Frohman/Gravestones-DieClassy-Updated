@@ -43,6 +43,6 @@ public class Constants {
     public static final TileEntityGravestone GRAVE_PLACEHOLDER = new TileEntityGravestone();
 
     static {
-        GRAVE_PLACEHOLDER.isDecorativeGrave = true;
+        GRAVE_PLACEHOLDER.isDecorative = true;
     }
 }

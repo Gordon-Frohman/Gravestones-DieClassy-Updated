@@ -15,7 +15,7 @@ public class GraveInventoryCosmeticArmor extends GraveInventory {
     }
 
     public GraveInventoryCosmeticArmor(TileEntityGravestone grave) {
-        super(CosmeticArmorIntegration.modName, CosmeticArmorIntegration.modId, 4, grave);
+        super(CosmeticArmorIntegration.inventoryName, CosmeticArmorIntegration.modId, 4, grave);
     }
 
     @Override

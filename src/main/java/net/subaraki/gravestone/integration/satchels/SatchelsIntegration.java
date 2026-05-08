@@ -16,15 +16,16 @@ public class SatchelsIntegration extends ModIntegration {
 
     public static final String modName = "Satchels";
     public static final String modId = "satchels";
-    public static final String inventoryLeftPouch = "Left Pouch";
-    public static final String inventoryRightPouch = "Right Pouch";
-    public static final String inventorySatchel = "Satchel";
+    public static final String inventoryLeftPouch = "leftPouch";
+    public static final String inventoryRightPouch = "rightPouch";
+    public static final String inventorySatchel = "satchel";
 
     public SatchelsIntegration() {
         super(
             modName,
             modId,
-            new String[] { modName, inventoryLeftPouch, inventoryRightPouch, inventorySatchel },
+            new String[] { modId + "." + modId, modId + "." + inventoryLeftPouch, modId + "." + inventoryRightPouch,
+                modId + "." + inventorySatchel },
             new Class<?>[] { GraveInventorySatchelsEquipment.class, GraveInventorySatchelsLeftPouch.class,
                 GraveInventorySatchelsRightPouch.class, GraveInventorySatchel.class });
     }

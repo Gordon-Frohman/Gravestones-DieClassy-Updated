@@ -8,6 +8,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 import cpw.mods.fml.common.Loader;
@@ -153,7 +154,7 @@ public class GraveInventory implements IInventory {
 
     @Override
     public String getInventoryName() {
-        return this.name;
+        return StatCollector.translateToLocal("grave.inventory." + this.name);
     }
 
     @Override

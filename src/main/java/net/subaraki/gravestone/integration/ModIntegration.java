@@ -12,8 +12,8 @@ public abstract class ModIntegration {
     protected final String modName;
     public final String modID;
 
-    public ModIntegration(String modName, String modID, Class<? extends GraveInventory> invClass) {
-        this(modName, modID, new String[] { modName }, new Class<?>[] { invClass });
+    public ModIntegration(String modName, String modID, String invName, Class<? extends GraveInventory> invClass) {
+        this(modName, modID, new String[] { invName }, new Class<?>[] { invClass });
     }
 
     @SuppressWarnings("unchecked")

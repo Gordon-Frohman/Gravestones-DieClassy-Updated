@@ -15,7 +15,7 @@ public class GraveInventoryAether extends GraveInventory {
     }
 
     public GraveInventoryAether(int size, TileEntityGravestone grave) {
-        super(AetherIntegration.modName, AetherIntegration.modId, size, grave);
+        super(AetherIntegration.inventoryName, AetherIntegration.modId, size, grave);
     }
 
     @Override

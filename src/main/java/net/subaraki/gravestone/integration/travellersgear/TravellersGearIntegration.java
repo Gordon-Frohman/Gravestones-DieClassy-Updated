@@ -16,9 +16,10 @@ public class TravellersGearIntegration extends ModIntegration {
 
     public static final String modName = "Traveller's Gear";
     public static final String modId = "TravellersGear";
+    public static final String inventoryName = "travellersgear";
 
     public TravellersGearIntegration() {
-        super(modName, modId, GraveInventoryTravellersGear.class);
+        super(modName, modId, inventoryName, GraveInventoryTravellersGear.class);
     }
 
     public ItemStack getModIcon() {

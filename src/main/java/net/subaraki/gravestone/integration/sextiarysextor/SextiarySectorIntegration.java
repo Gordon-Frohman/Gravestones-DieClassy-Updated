@@ -16,9 +16,10 @@ public class SextiarySectorIntegration extends ModIntegration {
 
     public static final String modName = "Sextiary Sector";
     public static final String modId = "SextiarySector";
+    public static final String inventoryName = "sextiarysector";
 
     public SextiarySectorIntegration() {
-        super(modName, modId, GraveInventorySextiarySector.class);
+        super(modName, modId, inventoryName, GraveInventorySextiarySector.class);
     }
 
     public ItemStack getModIcon() {

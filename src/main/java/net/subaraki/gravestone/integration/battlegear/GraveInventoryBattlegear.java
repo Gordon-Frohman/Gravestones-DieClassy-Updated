@@ -13,7 +13,7 @@ public class GraveInventoryBattlegear extends GraveInventory {
     }
 
     public GraveInventoryBattlegear(int size, TileEntityGravestone grave) {
-        super(BattlegearIntegration.modName, BattlegearIntegration.modId, size, grave);
+        super(BattlegearIntegration.inventoryName, BattlegearIntegration.modId, size, grave);
     }
 
     @Override

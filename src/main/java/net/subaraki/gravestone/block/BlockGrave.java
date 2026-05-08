@@ -69,11 +69,11 @@ public class BlockGrave extends Block {
                 player.openGui(GraveStones.instance, GuiHandler.GRAVE_CONTAINER, world, x, y, z);
             } else {
                 TileEntityGravestone tileEntityGravestone = te;
-                tileEntityGravestone.ModelRotation += 15.0f;
+                tileEntityGravestone.rotation += 15.0f;
             }
             return true;
         }
-        if (te.isDecorativeGrave) {
+        if (te.isDecorative) {
             String s = player.getCurrentEquippedItem()
                 .getDisplayName();
             te.setName(s);
@@ -100,7 +100,7 @@ public class BlockGrave extends Block {
     @Override
     public void onBlockExploded(World world, int x, int y, int z, Explosion explosion) {
         TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
-        if (te.isDecorativeGrave || !te.hasItems) super.onBlockExploded(world, x, y, z, explosion);
+        if (te.isDecorative || !te.hasItems) super.onBlockExploded(world, x, y, z, explosion);
     }
 
     public void onBlockDestroyedByExplosion(World world, int x, int y, int z, Explosion p_149723_5_) {
@@ -109,7 +109,7 @@ public class BlockGrave extends Block {
 
     public void onBlockClicked(World world, int x, int y, int z, EntityPlayer player) {
         TileEntityGravestone te = (TileEntityGravestone) world.getTileEntity(x, y, z);
-        if (te.hasItems && !te.isDecorativeGrave) {
+        if (te.hasItems && !te.isDecorative) {
             this.setBlockUnbreakable();
         } else {
             this.setHardness(5.0f);

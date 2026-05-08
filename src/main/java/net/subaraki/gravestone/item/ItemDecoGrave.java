@@ -82,7 +82,7 @@ public class ItemDecoGrave extends ItemBlock {
         final TileEntityGravestone grave = new TileEntityGravestone();
         grave.setDeathMessage(StatCollector.translateToLocal("grave.decorative"));
         grave.setDeathMessage2("");
-        grave.isDecorativeGrave = true;
+        grave.isDecorative = true;
         grave.modelType = itemStack.getItemDamage();
 
         Vec3 playerLookVec = player.getLookVec();
@@ -90,7 +90,7 @@ public class ItemDecoGrave extends ItemBlock {
         if (graveRotation < 0) {
             graveRotation += 360;
         }
-        grave.ModelRotation = (float) (Math.round(graveRotation / 15) * 15);
+        grave.rotation = (float) (Math.round(graveRotation / 15) * 15);
 
         world.setTileEntity(x, y, z, (TileEntity) grave);
         --itemStack.stackSize;

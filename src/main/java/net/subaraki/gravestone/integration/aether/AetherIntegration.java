@@ -16,9 +16,10 @@ public class AetherIntegration extends ModIntegration {
 
     public static final String modName = "Aether";
     public static final String modId = "aether_legacy";
+    public static final String inventoryName = "aether";
 
     public AetherIntegration() {
-        super(modName, modId, GraveInventoryAether.class);
+        super(modName, modId, modId, GraveInventoryAether.class);
     }
 
     public ItemStack getModIcon() {

@@ -17,9 +17,10 @@ public class GalacticraftIntegration extends ModIntegration {
 
     public static final String modName = "Galacticraft";
     public static final String modId = "GalacticraftCore";
+    public static final String inventoryName = "galacticraft";
 
     public GalacticraftIntegration() {
-        super(modName, modId, GraveInventoryGalacticraft.class);
+        super(modName, modId, inventoryName, GraveInventoryGalacticraft.class);
     }
 
     public ItemStack getModIcon() {

@@ -40,7 +40,16 @@ public class ClientProxy extends CommonProxy {
 
     @Override
     public EntityPlayer getClientPlayer() {
-        return (EntityPlayer) Minecraft.getMinecraft().thePlayer;
+        return Minecraft.getMinecraft().thePlayer;
+    }
+
+    @Override
+    public boolean usingRussianLanguage() {
+        return Minecraft.getMinecraft()
+            .getLanguageManager()
+            .getCurrentLanguage()
+            .getLanguageCode()
+            .equals("ru_RU");
     }
 
     static {

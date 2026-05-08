@@ -43,7 +43,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
     @SuppressWarnings("rawtypes")
     public void renderTileEntityAt(TileEntity te, double x, double y, double z, float f) {
         TileEntityGravestone tile = (TileEntityGravestone) te;
-        float rot = tile.ModelRotation;
+        float rot = tile.rotation;
         int modeltype = tile.modelType;
         this.renderBeam(tile, x, y, z);
         GL11.glPushMatrix();
@@ -218,7 +218,7 @@ public class TileEntitySpecialRendererGrave extends TileEntitySpecialRenderer {
     }
 
     private void renderBeam(TileEntityGravestone tileentity, double d, double d1, double d2) {
-        if (!tileentity.isDecorativeGrave && tileentity.hasItems) {
+        if (!tileentity.isDecorative && tileentity.hasItems) {
             Tessellator tesselator = Tessellator.instance;
             GL11.glDisable(3553);
             GL11.glDisable(2896);

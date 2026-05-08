@@ -14,7 +14,7 @@ public class GraveInventoryBaubles extends GraveInventory {
     }
 
     public GraveInventoryBaubles(int size, TileEntityGravestone grave) {
-        super(BaublesIntegration.modName, BaublesIntegration.modName, size, grave);
+        super(BaublesIntegration.inventoryName, BaublesIntegration.modName, size, grave);
     }
 
     @Override

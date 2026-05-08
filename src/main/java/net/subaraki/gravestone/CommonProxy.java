@@ -10,4 +10,8 @@ public class CommonProxy {
     public EntityPlayer getClientPlayer() {
         return null;
     }
+
+    public boolean usingRussianLanguage() {
+        return false;
+    }
 }

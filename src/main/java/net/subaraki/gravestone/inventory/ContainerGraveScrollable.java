@@ -55,7 +55,7 @@ public class ContainerGraveScrollable extends ContainerGraveAbstract {
         int currentRow = 0;
         while (currentRow < offset + 4) {
             if (skipRow) {
-                if (currentRow == offset + 3) this.tabNames[4] = currentInv.name;
+                if (currentRow == offset + 3) this.tabNames[4] = currentInv.getInventoryName();
                 currentRow++;
                 totalInvSlot = currentRow * 9;
                 skipRow = false;
@@ -63,9 +63,9 @@ public class ContainerGraveScrollable extends ContainerGraveAbstract {
             } else {
                 if (currentRow >= offset) {
                     if (currentRow == offset) {
-                        this.tabNames[0] = currentInv.name;
+                        this.tabNames[0] = currentInv.getInventoryName();
                     } else {
-                        if (currentInvSlot == 0) this.tabNames[currentRow - offset] = currentInv.name;
+                        if (currentInvSlot == 0) this.tabNames[currentRow - offset] = currentInv.getInventoryName();
                     }
                     int index = totalInvSlot - offset * 9;
                     this.enableSlots[index] = true;

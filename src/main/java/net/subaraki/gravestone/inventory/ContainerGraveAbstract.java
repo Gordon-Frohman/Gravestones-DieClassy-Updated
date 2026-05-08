@@ -37,7 +37,7 @@ public abstract class ContainerGraveAbstract extends Container {
 
     protected Slot getSlot(IInventory inv, int slotIndex, int xDisplayPosition, int yDisplayPosition, boolean isArmor,
         boolean isCreative, TileEntityGravestone grave) {
-        if (isCreative) {
+        if (isCreative || (grave.isDecorative && isArmor)) {
             if (isArmor) {
                 return new SlotArmorGrave(inv, slotIndex, xDisplayPosition, yDisplayPosition, grave);
             } else {

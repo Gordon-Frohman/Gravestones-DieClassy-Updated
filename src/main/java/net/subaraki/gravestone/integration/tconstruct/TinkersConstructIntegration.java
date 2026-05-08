@@ -16,14 +16,15 @@ public class TinkersConstructIntegration extends ModIntegration {
 
     public static final String modName = "Tinkers Construct";
     public static final String modId = "TConstruct";
-    public static final String inventoryAccessories = "Tinkers Construct - Accessories";
-    public static final String inventoryKnapsack = "Tinkers Construct - Knapsack";
+    public static final String inventoryGroup = "tconstruct";
+    public static final String inventoryAccessories = "accessories";
+    public static final String inventoryKnapsack = "knapsack";
 
     public TinkersConstructIntegration() {
         super(
             modName,
             modId,
-            new String[] { inventoryAccessories, inventoryKnapsack },
+            new String[] { inventoryGroup + "." + inventoryAccessories, inventoryGroup + "." + inventoryKnapsack },
             new Class<?>[] { GraveInventoryTiCAccessories.class, GraveInventoryTiCKnapsack.class });
     }
 

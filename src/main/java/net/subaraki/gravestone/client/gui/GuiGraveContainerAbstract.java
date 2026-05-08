@@ -50,7 +50,7 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         this.ySize = 186;
         if (te != null) {
             if (te.message1.length() <= 0) {
-                te.isDecorativeGrave = false;
+                te.isDecorative = false;
                 if (this.nameOfDeadPlayer.equals("!Empty!")) {
                     this.epitaph = StatCollector.translateToLocal("grave.empty");
                 } else {
@@ -76,9 +76,9 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         this.fontRendererObj.drawSplitString(this.epitaph, this.width / 2 + 109, this.height / 2 - 89, 100, 0);
         this.fontRendererObj.drawSplitString(this.epitaph, this.width / 2 + 110, this.height / 2 - 90, 100, 16777215);
         if (this.te.locked.length() > 0) {
-            this.fontRendererObj.drawSplitString(this.te.locked, this.width / 2 + 79, this.height / 2 + 39, 150, 0);
+            this.fontRendererObj.drawSplitString(this.te.locked, this.width / 2 + 109, this.height / 2 + 39, 100, 0);
             this.fontRendererObj
-                .drawSplitString(this.te.locked, this.width / 2 + 80, this.height / 2 + 40, 150, 16777215);
+                .drawSplitString(this.te.locked, this.width / 2 + 110, this.height / 2 + 40, 100, 16777215);
         }
         this.fontRendererObj.drawString(
             this.tabText,
@@ -203,13 +203,13 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
                     default:
                         break;
                     case GuiHandler.GRAVE_CONTAINER:
-                        textToRender = "Minecraft";
+                        textToRender = StatCollector.translateToLocal("grave.inventory.minecraft");
                         break;
                     case GuiHandler.GRAVE_CONTAINER_SCROLLABLE:
-                        textToRender = "Modded inventories";
+                        textToRender = StatCollector.translateToLocal("grave.inventory.modded");
                         break;
                     case GuiAutoEquipButton.BUTTON_ID:
-                        textToRender = "Equip all the items";
+                        textToRender = StatCollector.translateToLocal("grave.button.autoEquip");
                         break;
                 }
                 if (textToRender != null) {

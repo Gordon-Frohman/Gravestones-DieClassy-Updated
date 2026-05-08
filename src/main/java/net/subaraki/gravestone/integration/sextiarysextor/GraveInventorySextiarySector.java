@@ -14,7 +14,7 @@ public class GraveInventorySextiarySector extends GraveInventory {
     }
 
     public GraveInventorySextiarySector(int size, TileEntityGravestone grave) {
-        super(SextiarySectorIntegration.modName, SextiarySectorIntegration.modId, size, grave);
+        super(SextiarySectorIntegration.inventoryName, SextiarySectorIntegration.modId, size, grave);
     }
 
     @Override

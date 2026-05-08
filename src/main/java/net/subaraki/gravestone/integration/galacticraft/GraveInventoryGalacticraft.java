@@ -15,7 +15,7 @@ public class GraveInventoryGalacticraft extends GraveInventory {
     }
 
     public GraveInventoryGalacticraft(int size, TileEntityGravestone grave) {
-        super(GalacticraftIntegration.modName, GalacticraftIntegration.modId, size, grave);
+        super(GalacticraftIntegration.inventoryName, GalacticraftIntegration.modId, size, grave);
     }
 
     @Override

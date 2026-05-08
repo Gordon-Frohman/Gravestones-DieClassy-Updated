@@ -12,7 +12,7 @@ public abstract class GraveInventorySatchels extends GraveInventory {
     }
 
     public GraveInventorySatchels(String name, int size, TileEntityGravestone grave) {
-        super(name, SatchelsIntegration.modId, size, grave);
+        super(SatchelsIntegration.modId + "." + name, SatchelsIntegration.modId, size, grave);
     }
 
     @Override
