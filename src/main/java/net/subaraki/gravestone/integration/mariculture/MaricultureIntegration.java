@@ -37,6 +37,7 @@ public class MaricultureIntegration extends ModIntegration {
                 if (stack != null) graveInv.setInventorySlotContents(i, stack);
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
                 MirrorHelper.save(player, new ItemStack[size]);
                 te.inventories.add(graveInv);
                 return true;

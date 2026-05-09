@@ -39,6 +39,7 @@ public abstract class ModIntegration {
                 }
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
                 te.inventories.add(graveInv);
                 return true;
             }

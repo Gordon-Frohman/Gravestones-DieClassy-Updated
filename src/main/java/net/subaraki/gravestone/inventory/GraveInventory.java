@@ -20,6 +20,7 @@ public class GraveInventory implements IInventory {
     protected String name;
     protected String modID;
     protected int size;
+    public ItemStack icon;
     protected Map<Integer, ItemStack> items = new HashMap<Integer, ItemStack>();
     public TileEntityGravestone grave;
 
@@ -60,6 +61,7 @@ public class GraveInventory implements IInventory {
         nbt.setString("name", name);
         nbt.setString("modID", modID);
         nbt.setInteger("size", size);
+        if (this.icon != null) nbt.setTag("icon", this.icon.writeToNBT(new NBTTagCompound()));
         NBTTagList items = new NBTTagList();
         for (int i = 0; i < size; i++) {
             ItemStack item = this.items.get(i);
@@ -78,6 +80,7 @@ public class GraveInventory implements IInventory {
         this.name = nbt.getString("name");
         this.modID = nbt.getString("modID");
         this.size = nbt.getInteger("size");
+        if (nbt.hasKey("icon")) this.icon = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("icon"));
         NBTTagList items = (NBTTagList) nbt.getTag("items");
         for (int i = 0; i < items.tagCount(); i++) {
             NBTTagCompound itemNBT = items.getCompoundTagAt(i);

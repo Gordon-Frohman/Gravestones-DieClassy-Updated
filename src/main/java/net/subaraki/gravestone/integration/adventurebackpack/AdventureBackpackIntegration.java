@@ -37,6 +37,7 @@ public class AdventureBackpackIntegration extends ModIntegration {
                 GraveInventory graveInv = getGraveInventory(1, te);
                 bp.setWearable(null);
                 graveInv.setInventorySlotContents(0, backpack);
+                graveInv.icon = backpack;
                 return true;
             }
         } else {

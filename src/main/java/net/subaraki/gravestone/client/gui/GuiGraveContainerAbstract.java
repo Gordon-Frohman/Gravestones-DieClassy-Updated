@@ -1,11 +1,14 @@
 
 package net.subaraki.gravestone.client.gui;
 
+import java.util.ArrayList;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
@@ -14,6 +17,7 @@ import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.ModelHandler;
 import net.subaraki.gravestone.handler.TextureHandler;
 import net.subaraki.gravestone.inventory.ContainerGraveAbstract;
+import net.subaraki.gravestone.inventory.GraveInventory;
 import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
 import net.subaraki.gravestone.network.play.client.C03PacketAutoEquip;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
@@ -156,13 +160,20 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
                     y,
                     this instanceof GuiGraveContainer,
                     Constants.ICON_VANILLA));
+            ArrayList<ItemStack> iconsList = new ArrayList<ItemStack>();
+            for (GraveInventory inv : this.te.inventories) {
+                if (inv.icon != null) iconsList.add(inv.icon);
+            }
+            if (iconsList.isEmpty()) iconsList.add(Constants.ICON_MISC);
+            ItemStack[] icons = new ItemStack[iconsList.size()];
+            for (int i = 0; i < iconsList.size(); i++) icons[i] = iconsList.get(i);
             this.buttonList.add(
                 new GuiTabButton(
                     GuiHandler.GRAVE_CONTAINER_SCROLLABLE,
                     x + offsetSize,
                     y,
                     this instanceof GuiGraveContainerScrollable,
-                    Constants.ICON_MISC));
+                    icons));
         }
         EntityPlayer player = Minecraft.getMinecraft().thePlayer;
         if (this.te.playername.equals(player.getCommandSenderName()) || player.capabilities.isCreativeMode) {

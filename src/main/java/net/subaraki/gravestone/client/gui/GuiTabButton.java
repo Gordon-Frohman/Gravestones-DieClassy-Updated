@@ -13,18 +13,20 @@ import org.lwjgl.opengl.GL11;
 
 public class GuiTabButton extends GuiButton {
 
+    protected static int ticks = 0;
     protected static RenderItem itemRender = new RenderItem();
     protected static final ResourceLocation button = new ResourceLocation(
         "textures/gui/container/creative_inventory/tabs.png");
     private boolean page;
-    private final ItemStack stack;
+    private final ItemStack[] icons;
 
-    public GuiTabButton(int id, int xPosition, int yPosition, boolean page, ItemStack stack) {
+    public GuiTabButton(int id, int xPosition, int yPosition, boolean page, ItemStack... stack) {
         super(id, xPosition, yPosition, 35, 20, "");
         this.page = page;
-        this.stack = stack;
+        this.icons = stack;
     }
 
+    @Override
     public void drawButton(Minecraft minecraft, int x, int y) {
         if (this.visible) {
             FontRenderer fontrenderer = minecraft.fontRenderer;
@@ -73,7 +75,7 @@ public class GuiTabButton extends GuiButton {
             GuiTabButton.itemRender.zLevel = 100.0f;
             GL11.glEnable(2896);
             GL11.glEnable(32826);
-            final ItemStack itemstack = this.stack;
+            final ItemStack itemstack = this.icons[(Math.abs(ticks++) / 100) % this.icons.length];
             GuiTabButton.itemRender.renderItemAndEffectIntoGUI(
                 fontrenderer,
                 Minecraft.getMinecraft()

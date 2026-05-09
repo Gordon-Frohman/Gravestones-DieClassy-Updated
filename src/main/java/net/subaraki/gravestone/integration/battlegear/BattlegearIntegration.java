@@ -41,6 +41,7 @@ public class BattlegearIntegration extends ModIntegration {
                 }
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
                 inv.markDirty();
                 te.inventories.add(graveInv);
                 return true;

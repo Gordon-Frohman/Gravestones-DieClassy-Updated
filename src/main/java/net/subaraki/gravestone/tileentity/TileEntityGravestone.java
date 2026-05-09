@@ -9,6 +9,7 @@ import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -26,7 +27,7 @@ import com.mojang.authlib.GameProfile;
 
 public class TileEntityGravestone extends TileEntity {
 
-    public GraveInventory mainInv = new GraveInventory("Minecraft", "minecraft", 36, this);
+    public GraveInventory mainInv = new GraveInventory("minecraft", "minecraft", 36, this);
     public GraveInventory armor = new GraveInventoryArmor("minecraft", this);
     public List<GraveInventory> inventories = new ArrayList<GraveInventory>();
 
@@ -92,6 +93,7 @@ public class TileEntityGravestone extends TileEntity {
             if (!items.isEmpty()) {
                 int size = items.size();
                 GraveInventory inv = new GraveInventory("outdated", "", size, this);
+                inv.icon = new ItemStack(Items.lava_bucket);
                 for (int i = 0; i < size; i++) {
                     inv.setInventorySlotContents(i, items.get(i));
                 }

@@ -35,6 +35,11 @@ public class SatchelsIntegration extends ModIntegration {
             : new ItemStack(Items.leather);
     }
 
+    public ItemStack getModIcon1() {
+        return GraveStones.hasSatchels && SatchelsItems.satchel != null ? new ItemStack(SatchelsItems.satchel)
+            : new ItemStack(Items.leather);
+    }
+
     public static IInventory getEquipmentInventory(EntityPlayer player) {
         return EntityPropertiesSatchels.fromPlayer(player).equipment;
     }
@@ -64,6 +69,7 @@ public class SatchelsIntegration extends ModIntegration {
                 equipment.setInventorySlotContents(i, null);
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon1();
                 te.inventories.add(graveInv);
                 result = true;
             }
@@ -81,6 +87,7 @@ public class SatchelsIntegration extends ModIntegration {
                 leftPouch.setInventorySlotContents(i, null);
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
                 te.inventories.add(graveInv);
                 result = true;
             }
@@ -98,6 +105,7 @@ public class SatchelsIntegration extends ModIntegration {
                 rightPouch.setInventorySlotContents(i, null);
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
                 te.inventories.add(graveInv);
                 result = true;
             }
@@ -115,6 +123,7 @@ public class SatchelsIntegration extends ModIntegration {
                 satchel.setInventorySlotContents(i, null);
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon1();
                 te.inventories.add(graveInv);
                 result = true;
             }

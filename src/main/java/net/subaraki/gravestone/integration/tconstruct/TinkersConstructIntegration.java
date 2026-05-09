@@ -33,6 +33,11 @@ public class TinkersConstructIntegration extends ModIntegration {
             : new ItemStack(Items.diamond_chestplate);
     }
 
+    public ItemStack getModIcon1() {
+        return GraveStones.hasTiC && TinkerArmor.travelBelt != null ? new ItemStack(TinkerArmor.travelBelt)
+            : new ItemStack(Items.diamond_chestplate);
+    }
+
     public static IInventory getKnapsackInventory(EntityPlayer player) {
         TPlayerStats stats = TPlayerStats.get(player);
         return stats.getKnapsackInventory(player);
@@ -46,34 +51,37 @@ public class TinkersConstructIntegration extends ModIntegration {
     @Override
     public boolean storeItems(TileEntityGravestone te, EntityPlayer player) {
         boolean result = false;
-        IInventory accessories = getAccessoryInventory(player);
-        if (accessories != null) {
-            int size = accessories.getSizeInventory();
-            GraveInventory accInv = new GraveInventoryTiCAccessories(size, te);
+        IInventory inv = getAccessoryInventory(player);
+        GraveInventory graveInv;
+        if (inv != null) {
+            int size = inv.getSizeInventory();
+            graveInv = new GraveInventoryTiCAccessories(size, te);
             for (int i = 0; i < size; ++i) {
-                ItemStack stack = accessories.getStackInSlot(i);
-                accInv.setInventorySlotContents(i, stack);
-                accessories.setInventorySlotContents(i, null);
+                ItemStack stack = inv.getStackInSlot(i);
+                graveInv.setInventorySlotContents(i, stack);
+                inv.setInventorySlotContents(i, null);
             }
-            if (!accInv.isEmpty()) {
-                te.inventories.add(accInv);
+            if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon1();
+                te.inventories.add(graveInv);
                 result = true;
             }
         } else {
             GraveStones.printDebugMessage(
                 "GraveStones Mod couldn't connect to Tinkers Construct's Accessories. Have these classes been modified? Report to mod Author pleases.");
         }
-        IInventory sack = getKnapsackInventory(player);
-        if (sack != null) {
-            int size = sack.getSizeInventory();
-            GraveInventory sackInv = new GraveInventoryTiCKnapsack(size, te);
+        inv = getKnapsackInventory(player);
+        if (inv != null) {
+            int size = inv.getSizeInventory();
+            graveInv = new GraveInventoryTiCKnapsack(size, te);
             for (int i = 0; i < size; ++i) {
-                ItemStack stack = sack.getStackInSlot(i);
-                sackInv.setInventorySlotContents(i, stack);
-                sack.setInventorySlotContents(i, null);
+                ItemStack stack = inv.getStackInSlot(i);
+                graveInv.setInventorySlotContents(i, stack);
+                inv.setInventorySlotContents(i, null);
             }
-            if (!sackInv.isEmpty()) {
-                te.inventories.add(sackInv);
+            if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
+                te.inventories.add(graveInv);
                 result = true;
             }
         } else {

@@ -42,6 +42,7 @@ public class TravellersGearIntegration extends ModIntegration {
                 }
             }
             if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon();
                 TravellersGearAPI.setExtendedInventory(player, inv);
                 te.inventories.add(graveInv);
                 return true;
