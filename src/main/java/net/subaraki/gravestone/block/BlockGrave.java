@@ -164,52 +164,76 @@ public class BlockGrave extends Block {
     public void setBlockBoundsBasedOnState(IBlockAccess par1IBlockAccess, int x, int y, int z) {
         TileEntityGravestone te = (TileEntityGravestone) par1IBlockAccess.getTileEntity(x, y, z);
         int meta = te.modelType;
+        float minX, minZ, maxX, maxZ;
+        float minY = 0.0f;
+        float maxY = 1.0f;
         switch (meta) {
-            case 1: {
-                this.setBlockBounds(0.4f, 0.0f, 0.4f, 0.6f, 1.0f, 0.6f);
+            default:
+            case 1:
+                minX = minZ = 0.4f;
+                maxX = maxZ = 0.6f;
                 break;
-            }
-            case 2: {
-                this.setBlockBounds(0.43f, 0.0f, 0.14f, 0.57f, 1.05f, 0.86f);
-                break;
-            }
+            case 2:
             case 3: {
-                this.setBlockBounds(0.33f, 0.0f, 0.25f, 0.67f, 0.95f, 0.75f);
+                // The grave's width and length are not equal
+                // We must address that
+                float minThin, minThick, maxThin, maxThick;
+                switch (meta) {
+                    default:
+                    case 2:
+                        maxY = 1.05f;
+                        minThin = 0.43f;
+                        minThick = 0.14f;
+                        maxThin = 0.57f;
+                        maxThick = 0.86f;
+                        break;
+                    case 3:
+                        maxY = 0.95f;
+                        minThin = 0.33f;
+                        minThick = 0.25f;
+                        maxThin = 0.67f;
+                        maxThick = 0.75f;
+                        break;
+                }
+
+                minX = minZ = minThick;
+                maxX = maxZ = maxThick;
+
+                if (te.rotation % 180f == 0) {
+                    minX = minThin;
+                    maxX = maxThin;
+                } else {
+                    if (te.rotation % 90f == 0) {
+                        minZ = minThin;
+                        maxZ = maxThin;
+                    }
+                }
                 break;
             }
-            case 4: {
-                this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 1.25f, 0.8f);
+            case 4:
+            case 5:
+            case 7:
+                minX = minZ = 0.2f;
+                maxX = maxZ = 0.8f;
+                maxY = 1.25f;
                 break;
-            }
-            case 5: {
-                this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 1.25f, 0.8f);
+            case 6:
+                minX = minZ = 0.4f;
+                maxX = maxZ = 0.6f;
                 break;
-            }
-            case 7: {
-                this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 1.25f, 0.8f);
+            case 8:
+            case 9:
+                minX = minZ = 0.2f;
+                maxX = maxZ = 0.8f;
+                maxY = 1.5f;
                 break;
-            }
-            case 6: {
-                this.setBlockBounds(0.4f, 0.0f, 0.4f, 0.6f, 1.0f, 0.6f);
+            case 10:
+                minX = minZ = 0.2f;
+                maxX = maxZ = 0.8f;
+                maxY = 0.85f;
                 break;
-            }
-            case 8: {
-                this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 1.5f, 0.8f);
-                break;
-            }
-            case 9: {
-                this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 1.5f, 0.8f);
-                break;
-            }
-            case 10: {
-                this.setBlockBounds(0.2f, 0.0f, 0.2f, 0.8f, 0.85f, 0.8f);
-                break;
-            }
-            default: {
-                this.setBlockBounds(0.4f, 0.0f, 0.4f, 0.6f, 1.0f, 0.6f);
-                break;
-            }
         }
+        this.setBlockBounds(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     public int getRenderType() {
