@@ -1,15 +1,16 @@
 
 package net.subaraki.gravestone.tileentity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.network.NetworkManager;
@@ -17,54 +18,48 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.StatCollector;
 import net.minecraft.world.World;
-import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.inventory.GraveInventory;
+import net.subaraki.gravestone.inventory.GraveInventoryArmor;
 import net.subaraki.gravestone.util.GraveUtility;
 
 import com.mojang.authlib.GameProfile;
 
-public class TileEntityGravestone extends TileEntity implements IInventory {
+public class TileEntityGravestone extends TileEntity {
 
-    public ItemStack[] list;
-    public ItemStack[] slots;
-    public int tab;
+    public GraveInventory mainInv = new GraveInventory("minecraft", "minecraft", 36, this);
+    public GraveInventory armor = new GraveInventoryArmor("minecraft", this);
+    public List<GraveInventory> inventories = new ArrayList<GraveInventory>();
+
     public String playername;
     public GameProfile profile;
     public int modelType;
     public boolean maleEpitaph;
-    public float ModelRotation;
+    public float rotation;
     public EntityPlayer entityPlayerStub;
     public String message1;
     public String message2;
-    public boolean isDecorativeGrave;
+    public boolean isDecorative;
     public boolean hasItems;
     public String locked;
-    public boolean otherPlayerHasTakenItemStack;
-    public ResourceLocation skinLocation = null;
+    public boolean looted;
     Random rand;
 
-    public static int listSize = 0;
-
     public TileEntityGravestone() {
-        this.list = new ItemStack[listSize];
-        this.slots = new ItemStack[40];
-        this.tab = 0;
         this.playername = "";
         this.modelType = 0;
         this.maleEpitaph = true;
-        this.ModelRotation = 0.0f;
+        this.rotation = 0.0f;
         this.message1 = "";
         this.message2 = "";
-        this.isDecorativeGrave = false;
+        this.isDecorative = false;
         this.hasItems = false;
         this.locked = "";
-        this.otherPlayerHasTakenItemStack = false;
+        this.looted = false;
         this.rand = new Random();
     }
 
-    public void setGraveData(final String playername, final int modelid, final boolean maleEpitaph) {
+    public void setGraveData(String playername, int modelid, boolean maleEpitaph) {
         this.playername = playername;
         this.modelType = modelid;
         this.maleEpitaph = maleEpitaph;
@@ -74,185 +69,121 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         }
     }
 
-    public int getSizeInventory() {
-        return this.slots.length;
-    }
-
-    public ItemStack getStackInSlot(final int par1) {
-        return this.slots[par1];
-    }
-
-    public ItemStack getStackInList(final int par1) {
-        return this.list[par1];
-    }
-
-    public void setInventorySlotContents(final int slot, final ItemStack par2ItemStack) {
-        final int slotID = this.getListSlotID(slot);
-        if (slotID == -1) {
-            GraveStones.printDebugMessage(
-                "Tab id was not recognized ! This is a bug or an unimplemented feature. please report to mod author !");
-            GraveStones.printDebugMessage(
-                "Tried getting content of tab #" + this.tab
-                    + " this should be the "
-                    + GraveStones.inventories.get(this.tab)
-                    + " inventory");
-        }
-        if (slotID < this.list.length) {
-            this.slots[slot] = par2ItemStack;
-            this.list[slotID] = par2ItemStack;
-            if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit()) {
-                par2ItemStack.stackSize = this.getInventoryStackLimit();
-            }
-        }
-    }
-
-    public ItemStack decrStackSize(final int slot, final int ammount) {
-        final int slotID = this.getListSlotID(slot);
-        if (slotID == -1) {
-            GraveStones.printDebugMessage(
-                "Tab id was not recognized ! This is a bug or inimplemented feature. please report to mod author !");
-            GraveStones.printDebugMessage(
-                "Tried getting content of tab #" + this.tab
-                    + " this should be the "
-                    + GraveStones.inventories.get(this.tab)
-                    + " inventory");
-        }
-        GraveStones.printDebugMessage("");
-        if (this.slots[slot] == null) {
-            return null;
-        }
-        if (this.slots[slot].stackSize <= ammount) {
-            final ItemStack itemstack = this.slots[slot];
-            this.slots[slot] = null;
-            this.list[slotID] = null;
-            return itemstack;
-        }
-        final ItemStack itemstack = this.slots[slot].splitStack(ammount);
-        if (this.slots[slot].stackSize == 0) {
-            this.slots[slot] = null;
-            this.list[slotID] = null;
-        }
-        return itemstack;
-    }
-
-    public ItemStack getStackInSlotOnClosing(final int par1) {
-        return null;
-    }
-
-    public int getInventoryStackLimit() {
-        return 64;
-    }
-
-    public boolean isUseableByPlayer(final EntityPlayer par1EntityPlayer) {
-        return this.worldObj.getTileEntity(this.xCoord, this.yCoord, this.zCoord) == this
-            && par1EntityPlayer.getDistanceSq(this.xCoord + 0.5, this.yCoord + 0.5, this.zCoord + 0.5) <= 64.0;
-    }
-
-    public String getInvName() {
-        return "Grave";
-    }
-
-    public boolean isItemValidForSlot(final int i, final ItemStack itemstack) {
-        return true;
-    }
-
-    public boolean isInvNameLocalized() {
-        return true;
-    }
-
-    public void readFromNBT(final NBTTagCompound nbt) {
+    public void readFromNBT(NBTTagCompound nbt) {
         super.readFromNBT(nbt);
         this.playername = nbt.getString("name");
         this.message1 = nbt.getString("message");
         this.message2 = nbt.getString("message2");
         this.modelType = nbt.getInteger("Meta");
         this.maleEpitaph = nbt.getBoolean("maleEpitaph");
-        this.ModelRotation = nbt.getFloat("rotation");
-        this.otherPlayerHasTakenItemStack = nbt.getBoolean("isLooted");
-        this.isDecorativeGrave = nbt.getBoolean("decoGrave");
+        this.rotation = nbt.getFloat("rotation");
+        this.looted = nbt.getBoolean("isLooted");
+        this.isDecorative = nbt.getBoolean("decoGrave");
         if (this.modelType == 5 && playername.length() > 0) {
             this.profile = new GameProfile((UUID) null, playername);
             fixProfile();
         }
-        final NBTTagList tagList = nbt.getTagList("Items", 10);
-        for (int i = 0; i < tagList.tagCount(); ++i) {
-            final NBTTagCompound tag = tagList.getCompoundTagAt(i);
-            final byte slot = tag.getByte("Slot");
-            if (slot >= 0 && slot < this.slots.length) {
-                this.slots[slot] = ItemStack.loadItemStackFromNBT(tag);
+        if (nbt.hasKey("ListItems")) {
+            NBTTagList listItems = nbt.getTagList("ListItems", 10);
+            List<ItemStack> items = new ArrayList<ItemStack>();
+            for (int j = 0; j < listItems.tagCount(); ++j) {
+                NBTTagCompound tagCompound = listItems.getCompoundTagAt(j);
+                items.add(ItemStack.loadItemStackFromNBT(tagCompound));
             }
-        }
-        final NBTTagList tagList2 = nbt.getTagList("ListItems", 10);
-        for (int j = 0; j < tagList2.tagCount(); ++j) {
-            final NBTTagCompound tag2 = tagList2.getCompoundTagAt(j);
-            final byte slot2 = tag2.getByte("ListSlot");
-            if (slot2 >= 0 && slot2 < this.list.length) {
-                this.list[slot2] = ItemStack.loadItemStackFromNBT(tag2);
+            if (!items.isEmpty()) {
+                int size = items.size();
+                GraveInventory inv = new GraveInventory("outdated", "", size, this);
+                inv.icon = new ItemStack(Items.lava_bucket);
+                for (int i = 0; i < size; i++) {
+                    inv.setInventorySlotContents(i, items.get(i));
+                }
+                this.inventories.add(inv);
+            }
+        } else {
+            this.mainInv = new GraveInventory();
+            this.mainInv.grave = this;
+            if (nbt.hasKey("mainInv")) this.mainInv.readFromNBT(nbt.getCompoundTag("mainInv"));
+
+            this.armor = new GraveInventoryArmor();
+            this.armor.grave = this;
+            if (nbt.hasKey("armor")) this.armor.readFromNBT(nbt.getCompoundTag("armor"));
+
+            GraveInventory inv;
+            this.inventories.clear();
+            NBTTagList inventories = (NBTTagList) nbt.getTag("inventories");
+            for (int i = 0; i < inventories.tagCount(); i++) {
+                inv = GraveInventory.loadFromNBT(inventories.getCompoundTagAt(i));
+                inv.grave = this;
+                this.inventories.add(inv);
             }
         }
     }
 
-    public void writeToNBT(final NBTTagCompound nbt) {
+    public void writeToNBT(NBTTagCompound nbt) {
         super.writeToNBT(nbt);
         nbt.setString("name", this.playername);
         nbt.setString("message", this.message1);
         nbt.setString("message2", this.message2);
         nbt.setInteger("Meta", this.modelType);
         nbt.setBoolean("maleEpitaph", this.maleEpitaph);
-        nbt.setFloat("rotation", this.ModelRotation);
-        nbt.setBoolean("isLooted", this.otherPlayerHasTakenItemStack);
-        nbt.setBoolean("decoGrave", this.isDecorativeGrave);
+        nbt.setFloat("rotation", this.rotation);
+        nbt.setBoolean("isLooted", this.looted);
+        nbt.setBoolean("decoGrave", this.isDecorative);
 
-        final NBTTagList nbttaglist = new NBTTagList();
-        for (int i = 0; i < this.slots.length; ++i) {
-            if (this.slots[i] != null) {
-                final NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte) i);
-                this.slots[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag((NBTBase) nbttagcompound1);
-            }
+        if (this.mainInv != null) nbt.setTag("mainInv", this.mainInv.writeToNBT());
+        if (this.armor != null) nbt.setTag("armor", this.armor.writeToNBT());
+
+        NBTTagList inventories = new NBTTagList();
+        for (GraveInventory graveInv : this.inventories) {
+            if (graveInv != null) inventories.appendTag(graveInv.writeToNBT());
         }
-        nbt.setTag("Items", (NBTBase) nbttaglist);
-        final NBTTagList nbttaglist2 = new NBTTagList();
-        for (int j = 0; j < this.list.length; ++j) {
-            if (this.list[j] != null) {
-                final NBTTagCompound nbttagcompound2 = new NBTTagCompound();
-                nbttagcompound2.setByte("ListSlot", (byte) j);
-                this.list[j].writeToNBT(nbttagcompound2);
-                nbttaglist2.appendTag((NBTBase) nbttagcompound2);
-            }
-        }
-        nbt.setTag("ListItems", (NBTBase) nbttaglist2);
+        nbt.setTag("inventories", inventories);
     }
 
-    public void dropContents(final World world, final int x, final int y, final int z) {
-        if (this != null) {
-            for (int slotIndex = 0; slotIndex < this.list.length; ++slotIndex) {
-                final ItemStack items = this.getStackInSlot(slotIndex);
-                if (items != null) {
-                    final float var10 = this.rand.nextFloat() * 0.8f + 0.1f;
-                    final float var11 = this.rand.nextFloat() * 0.8f + 0.1f;
-                    final float var12 = this.rand.nextFloat() * 0.8f + 0.1f;
-                    while (items.stackSize > 0) {
-                        int var13 = this.rand.nextInt(21) + 10;
-                        if (var13 > items.stackSize) {
-                            var13 = items.stackSize;
+    public List<GraveInventory> getAllInventories() {
+        List<GraveInventory> invList = new ArrayList<GraveInventory>();
+        invList.add(mainInv);
+        invList.add(armor);
+        invList.addAll(inventories);
+        return invList;
+    }
+
+    public void autoEquipItems(EntityPlayer player) {
+        for (GraveInventory inv : getAllInventories()) {
+            inv.autoEquipItems(player);
+            if (inv.isEmpty() && this.inventories.contains(inv)) this.inventories.remove(inv);
+        }
+        markDirty();
+    }
+
+    public void dropContents(World world, int x, int y, int z) {
+        for (GraveInventory inv : getAllInventories()) {
+            for (int i = 0; i < inv.getSizeInventory(); i++) {
+                ItemStack stack = inv.getStackInSlot(i);
+                if (stack != null) {
+                    double xOffset = this.rand.nextDouble() * 0.8d + 0.1d;
+                    double yOffset = this.rand.nextDouble() * 0.8d + 0.1d;
+                    double zOffset = this.rand.nextDouble() * 0.8d + 0.1d;
+                    while (stack.stackSize > 0) {
+                        int dropSize = this.rand.nextInt(21) + 10;
+                        if (dropSize > stack.stackSize) {
+                            dropSize = stack.stackSize;
                         }
-                        final ItemStack itemStack = items;
-                        itemStack.stackSize -= var13;
-                        final EntityItem entityItem = new EntityItem(
+                        ItemStack itemStack = stack;
+                        itemStack.stackSize -= dropSize;
+                        EntityItem entityItem = new EntityItem(
                             world,
-                            (double) (x + var10),
-                            (double) (y + var11),
-                            (double) (z + var12),
-                            new ItemStack(items.getItem(), var13, items.getItemDamage()));
+                            x + xOffset,
+                            y + yOffset,
+                            z + zOffset,
+                            new ItemStack(stack.getItem(), dropSize, stack.getItemDamage()));
                         entityItem.motionX = this.rand.nextGaussian() * 0.05000000074505806;
                         entityItem.motionY = this.rand.nextGaussian() * 0.25;
                         entityItem.motionZ = this.rand.nextGaussian() * 0.05000000074505806;
-                        if (items.hasTagCompound()) {
+                        if (stack.hasTagCompound()) {
                             entityItem.getEntityItem()
                                 .setTagCompound(
-                                    (NBTTagCompound) items.getTagCompound()
+                                    (NBTTagCompound) stack.getTagCompound()
                                         .copy());
                         }
                         world.spawnEntityInWorld((Entity) entityItem);
@@ -262,7 +193,7 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         }
     }
 
-    public String setName(final String name) {
+    public String setName(String name) {
         this.playername = name;
         if (this.modelType == 5 && playername != "") {
             this.profile = new GameProfile((UUID) null, name);
@@ -271,23 +202,23 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         return this.playername;
     }
 
-    public Entity setPlayer(final EntityPlayer player) {
+    public Entity setPlayer(EntityPlayer player) {
         if (this.modelType == 5 && player.getDisplayName() != "") {
             this.profile = new GameProfile((UUID) null, player.getDisplayName());
             fixProfile();
         }
-        return (Entity) (this.entityPlayerStub = player);
+        return this.entityPlayerStub = player;
     }
 
-    public void setDeathMessage(final String message) {
+    public void setDeathMessage(String message) {
         this.message1 = message;
     }
 
-    public void setDeathMessage2(final String message) {
+    public void setDeathMessage2(String message) {
         this.message2 = message;
     }
 
-    public void setMeta(final int i) {
+    public void setMeta(int i) {
         this.modelType = i;
     }
 
@@ -297,13 +228,16 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
     }
 
     public void checkForItems() {
-        for (final ItemStack element : this.list) {
-            if (element != null) {
-                this.hasItems = true;
-                break;
+        for (GraveInventory inv : this.getAllInventories()) {
+            for (int i = 0; i < inv.getSizeInventory(); i++) {
+                ItemStack element = inv.getStackInSlot(i);
+                if (element != null) {
+                    this.hasItems = true;
+                    return;
+                }
             }
-            this.hasItems = false;
         }
+        this.hasItems = false;
     }
 
     public double getMaxRenderDistanceSquared() {
@@ -314,55 +248,18 @@ public class TileEntityGravestone extends TileEntity implements IInventory {
         return TileEntity.INFINITE_EXTENT_AABB;
     }
 
-    public String getInventoryName() {
-        return StatCollector.translateToLocal("grave.container.name");
-    }
-
-    public boolean hasCustomInventoryName() {
-        return true;
-    }
-
-    public void openInventory() {}
-
-    public void closeInventory() {}
-
     public boolean canUpdate() {
         return true;
     }
 
     public Packet getDescriptionPacket() {
-        final NBTTagCompound nbt = new NBTTagCompound();
+        NBTTagCompound nbt = new NBTTagCompound();
         this.writeToNBT(nbt);
-        return (Packet) new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
+        return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 1, nbt);
     }
 
-    public void onDataPacket(final NetworkManager net, final S35PacketUpdateTileEntity pkt) {
+    public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
         this.readFromNBT(pkt.func_148857_g());
-    }
-
-    public void changeSlotLayout(final byte b) {
-        for (int i = 0; i < this.slots.length; ++i) {
-            this.slots[i] = null;
-        }
-        int previousSlots = 0;
-        int inventorySize = 40;
-        for (int i = 1; i <= b; i++) {
-            Integer previousInventorySize = GraveStones.inventorySizes.get(i - 1);
-            Integer currentInventorySize = GraveStones.inventorySizes.get(i);
-            previousSlots += previousInventorySize == null ? 0 : previousInventorySize;
-            inventorySize = currentInventorySize == null ? 0 : currentInventorySize;
-        }
-        int startPos = inventorySize <= 4 ? 36 : 0;
-        for (int i = 0; i < inventorySize; ++i) {
-            this.slots[startPos + i] = this.list[i + previousSlots];
-        }
-        this.worldObj.markBlockForUpdate(this.xCoord, this.yCoord, this.zCoord);
-    }
-
-    private int getListSlotID(final int slot) {
-        if (!GraveStones.inventories.containsKey(this.tab)) return -1;
-        int id = GraveStones.inventorySizes.get(this.tab) <= 4 ? slot - 36 : slot;
-        return id + GraveStones.getPrevInventoriesSize(this.tab);
     }
 
     private void fixProfile() {

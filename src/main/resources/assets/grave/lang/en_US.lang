@@ -57,6 +57,37 @@ grave.empty=The Grave is empty!
 
 grave.decorative=Decorative grave.
 
+grave.loot.1=You loot 
+grave.loot.2= from 
+grave.loot.3='s grave.
+
+grave.loot.forbidden.1=You admire the items from 
+grave.loot.forbidden.2='s grave...
+
+grave.button.autoEquip=Equip all the items
+
+grave.inventory.minecraft=Minecraft
+grave.inventory.armor=Armor
+grave.inventory.outdated=Outdated
+grave.inventory.modded=Modded Inventories
+
+grave.inventory.adventurebackpack=Adventure Backpack
+grave.inventory.aether=Aether
+grave.inventory.battlegear=Battlegear
+grave.inventory.baubles=Baubles
+grave.inventory.cosmeticarmor=Cosmetic Armor
+grave.inventory.galacticraft=Galacticraft
+grave.inventory.mariculture=Mariculture
+grave.inventory.rpginventory=RPG Inventory
+grave.inventory.satchels.satchels=Satchels
+grave.inventory.satchels.leftPouch=Left Pouch
+grave.inventory.satchels.rightPouch=Right Pouch
+grave.inventory.satchels.satchel=Satchel
+grave.inventory.sextiarysector=Sextiary Sector
+grave.inventory.tconstruct.accessories=Tinkers Construct - Accessories
+grave.inventory.tconstruct.knapsack=Tinkers Construct - Knapsack
+grave.inventory.travellersgear=Traveller's Gear
+
 pickGrave.settings.category=Gravestones
 pickGrave.settings.0=Pick Grave GUI
 pickGrave.text=Choose the Grave you want to spawn when you die.

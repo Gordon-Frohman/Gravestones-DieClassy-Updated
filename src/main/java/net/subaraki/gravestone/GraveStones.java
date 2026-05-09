@@ -1,35 +1,37 @@
 
 package net.subaraki.gravestone;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.init.Blocks;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 import net.subaraki.gravestone.block.BlockGrave;
-import net.subaraki.gravestone.common.CommonProxy;
-import net.subaraki.gravestone.common.network.PacketSwitchSlotLayout;
-import net.subaraki.gravestone.common.network.PacketSyncGraveData;
-import net.subaraki.gravestone.common.network.PacketSyncGraveDataToClient;
 import net.subaraki.gravestone.handler.ConfigHandler;
 import net.subaraki.gravestone.handler.GravestoneEventHandler;
 import net.subaraki.gravestone.handler.GuiHandler;
 import net.subaraki.gravestone.handler.RecipeHandler;
-import net.subaraki.gravestone.integration.AdventureBackpackIntegration;
-import net.subaraki.gravestone.integration.AetherIntegration;
-import net.subaraki.gravestone.integration.BattlegearIntegration;
-import net.subaraki.gravestone.integration.GalacticraftIntegration;
-import net.subaraki.gravestone.integration.MaricultureIntegration;
-import net.subaraki.gravestone.integration.SatchelsIntegration;
-import net.subaraki.gravestone.integration.SextiarySectorIntegration;
-import net.subaraki.gravestone.integration.ThaumcraftIntegration;
-import net.subaraki.gravestone.integration.TinkersConstructIntegration;
-import net.subaraki.gravestone.integration.TravellersGearIntegration;
+import net.subaraki.gravestone.integration.ModIntegration;
+import net.subaraki.gravestone.integration.adventurebackpack.AdventureBackpackIntegration;
+import net.subaraki.gravestone.integration.aether.AetherIntegration;
+import net.subaraki.gravestone.integration.battlegear.BattlegearIntegration;
+import net.subaraki.gravestone.integration.baubles.BaublesIntegration;
+import net.subaraki.gravestone.integration.cosmeticarmor.CosmeticArmorIntegration;
+import net.subaraki.gravestone.integration.galacticraft.GalacticraftIntegration;
+import net.subaraki.gravestone.integration.mariculture.MaricultureIntegration;
+import net.subaraki.gravestone.integration.rpginventory.RPGInventoryIntegration;
+import net.subaraki.gravestone.integration.satchels.SatchelsIntegration;
+import net.subaraki.gravestone.integration.sextiarysextor.SextiarySectorIntegration;
+import net.subaraki.gravestone.integration.tconstruct.TinkersConstructIntegration;
+import net.subaraki.gravestone.integration.travellersgear.TravellersGearIntegration;
 import net.subaraki.gravestone.item.ItemDecoGrave;
+import net.subaraki.gravestone.network.play.client.C00PacketSyncGraveData;
+import net.subaraki.gravestone.network.play.client.C01PacketOpenGui;
+import net.subaraki.gravestone.network.play.client.C02PacketGraveScroll;
+import net.subaraki.gravestone.network.play.client.C03PacketAutoEquip;
+import net.subaraki.gravestone.network.play.server.S00PacketSyncGraveData;
+import net.subaraki.gravestone.network.play.server.S01PacketGraveScroll;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 import net.subaraki.gravestone.util.Constants;
 import net.subaraki.gravestone.util.GraveUtility;
@@ -40,7 +42,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -49,135 +50,140 @@ import cpw.mods.fml.relauncher.Side;
 @Mod(modid = "gravestonemod")
 public class GraveStones {
 
-    @SidedProxy(
-        serverSide = "net.subaraki.gravestone.common.CommonProxy",
-        clientSide = "net.subaraki.gravestone.client.ClientProxy")
+    @SidedProxy(serverSide = "net.subaraki.gravestone.CommonProxy", clientSide = "net.subaraki.gravestone.ClientProxy")
     public static CommonProxy proxy;
+
     @Mod.Instance("gravestonemod")
     public static GraveStones instance;
-    public SimpleNetworkWrapper network;
-    public static Block graveStone;
-    public static boolean hasTiC;
-    public static boolean hasRpgI;
-    public static boolean hasBaubles;
-    public static boolean hasThaumcraft;
-    public static boolean hasGalacticraft;
-    public static boolean hasMariculture;
-    public static boolean hasCosmeticArmor;
-    public static boolean hasSatchels;
-    public static boolean hasAether;
-    public static boolean hasBattlegear;
-    public static boolean hasTravellersGear;
-    public static boolean hasSextiarySector;
-    public static boolean hasAdventureBackpack;
 
-    public static Map<Integer, String> inventories = new HashMap<Integer, String>();
-    public static Map<Integer, Integer> inventorySizes = new HashMap<Integer, Integer>();
+    public SimpleNetworkWrapper network;
+
+    public static Block graveStone;
+
+    public static boolean hasTiC = false;
+    public static boolean hasRpgI = false;
+    public static boolean hasBaubles = false;
+    public static boolean hasThaumcraft = false;
+    public static boolean hasGalacticraft = false;
+    public static boolean hasMariculture = false;
+    public static boolean hasCosmeticArmor = false;
+    public static boolean hasSatchels = false;
+    public static boolean hasAether = false;
+    public static boolean hasBattlegear = false;
+    public static boolean hasTravellersGear = false;
+    public static boolean hasSextiarySector = false;
+    public static boolean hasAdventureBackpack = false;
+
+    public static List<ModIntegration> integrations = new ArrayList<ModIntegration>();
 
     @Mod.EventHandler
     public void preInit(final FMLPreInitializationEvent event) {
         new GraveUtility();
-        (this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones"))
-            .registerMessage(PacketSyncGraveData.Handler.class, PacketSyncGraveData.class, 0, Side.SERVER);
-        this.network
-            .registerMessage(PacketSwitchSlotLayout.Handler.class, PacketSwitchSlotLayout.class, 1, Side.SERVER);
+        this.network = NetworkRegistry.INSTANCE.newSimpleChannel("gravestones");
+
+        int discriminator = 0;
         this.network.registerMessage(
-            PacketSyncGraveDataToClient.Handler.class,
-            PacketSyncGraveDataToClient.class,
-            2,
+            C00PacketSyncGraveData.Handler.class,
+            C00PacketSyncGraveData.class,
+            discriminator++,
+            Side.SERVER);
+        this.network
+            .registerMessage(C01PacketOpenGui.Handler.class, C01PacketOpenGui.class, discriminator++, Side.SERVER);
+        this.network.registerMessage(
+            C02PacketGraveScroll.Handler.class,
+            C02PacketGraveScroll.class,
+            discriminator++,
+            Side.SERVER);
+        this.network
+            .registerMessage(C03PacketAutoEquip.Handler.class, C03PacketAutoEquip.class, discriminator++, Side.SERVER);
+
+        this.network.registerMessage(
+            S00PacketSyncGraveData.Handler.class,
+            S00PacketSyncGraveData.class,
+            discriminator++,
             Side.CLIENT);
-        NetworkRegistry.INSTANCE.registerGuiHandler((Object) this, (IGuiHandler) new GuiHandler());
+        this.network.registerMessage(
+            S01PacketGraveScroll.Handler.class,
+            S01PacketGraveScroll.class,
+            discriminator++,
+            Side.CLIENT);
+
+        NetworkRegistry.INSTANCE.registerGuiHandler(this, new GuiHandler());
+
         ConfigHandler.instance.loadConfig(event.getSuggestedConfigurationFile());
+
+        GameRegistry.registerTileEntity(TileEntityGravestone.class, "TileEntityGraveStone");
+
         GraveStones.graveStone = new BlockGrave(Material.rock).setBlockName("gravestone")
             .setCreativeTab(CreativeTabs.tabDecorations);
-        GameRegistry.registerTileEntity(TileEntityGravestone.class, "TileEntityGraveStone");
         GameRegistry.registerBlock(GraveStones.graveStone, ItemDecoGrave.class, "graveStone");
+
         RecipeHandler.registerBlockRecipe();
+
         GraveStones.proxy.preInit();
     }
 
     @Mod.EventHandler
     public void init(final FMLInitializationEvent event) {
-        GraveStones.hasRpgI = GraveUtility.findClass("rpgInventory.RpgInventoryMod", "RPG Inventory");
-        GraveStones.hasTiC = Loader.isModLoaded("TConstruct");
-        GraveStones.hasBaubles = Loader.isModLoaded("Baubles");
+        if (Loader.isModLoaded("rpginventorymod")) {
+            GraveStones.hasRpgI = true;
+            integrations.add(new RPGInventoryIntegration());
+        }
+        if (Loader.isModLoaded("TConstruct")) {
+            GraveStones.hasTiC = true;
+            integrations.add(new TinkersConstructIntegration());
+        }
+        if (Loader.isModLoaded("Baubles")) {
+            GraveStones.hasBaubles = true;
+            integrations.add(new BaublesIntegration());
+        }
         GraveStones.hasThaumcraft = Loader.isModLoaded("Thaumcraft");
-        GraveStones.hasGalacticraft = Loader.isModLoaded("GalacticraftCore");
-        GraveStones.hasMariculture = Loader.isModLoaded("Mariculture");
-        GraveStones.hasCosmeticArmor = Loader.isModLoaded("cosmeticarmorreworked");
-        GraveStones.hasSatchels = Loader.isModLoaded("satchels");
-        GraveStones.hasAether = Loader.isModLoaded("aether_legacy");
-        GraveStones.hasBattlegear = Loader.isModLoaded("battlegear2");
-        GraveStones.hasTravellersGear = Loader.isModLoaded("TravellersGear");
-        GraveStones.hasSextiarySector = Loader.isModLoaded("SextiarySector");
-        GraveStones.hasAdventureBackpack = Loader.isModLoaded("adventurebackpack");
+        if (Loader.isModLoaded("GalacticraftCore")) {
+            GraveStones.hasGalacticraft = true;
+            integrations.add(new GalacticraftIntegration());
+        }
+        if (Loader.isModLoaded("Mariculture")) {
+            GraveStones.hasMariculture = true;
+            integrations.add(new MaricultureIntegration());
+        }
+        if (Loader.isModLoaded("cosmeticarmorreworked")) {
+            GraveStones.hasCosmeticArmor = true;
+            integrations.add(new CosmeticArmorIntegration());
+        }
+        if (Loader.isModLoaded("satchels")) {
+            GraveStones.hasSatchels = true;
+            integrations.add(new SatchelsIntegration());
+        }
+        if (Loader.isModLoaded("aether_legacy")) {
+            GraveStones.hasAether = true;
+            integrations.add(new AetherIntegration());
+        }
+        if (Loader.isModLoaded("battlegear2")) {
+            GraveStones.hasBattlegear = true;
+            integrations.add(new BattlegearIntegration());
+        }
+        if (Loader.isModLoaded("TravellersGear")) {
+            GraveStones.hasTravellersGear = true;
+            integrations.add(new TravellersGearIntegration());
+        }
+        if (Loader.isModLoaded("SextiarySector")) {
+            GraveStones.hasSextiarySector = true;
+            integrations.add(new SextiarySectorIntegration());
+        }
+        if (Loader.isModLoaded("adventurebackpack")) {
+            GraveStones.hasAdventureBackpack = true;
+            integrations.add(new AdventureBackpackIntegration());
+        }
     }
 
     @Mod.EventHandler
     public void postInit(final FMLPostInitializationEvent event) {
-        Constants.ICON_TCON = TinkersConstructIntegration.getModIcon();
-        Constants.ICON_BAUBLES = ThaumcraftIntegration.getModIcon(); // Yes, that's correct
-        Constants.ICON_GALACTICRAFT = GalacticraftIntegration.getModIcon();
-        Constants.ICON_MARICULTURE = MaricultureIntegration.getModIcon();
-        Constants.ICON_SATCHELS = SatchelsIntegration.getModIcon();
-        Constants.ICON_AETHER = AetherIntegration.getModIcon();
-        Constants.ICON_BATTLEGEAR = BattlegearIntegration.getModIcon();
-        Constants.ICON_TRAVELLERS_GEAR = GraveStones.hasTravellersGear ? TravellersGearIntegration.getModIcon()
-            : new ItemStack(Items.name_tag);
-        Constants.ICON_SEXTIARY_SECTOR = SextiarySectorIntegration.getModIcon();
-        Constants.ICON_ADVENTURE_BACKPACK = GraveStones.hasAdventureBackpack ? AdventureBackpackIntegration.getModIcon()
-            : new ItemStack(Blocks.chest);
-
         new GravestoneEventHandler();
     }
 
     public static void printDebugMessage(final String message) {
         if (ConfigHandler.allowDebug) {
-            Constants.LOG.info(message);
+            Constants.LOGGER.info(message);
         }
-    }
-
-    private static void registerInventory(int id, String inventoryName, int size) {
-        inventories.put(id, inventoryName);
-        inventorySizes.put(id, size);
-        TileEntityGravestone.listSize += size;
-    }
-
-    public static int getPrevInventoriesSize(int invId) {
-        int size = 0;
-        for (int i = 0; i < invId; i++) {
-            Integer inventorySize = GraveStones.inventorySizes.get(i);
-            size += inventorySize == null ? 0 : inventorySize;
-        }
-        return size;
-    }
-
-    static {
-        GraveStones.hasTiC = false;
-        GraveStones.hasRpgI = false;
-        GraveStones.hasBaubles = false;
-        GraveStones.hasThaumcraft = false;
-        GraveStones.hasGalacticraft = false;
-        GraveStones.hasMariculture = false;
-        GraveStones.hasCosmeticArmor = false;
-        GraveStones.hasSatchels = false;
-        GraveStones.hasAether = false;
-        GraveStones.hasBattlegear = false;
-        GraveStones.hasTravellersGear = false;
-        GraveStones.hasSextiarySector = false;
-        GraveStones.hasAdventureBackpack = false;
-        registerInventory(Constants.VANILLA, "Minecraft", 40);
-        registerInventory(Constants.RPGI, "RPG Inventory", 7);
-        registerInventory(Constants.TC, "Tinkers Construct", 34);
-        registerInventory(Constants.BAUBLES, "Baubles", 20);
-        registerInventory(Constants.GALACTICRAFT, "Galacticraft", 10);
-        registerInventory(Constants.MARICULTURE, "Mariculture", 3);
-        registerInventory(Constants.COSMETIC_ARMOR, "Cosmetic Armor", 4);
-        registerInventory(Constants.SATCHELS, "Satchels", 3);
-        registerInventory(Constants.AETHER, "Aether", 8);
-        registerInventory(Constants.BATTLEGEAR, "Battlegear", 18);
-        registerInventory(Constants.TRAVELLERS_GEAR, "Traveller's Gear", 4);
-        registerInventory(Constants.SEXTIARY_SECTOR, "Sextiary Sector", 20);
-        registerInventory(Constants.ADVENTURE_BACKPACK, "Adventure Backpack", 1);
     }
 }

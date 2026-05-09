@@ -11,28 +11,24 @@ public class SlotArmorGrave extends Slot {
 
     TileEntityGravestone te;
 
-    public SlotArmorGrave(final IInventory par1iInventory, final int par2, final int par3, final int par4) {
-        super(par1iInventory, par2, par3, par4);
-        this.te = (TileEntityGravestone) par1iInventory;
+    public SlotArmorGrave(IInventory inventory, int slotIndex, int xDisplayPosition, int yDisplayPosition,
+        TileEntityGravestone grave) {
+        super(inventory, slotIndex, xDisplayPosition, yDisplayPosition);
+        this.te = grave;
     }
 
-    public boolean isItemValid(final ItemStack par1ItemStack) {
+    public boolean isItemValid(ItemStack item) {
         return true;
     }
 
-    public boolean canTakeStack(final EntityPlayer par1EntityPlayer) {
+    public boolean canTakeStack(EntityPlayer player) {
         return true;
     }
 
-    public ItemStack decrStackSize(final int par1) {
+    public ItemStack decrStackSize(int amount) {
         if (this.getHasStack()) {
-            Math.min(par1, this.getStack().stackSize);
+            Math.min(amount, this.getStack().stackSize);
         }
-        return super.decrStackSize(par1);
-    }
-
-    public void onPickupFromSlot(final EntityPlayer par1EntityPlayer, final ItemStack par2ItemStack) {
-        this.onCrafting(par2ItemStack);
-        super.onPickupFromSlot(par1EntityPlayer, par2ItemStack);
+        return super.decrStackSize(amount);
     }
 }

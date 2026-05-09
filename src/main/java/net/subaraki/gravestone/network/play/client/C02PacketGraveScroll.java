@@ -1,0 +1,49 @@
+
+package net.subaraki.gravestone.network.play.client;
+
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.inventory.ContainerGraveScrollable;
+import net.subaraki.gravestone.network.play.server.S01PacketGraveScroll;
+
+import cpw.mods.fml.common.network.simpleimpl.IMessage;
+import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
+import cpw.mods.fml.common.network.simpleimpl.MessageContext;
+import io.netty.buffer.ByteBuf;
+
+public class C02PacketGraveScroll implements IMessage {
+
+    public int windowId;
+    public float scrollValue;
+
+    public C02PacketGraveScroll() {}
+
+    public C02PacketGraveScroll(int windowId, float scrollValue) {
+        this.windowId = windowId;
+        this.scrollValue = scrollValue;
+    }
+
+    public void fromBytes(ByteBuf buf) {
+        this.windowId = buf.readInt();
+        this.scrollValue = buf.readFloat();
+    }
+
+    public void toBytes(ByteBuf buf) {
+        buf.writeInt(this.windowId);
+        buf.writeFloat(this.scrollValue);
+    }
+
+    public static class Handler implements IMessageHandler<C02PacketGraveScroll, IMessage> {
+
+        public IMessage onMessage(C02PacketGraveScroll message, MessageContext ctx) {
+            EntityPlayer player = ctx.getServerHandler().playerEntity;
+            if (player.openContainer.windowId == message.windowId) {
+                ((ContainerGraveScrollable) player.openContainer).scrollTo(message.scrollValue);
+                GraveStones.instance.network
+                    .sendTo(new S01PacketGraveScroll(message.windowId, message.scrollValue), (EntityPlayerMP) player);
+            }
+            return null;
+        }
+    }
+}
