@@ -24,6 +24,7 @@ public class GraveInventoryAdventureBackpack extends GraveInventory {
             ItemStack backpack = bp.getWearable();
             if (backpack == null) {
                 bp.setWearable(this.getStackInSlot(0));
+                BackpackProperty.sync(player);
                 this.setInventorySlotContents(0, null);
             }
         }
