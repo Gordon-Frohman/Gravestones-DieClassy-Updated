@@ -5,11 +5,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class GuiTabButton extends GuiButton {
 
@@ -69,13 +71,22 @@ public class GuiTabButton extends GuiButton {
                 this.xPosition + this.width / 2,
                 this.yPosition + (this.height - 8) / 2,
                 l);
-            GL11.glDisable(2896);
-            GL11.glColor3f(1.0f, 1.0f, 1.0f);
             this.zLevel = 100.0f;
             GuiTabButton.itemRender.zLevel = 100.0f;
-            GL11.glEnable(2896);
-            GL11.glEnable(32826);
             final ItemStack itemstack = this.icons[(Math.abs(ticks++) / 100) % this.icons.length];
+
+            GL11.glPushAttrib(GL11.GL_ALL_ATTRIB_BITS);
+
+            GL11.glEnable(GL11.GL_DEPTH_TEST);
+            GL11.glDepthFunc(GL11.GL_LEQUAL);
+
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glEnable(GL11.GL_BLEND);
+            OpenGlHelper.glBlendFunc(775, 769, 1, 0);
+            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            RenderHelper.enableGUIStandardItemLighting();
+
             GuiTabButton.itemRender.renderItemAndEffectIntoGUI(
                 fontrenderer,
                 Minecraft.getMinecraft()
@@ -83,14 +94,12 @@ public class GuiTabButton extends GuiButton {
                 itemstack,
                 this.xPosition + 9,
                 this.yPosition);
-            GuiTabButton.itemRender.renderItemOverlayIntoGUI(
-                fontrenderer,
-                Minecraft.getMinecraft()
-                    .getTextureManager(),
-                itemstack,
-                this.xPosition,
-                this.yPosition);
-            GL11.glDisable(2896);
+
+            RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glDisable(GL11.GL_BLEND);
+
+            GL11.glPopAttrib();
             GuiTabButton.itemRender.zLevel = 0.0f;
         }
     }
