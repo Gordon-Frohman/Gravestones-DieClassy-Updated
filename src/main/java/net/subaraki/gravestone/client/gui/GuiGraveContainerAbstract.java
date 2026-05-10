@@ -53,7 +53,8 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
             .getPlayerEntityByName(te.playername);
         this.nameOfDeadPlayer = te.playername;
         this.te = te;
-        this.xSize = 198 + (GraveStones.hasBackhand ? backhandWidth : 0);
+        this.xSize = 198
+            + (GraveStones.hasBackhand || (te.offhand != null && !te.offhand.isEmpty()) ? backhandWidth : 0);
         this.ySize = 186;
         if (te != null) {
             if (te.message1.length() <= 0) {
@@ -111,7 +112,8 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
             scale = 50.0f;
         }
         GL11.glTranslatef(
-            (float) (this.width / 2 - 150 - (GraveStones.hasBackhand ? backhandWidth / 2 : 0)),
+            (float) (this.width / 2 - 150
+                - (GraveStones.hasBackhand || (te.offhand != null && !te.offhand.isEmpty()) ? backhandWidth / 2 : 0)),
             (float) (this.height / 2 - height),
             40.0f);
         GL11.glScaled((double) scale, (double) scale, (double) (-scale));
@@ -148,7 +150,8 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         GL11.glPushMatrix();
         this.mc.renderEngine.bindTexture(GraveUtility.instance.processPlayerTexture(this.nameOfDeadPlayer));
         GL11.glTranslatef(
-            (float) (this.width / 2 - 150 - (GraveStones.hasBackhand ? backhandWidth / 2 : 0)),
+            (float) (this.width / 2 - 150
+                - (GraveStones.hasBackhand || (te.offhand != null && !te.offhand.isEmpty()) ? backhandWidth / 2 : 0)),
             (float) (this.height / 2 - 40),
             40.0f);
         GL11.glScaled(50.0, 50.0, -50.0);
@@ -193,7 +196,10 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
             this.buttonList.add(
                 new GuiAutoEquipButton(
                     GuiAutoEquipButton.BUTTON_ID,
-                    this.width / 2 + this.xSize / 2 - 22 - (GraveStones.hasBackhand ? backhandWidth : 0),
+                    this.width / 2 + this.xSize / 2
+                        - 22
+                        - (GraveStones.hasBackhand || (te.offhand != null && !te.offhand.isEmpty()) ? backhandWidth
+                            : 0),
                     this.height / 2 - this.ySize / 2 + 90));
         }
     }
