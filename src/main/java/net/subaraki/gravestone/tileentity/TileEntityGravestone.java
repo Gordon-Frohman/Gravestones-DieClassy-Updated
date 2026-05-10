@@ -19,6 +19,8 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.integration.backhand.BackhandIntegration;
 import net.subaraki.gravestone.inventory.GraveInventory;
 import net.subaraki.gravestone.inventory.GraveInventoryArmor;
 import net.subaraki.gravestone.util.GraveUtility;
@@ -29,6 +31,7 @@ public class TileEntityGravestone extends TileEntity {
 
     public GraveInventory mainInv = new GraveInventory("minecraft", "minecraft", 36, this);
     public GraveInventory armor = new GraveInventoryArmor("minecraft", this);
+    public GraveInventory offhand = new GraveInventory("backhand", "backhand", 1, this);
     public List<GraveInventory> inventories = new ArrayList<GraveInventory>();
 
     public String playername;
@@ -108,6 +111,11 @@ public class TileEntityGravestone extends TileEntity {
             this.armor.grave = this;
             if (nbt.hasKey("armor")) this.armor.readFromNBT(nbt.getCompoundTag("armor"));
 
+            this.offhand = GraveStones.hasBackhand ? BackhandIntegration.getGraveInventory()
+                : new GraveInventory("backhand", "backhand", 1, this);
+            this.offhand.grave = this;
+            if (nbt.hasKey("offhand")) this.offhand.readFromNBT(nbt.getCompoundTag("offhand"));
+
             GraveInventory inv;
             this.inventories.clear();
             NBTTagList inventories = (NBTTagList) nbt.getTag("inventories");
@@ -132,6 +140,7 @@ public class TileEntityGravestone extends TileEntity {
 
         if (this.mainInv != null) nbt.setTag("mainInv", this.mainInv.writeToNBT());
         if (this.armor != null) nbt.setTag("armor", this.armor.writeToNBT());
+        if (this.offhand != null) nbt.setTag("offhand", this.offhand.writeToNBT());
 
         NBTTagList inventories = new NBTTagList();
         for (GraveInventory graveInv : this.inventories) {
@@ -144,6 +153,7 @@ public class TileEntityGravestone extends TileEntity {
         List<GraveInventory> invList = new ArrayList<GraveInventory>();
         invList.add(mainInv);
         invList.add(armor);
+        if (offhand != null) invList.add(offhand);
         invList.addAll(inventories);
         return invList;
     }

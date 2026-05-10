@@ -2,6 +2,8 @@
 package net.subaraki.gravestone.inventory;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Slot;
+import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
 public class ContainerGrave extends ContainerGraveAbstract {
@@ -20,6 +22,8 @@ public class ContainerGrave extends ContainerGraveAbstract {
             this.addSlotToContainer(getSlot(te.armor, i, 174, 72 - i * 18, true, isCreative, te));
             ++this.slotCount;
         }
+        if (GraveStones.hasBackhand || (te.offhand != null && !te.offhand.isEmpty()))
+            this.addSlotToContainer(new Slot(te.offhand, 0, 196, 72));
         this.fillInv(player.inventory);
     }
 }

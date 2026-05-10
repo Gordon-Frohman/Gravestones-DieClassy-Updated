@@ -207,7 +207,7 @@ public class GravestoneEventHandler {
 
         for (int i = 0; i < 4; i++) {
             te.armor.setInventorySlotContents(i, inv.armorItemInSlot(i));
-            inv.setInventorySlotContents(36 + i, null);
+            inv.setInventorySlotContents(inv.mainInventory.length + i, null);
         }
 
         this.addOtherInventories(te, player);

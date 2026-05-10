@@ -15,6 +15,7 @@ import net.subaraki.gravestone.handler.RecipeHandler;
 import net.subaraki.gravestone.integration.ModIntegration;
 import net.subaraki.gravestone.integration.adventurebackpack.AdventureBackpackIntegration;
 import net.subaraki.gravestone.integration.aether.AetherIntegration;
+import net.subaraki.gravestone.integration.backhand.BackhandIntegration;
 import net.subaraki.gravestone.integration.battlegear.BattlegearIntegration;
 import net.subaraki.gravestone.integration.baubles.BaublesIntegration;
 import net.subaraki.gravestone.integration.cosmeticarmor.CosmeticArmorIntegration;
@@ -73,6 +74,7 @@ public class GraveStones {
     public static boolean hasTravellersGear = false;
     public static boolean hasSextiarySector = false;
     public static boolean hasAdventureBackpack = false;
+    public static boolean hasBackhand = false;
 
     public static List<ModIntegration> integrations = new ArrayList<ModIntegration>();
 
@@ -173,6 +175,10 @@ public class GraveStones {
         if (Loader.isModLoaded("adventurebackpack")) {
             GraveStones.hasAdventureBackpack = true;
             integrations.add(new AdventureBackpackIntegration());
+        }
+        if (Loader.isModLoaded("backhand")) {
+            GraveStones.hasBackhand = true;
+            integrations.add(new BackhandIntegration());
         }
     }
 

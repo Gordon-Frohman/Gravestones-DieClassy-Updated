@@ -32,13 +32,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 @SideOnly(Side.CLIENT)
 public abstract class GuiGraveContainerAbstract extends GuiContainer {
 
-    static short rotationCounter = 0;
+    private static final int backhandWidth = 22;
+    private static short rotationCounter = 0;
     public String epitaph = "";
     public EntityPlayer deadPlayer;
     public String nameOfDeadPlayer;
     protected TileEntityGravestone te;
     protected String tabText = "";
     protected ResourceLocation graveGui;
+
+    public static final ResourceLocation widgets = new ResourceLocation("grave:textures/gui/grave_widgets.png");
 
     int offsetSize = 33;
     int x = this.width / 2 - this.xSize / 2 + 4;
@@ -50,7 +53,7 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
             .getPlayerEntityByName(te.playername);
         this.nameOfDeadPlayer = te.playername;
         this.te = te;
-        this.xSize = 198;
+        this.xSize = 198 + (GraveStones.hasBackhand ? backhandWidth : 0);
         this.ySize = 186;
         if (te != null) {
             if (te.message1.length() <= 0) {
@@ -77,6 +80,10 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         int posY = (this.height - this.ySize) / 2;
         this.mc.renderEngine.bindTexture(graveGui);
         this.drawTexturedModalRect(posX, posY, 0, 0, this.xSize, this.ySize);
+        if (GraveStones.hasBackhand) {
+            this.mc.renderEngine.bindTexture(widgets);
+            this.drawTexturedModalRect(posX + 191, posY + 154, 29, 0, 29, 32);
+        }
         this.fontRendererObj.drawSplitString(this.epitaph, this.width / 2 + 109, this.height / 2 - 89, 100, 0);
         this.fontRendererObj.drawSplitString(this.epitaph, this.width / 2 + 110, this.height / 2 - 90, 100, 16777215);
         if (this.te.locked.length() > 0) {
@@ -103,7 +110,10 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
         if (render == 8) {
             scale = 50.0f;
         }
-        GL11.glTranslatef((float) (this.width / 2 - 150), (float) (this.height / 2 - height), 40.0f);
+        GL11.glTranslatef(
+            (float) (this.width / 2 - 150 - (GraveStones.hasBackhand ? backhandWidth / 2 : 0)),
+            (float) (this.height / 2 - height),
+            40.0f);
         GL11.glScaled((double) scale, (double) scale, (double) (-scale));
         float s = -0.65f;
         float s2 = -0.4f;
@@ -137,7 +147,10 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
     private void renderBust() {
         GL11.glPushMatrix();
         this.mc.renderEngine.bindTexture(GraveUtility.instance.processPlayerTexture(this.nameOfDeadPlayer));
-        GL11.glTranslatef((float) (this.width / 2 - 150), (float) (this.height / 2 - 40), 40.0f);
+        GL11.glTranslatef(
+            (float) (this.width / 2 - 150 - (GraveStones.hasBackhand ? backhandWidth / 2 : 0)),
+            (float) (this.height / 2 - 40),
+            40.0f);
         GL11.glScaled(50.0, 50.0, -50.0);
         GL11.glRotatef(5.0f, 1.0f, 0.0f, 0.0f);
         GL11.glRotatef((float) rotationCounter, 0.0f, 1.0f, 0.0f);
@@ -180,7 +193,7 @@ public abstract class GuiGraveContainerAbstract extends GuiContainer {
             this.buttonList.add(
                 new GuiAutoEquipButton(
                     GuiAutoEquipButton.BUTTON_ID,
-                    this.width / 2 + this.xSize / 2 - 22,
+                    this.width / 2 + this.xSize / 2 - 22 - (GraveStones.hasBackhand ? backhandWidth : 0),
                     this.height / 2 - this.ySize / 2 + 90));
         }
     }

@@ -11,6 +11,8 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
+import net.subaraki.gravestone.GraveStones;
+import net.subaraki.gravestone.integration.backhand.BackhandIntegration;
 import net.subaraki.gravestone.inventory.slot.SlotArmorGrave;
 import net.subaraki.gravestone.inventory.slot.SlotGrave;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
@@ -20,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class ContainerGraveAbstract extends Container {
 
-    protected TileEntityGravestone te;
+    public TileEntityGravestone te;
     int slotCount;
     protected EntityPlayer player;
 
@@ -60,7 +62,7 @@ public abstract class ContainerGraveAbstract extends Container {
         }
         for (int i = 0; i < 4; ++i) {
             int k = i;
-            this.addSlotToContainer(new Slot(inv, 36 + i, 174, 162 - i * 19) {
+            this.addSlotToContainer(new Slot(inv, 36 + (GraveStones.hasBackhand ? 1 : 0) + i, 174, 162 - i * 19) {
 
                 public int getSlotStackLimit() {
                     return 1;
@@ -76,6 +78,10 @@ public abstract class ContainerGraveAbstract extends Container {
                     return ItemArmor.func_94602_b(3 - k);
                 }
             });
+        }
+
+        if (GraveStones.hasBackhand) {
+            this.addSlotToContainer(BackhandIntegration.getBackhandSlot(inv, player));
         }
     }
 
