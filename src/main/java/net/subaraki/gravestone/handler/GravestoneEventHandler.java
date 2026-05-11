@@ -12,7 +12,6 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
@@ -183,7 +182,7 @@ public class GravestoneEventHandler {
         world.setBlock(x, y + 1, z, GraveStones.graveStone);
         TileEntityGravestone te = playerGraves.get(player.getUniqueID());
         if (te != null) {
-            world.setTileEntity(x, y + 1, z, (TileEntity) te);
+            world.setTileEntity(x, y + 1, z, te);
             world.markBlockForUpdate(x, y + 1, z);
             te.markDirty();
         }
@@ -215,9 +214,7 @@ public class GravestoneEventHandler {
 
         Vec3 playerLookVec = player.getLookVec();
         double graveRotation = Math.toDegrees(Math.atan2(playerLookVec.zCoord, playerLookVec.xCoord));
-        if (graveRotation < 0) {
-            graveRotation += 360;
-        }
+        if (graveRotation < 0) graveRotation += 360;
         te.rotation = (float) (Math.round(graveRotation / 15) * 15);
         playerGraves.put(player.getUniqueID(), te);
     }
