@@ -144,6 +144,7 @@ public class ModelCubeWorld extends ModelBase {
             this.cube.render(1.0f);
             GL11.glTranslatef((float) (-x), (float) (-y), (float) (-z));
         }
+        GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
         GL11.glEnable(3553);
         GL11.glPopMatrix();
     }

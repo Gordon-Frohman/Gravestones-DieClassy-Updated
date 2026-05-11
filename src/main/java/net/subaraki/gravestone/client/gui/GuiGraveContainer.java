@@ -6,8 +6,6 @@ import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.inventory.ContainerGrave;
 import net.subaraki.gravestone.tileentity.TileEntityGravestone;
 
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,7 +26,6 @@ public class GuiGraveContainer extends GuiGraveContainerAbstract {
             int posX = (this.width - this.xSize) / 2;
             int posY = (this.height - this.ySize) / 2;
             this.mc.renderEngine.bindTexture(GuiGraveContainerAbstract.widgets);
-            GL11.glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
             this.drawTexturedModalRect(posX + 191, posY + 64, 0, 0, 29, 32);
         }
     }
