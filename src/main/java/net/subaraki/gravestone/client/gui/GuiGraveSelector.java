@@ -4,6 +4,8 @@ package net.subaraki.gravestone.client.gui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.util.StatCollector;
 import net.subaraki.gravestone.GraveStones;
 import net.subaraki.gravestone.handler.ModelHandler;
@@ -13,6 +15,7 @@ import net.subaraki.gravestone.network.play.client.C00PacketSyncGraveData;
 import net.subaraki.gravestone.util.GraveUtility;
 
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL12;
 
 public class GuiGraveSelector extends GuiScreen {
 
@@ -125,10 +128,40 @@ public class GuiGraveSelector extends GuiScreen {
         if (this.graveType == 10) {
             GL11.glTranslatef(s2, 0.0f, -s2);
         }
+
+        if (this.graveType != 8 && this.graveType != 10) {
+            // Disabling lighting for CubeWorld models for now
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glEnable(GL11.GL_BLEND);
+            OpenGlHelper.glBlendFunc(775, 769, 1, 0);
+            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            RenderHelper.enableStandardItemLighting();
+        }
+
         ModelHandler.renderModelFromType(this.graveType);
+
+        if (this.graveType != 8 && this.graveType != 10) {
+            // Disabling lighting for CubeWorld models for now
+            RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glDisable(GL11.GL_BLEND);
+        }
+
         GL11.glPopMatrix();
         if (this.graveType == 5) {
+            GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+            GL11.glEnable(GL11.GL_BLEND);
+            OpenGlHelper.glBlendFunc(775, 769, 1, 0);
+            OpenGlHelper.glBlendFunc(770, 771, 1, 0);
+            GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+            RenderHelper.enableStandardItemLighting();
+
             this.renderBust();
+
+            RenderHelper.disableStandardItemLighting();
+            GL11.glDisable(GL12.GL_RESCALE_NORMAL);
+            GL11.glDisable(GL11.GL_BLEND);
         }
     }
 
