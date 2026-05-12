@@ -59,25 +59,9 @@ public class SatchelsIntegration extends ModIntegration {
     @Override
     public boolean storeItems(TileEntityGravestone te, EntityPlayer player) {
         boolean result = false;
-        IInventory equipment = getEquipmentInventory(player);
-        if (equipment != null) {
-            int size = equipment.getSizeInventory();
-            GraveInventory graveInv = new GraveInventorySatchelsEquipment(size, te);
-            for (int i = 0; i < size; ++i) {
-                ItemStack stack = equipment.getStackInSlot(i);
-                graveInv.setInventorySlotContents(i, stack);
-                equipment.setInventorySlotContents(i, null);
-            }
-            if (!graveInv.isEmpty()) {
-                graveInv.icon = this.getModIcon1();
-                te.inventories.add(graveInv);
-                result = true;
-            }
-        } else {
-            GraveStones.printDebugMessage(
-                "GraveStones Mod couldn't connect to Satchels' Equipment. Have these classes been modified? Report to mod Author pleases.");
-        }
+
         IInventory leftPouch = getLeftPouchInventory(player);
+        GraveInventory leftPouchInv = null;
         if (leftPouch != null) {
             int size = leftPouch.getSizeInventory();
             GraveInventory graveInv = new GraveInventorySatchelsLeftPouch(size, te);
@@ -88,14 +72,16 @@ public class SatchelsIntegration extends ModIntegration {
             }
             if (!graveInv.isEmpty()) {
                 graveInv.icon = this.getModIcon();
-                te.inventories.add(graveInv);
+                leftPouchInv = graveInv;
                 result = true;
             }
         } else {
             GraveStones.printDebugMessage(
                 "GraveStones Mod couldn't connect to Satchels' Left Pouch. Have these classes been modified? Report to mod Author pleases.");
         }
+
         IInventory rightPouch = getRightPouchInventory(player);
+        GraveInventory rightPouchInv = null;
         if (rightPouch != null) {
             int size = rightPouch.getSizeInventory();
             GraveInventory graveInv = new GraveInventorySatchelsRightPouch(size, te);
@@ -106,14 +92,16 @@ public class SatchelsIntegration extends ModIntegration {
             }
             if (!graveInv.isEmpty()) {
                 graveInv.icon = this.getModIcon();
-                te.inventories.add(graveInv);
+                rightPouchInv = graveInv;
                 result = true;
             }
         } else {
             GraveStones.printDebugMessage(
                 "GraveStones Mod couldn't connect to Satchels' Right Pouch. Have these classes been modified? Report to mod Author pleases.");
         }
+
         IInventory satchel = getSatchelInventory(player);
+        GraveInventory satchelInv = null;
         if (satchel != null) {
             int size = satchel.getSizeInventory();
             GraveInventory graveInv = new GraveInventorySatchel(size, te);
@@ -124,13 +112,41 @@ public class SatchelsIntegration extends ModIntegration {
             }
             if (!graveInv.isEmpty()) {
                 graveInv.icon = this.getModIcon1();
-                te.inventories.add(graveInv);
+                satchelInv = graveInv;
                 result = true;
             }
         } else {
             GraveStones.printDebugMessage(
                 "GraveStones Mod couldn't connect to Satchels' Satchel. Have these classes been modified? Report to mod Author pleases.");
         }
+
+        IInventory equipment = getEquipmentInventory(player);
+        GraveInventory equipmentInv = null;
+        if (equipment != null) {
+            int size = equipment.getSizeInventory();
+            GraveInventory graveInv = new GraveInventorySatchelsEquipment(size, te);
+            for (int i = 0; i < size; ++i) {
+                ItemStack stack = equipment.getStackInSlot(i);
+                graveInv.setInventorySlotContents(i, stack);
+                equipment.setInventorySlotContents(i, null);
+            }
+            if (!graveInv.isEmpty()) {
+                graveInv.icon = this.getModIcon1();
+                equipmentInv = graveInv;
+                result = true;
+            }
+        } else {
+            GraveStones.printDebugMessage(
+                "GraveStones Mod couldn't connect to Satchels' Equipment. Have these classes been modified? Report to mod Author pleases.");
+        }
+
+        if (result) {
+            if (equipmentInv != null) te.inventories.add(equipmentInv);
+            if (leftPouchInv != null) te.inventories.add(leftPouchInv);
+            if (rightPouchInv != null) te.inventories.add(rightPouchInv);
+            if (satchelInv != null) te.inventories.add(satchelInv);
+        }
+
         return result;
     }
 
