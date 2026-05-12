@@ -54,7 +54,7 @@ public abstract class ContainerGraveAbstract extends Container {
 
         for (int i = 0; i < 3; ++i) {
             for (int k = 0; k < 9; ++k) {
-                this.addSlotToContainer(new Slot(inv, k + i * 9 + 9, 8 + k * 18, 104 + i * 18));
+                this.addSlotToContainer(new Slot(inv, k + i * 9 + 9, 8 + k * 18, 105 + i * 18));
             }
         }
         for (int j = 0; j < 9; ++j) {
