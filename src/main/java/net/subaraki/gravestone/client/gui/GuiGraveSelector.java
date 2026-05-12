@@ -71,6 +71,7 @@ public class GuiGraveSelector extends GuiScreen {
     }
 
     public void drawScreen(int par1, int par2, float par3) {
+        drawDefaultBackground();
         super.drawScreen(par1, par2, par3);
         GL11.glColor4f(0.0f, 0.0f, 0.0f, 5.0f);
         int posX = (this.width - this.xSize) / 2;
