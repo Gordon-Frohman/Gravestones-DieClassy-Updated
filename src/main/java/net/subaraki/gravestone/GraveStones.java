@@ -75,6 +75,7 @@ public class GraveStones {
     public static boolean hasSextiarySector = false;
     public static boolean hasAdventureBackpack = false;
     public static boolean hasBackhand = false;
+    public static boolean hasForgeCreeperHeal = false;
 
     public static List<ModIntegration> integrations = new ArrayList<ModIntegration>();
 
@@ -180,6 +181,7 @@ public class GraveStones {
             GraveStones.hasBackhand = true;
             integrations.add(new BackhandIntegration());
         }
+        GraveStones.hasForgeCreeperHeal = Loader.isModLoaded("forgecreeperheal");
     }
 
     @Mod.EventHandler
