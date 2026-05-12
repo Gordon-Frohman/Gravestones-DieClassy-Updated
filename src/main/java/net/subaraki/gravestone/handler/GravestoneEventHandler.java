@@ -109,10 +109,10 @@ public class GravestoneEventHandler {
     }
 
     private void findPlaceForGrave(World world, EntityPlayer player, int x, int y, int z) {
-        if (world.isAirBlock(x, y, z)) {
+        if (isAirBlock(world, x, y, z)) {
             if (y < 0) {
                 // When you die from falling into void, your gravestone should spawn above the bedrock
-                if (isAirBlock(world, x, 0, z)) world.setBlock(x, 0, z, Blocks.bedrock);
+                if (isAirBlock(world, x, 0, z)) world.setBlock(x, 0, z, Blocks.cobblestone);
                 y = 1;
                 while (!isAirBlock(world, x, y, z) && y < 255) y++;
             }
