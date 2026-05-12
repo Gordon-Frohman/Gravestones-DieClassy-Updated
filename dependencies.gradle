@@ -48,7 +48,6 @@ dependencies {
     compileOnly(rfg.deobf(files("libs/Enchiridion 2-1.7.10-2.0.2a.jar"))) // For Mariculture runtime
     compileOnly(rfg.deobf(files("libs/CosmeticArmorReworked-1.7.10-v7.jar")))
     compileOnly(rfg.deobf(files("libs/Satchels-1.7.10-1.0.7.jar")))
-    compileOnly("com.github.GTNewHorizons:CodeChickenCore:1.4.7:dev") // For Satchels runtime
     compileOnly(rfg.deobf(files("libs/aether-1.7.10-v1.1.2.5.jar")))
     compileOnly(rfg.deobf(files("libs/TravellersGear-1.7.10-1.16.6.jar"))) // Incompatible with Baubles Expanded
     compileOnly(files("libs/SextiarySector2-2.4.8.b-1.7.10-dev.jar"))
