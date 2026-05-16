@@ -1,4 +1,5 @@
 # Gravestones – Die Classy (Updated)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/Gordon-Frohman/Gravestones-DieClassy-Updated)
 
 An updated fork of the original **Gravestones – Die Classy** mod for **Minecraft 1.7.10**. When a player dies, their entire inventory is captured and stored inside a decorative gravestone placed at the death location, preventing item despawn. This fork fixes several long-standing bugs and adds broad compatibility with other mods that modify the player inventory.
 
